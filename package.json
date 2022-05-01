@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "nodejs-trainee",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,10 +18,15 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "generate": "npx prisma generate",
+    "migrate": "npx prisma migrate dev",
+    "push": "npx prisma db push",
+    "dockerdb": "docker-compose up db -d && npm run generate && npm run push"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^8.0.0",
@@ -71,5 +76,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
   }
 }

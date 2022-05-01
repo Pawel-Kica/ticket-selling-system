@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  api:
+    build:
+      dockerfile: dockerfile
+      context: .
+    depends_on:
+      - db
+    env_file:
+      - docker.env
+    ports:
+      - '8001:4001'
+  db:
+    container_name: db
+    image: postgres:14.2
+    ports:
+      - '8000:5432'
+    env_file:
+      - docker.env
+    volumes:
+      - ./data:/var/lib/postgresql/data
