@@ -1,4 +1,4 @@
-import pureOmit from '../../../helpers/pureOmit';
+import pureOmit from '../../../utils/pureOmit';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from 'nestjs-prisma';
 import { AuthService } from '../services/auth.service';
@@ -7,23 +7,30 @@ import { UsersController } from './users.controller';
 import {
   expectToEqualError,
   expectToEqualObject,
-} from '../../../helpers/test/customExpections';
-import { ConflictExceptionInstance } from '../../../helpers/test/errors';
+} from '../../../tests/helpers/customExpections';
+import {
+  ConflictExceptionInstance,
+  InvalidCredetialsInstance,
+} from '../../../tests/helpers/errors';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entities/user.entity';
 import { SeedService } from '../../../prisma/seed/seed.service';
+import { createUserOmitProperties } from '../../../tests/helpers/omitProperties';
+import { Prisma } from '@prisma/client';
+
+const example_login = {
+  email: 'email@example.com',
+  password: 'strongpassword',
+};
+const example_user = {
+  name: 'name',
+  surname: 'surname',
+  ...example_login,
+  dateOfBirth: new Date(),
+};
+const example_user_response = pureOmit(example_user, ['password']);
 
 describe('UsersController', () => {
-  const data = {
-    name: 'name',
-    surname: 'surname',
-    email: 'email@example.com',
-    password: 'strongpassword',
-    dateOfBirth: new Date(),
-  };
-  const createUserOmitProperties = ['id', 'password'];
-  const result = pureOmit(data, ['password']);
-
   let usersController: UsersController;
   let usersService: UsersService;
   let authService: AuthService;
@@ -39,7 +46,8 @@ describe('UsersController', () => {
     usersService = moduleRef.get<UsersService>(UsersService);
     usersController = moduleRef.get<UsersController>(UsersController);
     authService = moduleRef.get<AuthService>(AuthService);
-
+  });
+  afterAll(async () => {
     seedService.removeSpecificTable('user');
   });
 
@@ -59,20 +67,47 @@ describe('UsersController', () => {
     afterAll(() => {
       expect(spyCreate).toHaveBeenCalledTimes(1);
       expect(spyCheckEmailAvailability).toHaveBeenCalledTimes(2);
+
       spyCreate.mockRestore();
       spyCheckEmailAvailability.mockRestore();
     });
     it('Should create new user', async () => {
       expectToEqualObject(
-        await usersController.createHandler(data),
-        result,
+        await usersController.createHandler(example_user),
+        example_user_response,
         createUserOmitProperties,
       );
     });
     it('Should return error conflict exception', async () => {
       expectToEqualError(
-        await usersController.createHandler(data).catch((e) => e),
+        await usersController.createHandler(example_user).catch((e) => e),
         ConflictExceptionInstance,
+      );
+    });
+  });
+  describe('login', () => {
+    let findUniqueSpy: jest.SpyInstance<
+      Promise<User>,
+      [where: Prisma.UserWhereUniqueInput]
+    >;
+    let verifyPasswordSpy: jest.SpyInstance<
+      Promise<void>,
+      [passwordToVerify: string, hashed: string]
+    >;
+    beforeAll(() => {
+      findUniqueSpy = jest.spyOn(usersService, 'findUnique');
+      verifyPasswordSpy = jest.spyOn(authService, 'verifyPassword');
+    });
+    afterAll(() => {
+      expect(findUniqueSpy).toHaveBeenCalledTimes(1);
+      expect(verifyPasswordSpy).toHaveBeenCalledTimes(1);
+      findUniqueSpy.mockRestore();
+      verifyPasswordSpy.mockRestore();
+    });
+    it('should not be able to login with invalid credentials', async () => {
+      expectToEqualError(
+        await usersController.loginHandler(example_login).catch((e) => e),
+        InvalidCredetialsInstance,
       );
     });
   });

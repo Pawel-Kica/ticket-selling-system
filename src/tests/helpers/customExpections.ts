@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import pureOmit from '../pureOmit';
+import pureOmit from '../../utils/pureOmit';
 
 export function expectToEqualObject(
   body: any,

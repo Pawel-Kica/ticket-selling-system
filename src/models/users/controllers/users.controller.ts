@@ -13,7 +13,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthService } from '../services/auth.service';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { InvalidCredentials } from '../../../helpers/errors';
+import { InvalidCredentials } from '../../../utils/errors';
 
 @Controller('users')
 export class UsersController {

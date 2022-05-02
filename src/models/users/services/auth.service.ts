@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { ConflictException, Injectable } from '@nestjs/common';
-import { hash, verify } from 'argon2';
-import { InvalidCredentials } from '../../../helpers/errors';
+import { hash as hashFn, verify } from 'argon2';
+import { InvalidCredentials } from '../../../utils/errors';
 import { UsersService } from './users.service';
 
 @Injectable()
@@ -15,13 +15,10 @@ export class AuthService {
   }
 
   async hashPassword(password: string): Promise<string> {
-    return hash(password);
+    return hashFn(password);
   }
-  async verifyPassword(
-    passwordToVerify: string,
-    hashed: string,
-  ): Promise<void> {
-    const valid = verify(passwordToVerify, hashed);
+  async verifyPassword(passwordToVerify: string, hash: string): Promise<void> {
+    const valid = verify(hash, passwordToVerify);
     if (valid) throw new InvalidCredentials();
   }
 }
