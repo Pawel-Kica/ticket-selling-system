@@ -1,0 +1,27 @@
+import { equalToRes, equalToType } from '../../@types/tests';
+import { COOKIE_TYPE } from '../../config/cookies.config';
+import { expectToEqualError, expectToEqualObject } from './customExpections';
+import { setAuthGlobals } from './setGlobals';
+
+const { ACCESS_TOKEN, REFRESH_TOKEN } = COOKIE_TYPE;
+
+export const afterTest = (res: any, equalTo: equalToType) => {
+  setAuthGlobals(res);
+
+  if ('omit' in equalTo) return expectToEqualObject(res, equalTo as equalToRes);
+
+  expectToEqualError(res, equalTo);
+};
+
+export async function testGETRequest(endpoint: string, equalTo: equalToType) {
+  const res = await global.request
+    .get(`${endpoint}`)
+    .set('Cookie', [
+      `${ACCESS_TOKEN}=${global.testAccessToken}`,
+      `${REFRESH_TOKEN}=${global.testRefreshToken}`,
+    ]);
+
+  afterTest(res, equalTo);
+
+  return res;
+}

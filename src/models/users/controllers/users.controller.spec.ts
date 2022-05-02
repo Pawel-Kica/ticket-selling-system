@@ -10,7 +10,7 @@ import {
 } from '../../../tests/helpers/customExpections';
 import {
   ConflictExceptionInstance,
-  InvalidCredetialsInstance,
+  InvalidCredentialsInstance,
 } from '../../../tests/helpers/errors';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entities/user.entity';
@@ -107,7 +107,7 @@ describe('UsersController', () => {
     it('should not be able to login with invalid credentials', async () => {
       expectToEqualError(
         await usersController.loginHandler(example_login).catch((e) => e),
-        InvalidCredetialsInstance,
+        InvalidCredentialsInstance,
       );
     });
   });

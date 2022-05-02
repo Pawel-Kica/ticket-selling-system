@@ -1,11 +1,25 @@
 import startTestServer from '../startTestServer';
-import { testWelcome } from '../helpers/endpointTest';
+import { SeedService } from '../../prisma/seed/seed.service';
+import { testGETRequest } from '../helpers/testEndpoint';
+import { InvalidCredentialsInstance } from '../helpers/errors';
 
 describe('Users CRUD', () => {
+  let seedService: SeedService;
+
   beforeAll(async () => {
-    await startTestServer();
+    seedService = await startTestServer();
+  });
+  afterAll(async () => {
+    await seedService.removeSpecificTable('user');
   });
   it('/ (UwU)', async () => {
-    await testWelcome();
+    await testGETRequest('/', {
+      data: { msg: 'Welcome' },
+      status: 200,
+      omit: [],
+    });
+  });
+  it('/ (UwU)', async () => {
+    await testGETRequest('/err', InvalidCredentialsInstance);
   });
 });

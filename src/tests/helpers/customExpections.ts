@@ -1,18 +1,20 @@
 import { HttpException } from '@nestjs/common';
+import { equalToRes } from '../../@types/tests';
 import pureOmit from '../../utils/pureOmit';
 
 export function expectToEqualObject(
-  body: any,
-  expectedData: object,
-  propertiesToOmit: string[],
+  { body, status }: any,
+  equalTo: equalToRes,
 ) {
-  expect(pureOmit(body, propertiesToOmit)).toEqual(expectedData);
+  expect(pureOmit(body, equalTo.omit)).toEqual(equalTo.data);
+  expect(equalTo.status).toEqual(status);
 
-  propertiesToOmit.forEach((property) => {
+  equalTo.omit.forEach((property) => {
     expect(body).toHaveProperty(property);
   });
 }
 
-export function expectToEqualError(data: any, err: HttpException) {
-  expect(data).toEqual(err);
+export function expectToEqualError({ body, status }: any, err: HttpException) {
+  expect(body.message).toEqual(err.getResponse());
+  expect(status).toEqual(err.getStatus());
 }
