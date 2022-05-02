@@ -2,23 +2,28 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../models/app.module';
+import { SeedService } from '../../prisma/seed/seed.service';
+import { InvalidCredentialsInstance } from '../helpers/errors';
+import { testGETRequest } from '../helpers/testEndpoint';
+import startTestServer from '../startTestServer';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication;
+  let seedService: SeedService;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+  beforeAll(async () => {
+    seedService = await startTestServer();
   });
-
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect({ msg: 'Welcome' });
+  afterAll(async () => {
+    await seedService.removeSpecificTable('user');
+  });
+  it('/ (home)', async () => {
+    await testGETRequest('/', {
+      data: { msg: 'Welcome' },
+      status: 200,
+      omit: [],
+    });
+  });
+  it('/err (err)', async () => {
+    await testGETRequest('/err', InvalidCredentialsInstance);
   });
 });
