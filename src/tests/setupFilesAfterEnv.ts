@@ -1,1 +1,1 @@
-import * as supertest from 'supertest';
+global.request = null;
