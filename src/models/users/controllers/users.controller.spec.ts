@@ -72,15 +72,18 @@ describe('UsersController', () => {
       spyCheckEmailAvailability.mockRestore();
     });
     it('Should create new user', async () => {
-      expectToEqualObject(
-        await usersController.createHandler(example_user),
-        example_user_response,
-        createUserOmitProperties,
-      );
+      expectToEqualObject(await usersController.createHandler(example_user), {
+        data: example_user_response,
+        omit: createUserOmitProperties,
+      });
     });
     it('Should return error conflict exception', async () => {
+      const res = await usersController
+        .createHandler(example_user)
+        .catch((e) => e);
+
       expectToEqualError(
-        await usersController.createHandler(example_user).catch((e) => e),
+        { body: { message: res.getResponse() }, status: res.getStatus() },
         ConflictExceptionInstance,
       );
     });
@@ -105,8 +108,12 @@ describe('UsersController', () => {
       verifyPasswordSpy.mockRestore();
     });
     it('should not be able to login with invalid credentials', async () => {
+      const res = await usersController
+        .loginHandler(example_login)
+        .catch((e) => e);
+
       expectToEqualError(
-        await usersController.loginHandler(example_login).catch((e) => e),
+        { body: { message: res.getResponse() }, status: res.getStatus() },
         InvalidCredentialsInstance,
       );
     });

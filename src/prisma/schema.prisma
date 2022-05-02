@@ -8,10 +8,59 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(cuid())
-  name String
-  surname String
-  email String @unique
-  password String
+  id          String   @id @default(cuid())
+  name        String
+  surname     String
+  email       String   @unique
+  password    String
   dateOfBirth DateTime
 }
+
+model Userr {
+  id              String    @id @default(cuid())
+  name            String
+  surname         String
+  dateOfBirth     DateTime
+  address         String
+  telephoneNumber String
+  position        roles
+  photoPath       String
+  // relations
+  Train           Train[]
+  Session         Session[]
+}
+enum roles {
+  admin
+  manager
+  boss
+}
+
+model Session {
+  id      String @id @default(cuid())
+  userId String
+  // relations
+  user    Userr  @relation(fields: [userId], references: [id])
+}
+
+
+model Train {
+  id            String     @id @default(cuid())
+  // trainNumber   String     @id @default(cuid())
+  routeNumber   Int
+  departureTime DateTime
+  bossId        String
+  // relations
+  trainBoss     Userr      @relation(fields: [bossId], references: [id])
+  Carriage      Carriage[]
+}
+
+model Carriage {
+  id      String @id @default(cuid())
+  // carriageNumber   String @id @default(cuid())
+  trainId String
+  type    String
+
+  // relations
+  train Train @relation(fields: [trainId], references: [id])
+}
+
