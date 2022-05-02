@@ -8,8 +8,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-RUN npm run generate
-RUN npm run push
+RUN npm run upt:prisma
 
 EXPOSE 8080
 

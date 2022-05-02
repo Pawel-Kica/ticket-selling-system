@@ -7,12 +7,13 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthService } from './auth.service';
-import { LoginUserDto } from './dto/login-user.dto';
 import { User } from '@prisma/client';
+import { UsersService } from '../services/users.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { AuthService } from '../services/auth.service';
+import { LoginUserDto } from '../dto/login-user.dto';
+import { InvalidCredentials } from 'src/helpers/errors';
 
 @Controller('users')
 export class UsersController {
@@ -23,16 +24,20 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    await this.authService.checkIfEmailAvailable(createUserDto.email);
+    await this.authService.checkIfEmailAlreadyExists(createUserDto.email);
 
     const hash = await this.authService.hashPassword(createUserDto.password);
 
     return this.usersService.create({ ...createUserDto, password: hash });
   }
 
-  @Post()
-  async login(@Body() loginUserDto: LoginUserDto): Promise<User> {
-    return this.authService.login(loginUserDto);
+  @Post('login')
+  async login(@Body() { email, password }: LoginUserDto): Promise<User> {
+    const user = await this.usersService.findOne({ email });
+    if (!user) throw new InvalidCredentials();
+    await this.authService.verifyPassword(password, user.password);
+
+    return user;
   }
 
   @Get()
