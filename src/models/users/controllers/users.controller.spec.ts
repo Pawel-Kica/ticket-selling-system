@@ -12,7 +12,6 @@ import { ConflictExceptionInstance } from '../../../helpers/test/errors';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entities/user.entity';
 import { SeedService } from '../../../prisma/seed/seed.service';
-import { ConfigService } from '@nestjs/config';
 
 describe('UsersController', () => {
   const data = {
@@ -29,19 +28,11 @@ describe('UsersController', () => {
   let usersService: UsersService;
   let authService: AuthService;
   let seedService: SeedService;
-  let spy1: jest.SpyInstance<Promise<User>, [data: CreateUserDto]>;
-  let spy2: jest.SpyInstance<Promise<void>, [email: string]>;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [
-        ConfigService,
-        PrismaService,
-        SeedService,
-        UsersService,
-        AuthService,
-      ],
+      providers: [PrismaService, SeedService, UsersService, AuthService],
     }).compile();
 
     seedService = moduleRef.get<SeedService>(SeedService);
@@ -49,19 +40,27 @@ describe('UsersController', () => {
     usersController = moduleRef.get<UsersController>(UsersController);
     authService = moduleRef.get<AuthService>(AuthService);
 
-    seedService.removeTables();
+    seedService.removeSpecificTable('user');
   });
 
   describe('Create', () => {
+    let spyCreate: jest.SpyInstance<Promise<User>, [data: CreateUserDto]>;
+    let spyCheckEmailAvailability: jest.SpyInstance<
+      Promise<void | User>,
+      [email: string]
+    >;
     beforeAll(() => {
-      spy1 = jest.spyOn(usersService, 'create');
-      spy2 = jest.spyOn(authService, 'checkIfEmailAlreadyExists');
+      spyCreate = jest.spyOn(usersService, 'create');
+      spyCheckEmailAvailability = jest.spyOn(
+        authService,
+        'checkEmailAvailability',
+      );
     });
     afterAll(() => {
-      expect(spy1).toHaveBeenCalledTimes(1);
-      expect(spy2).toHaveBeenCalledTimes(2);
-      spy1.mockRestore();
-      spy2.mockRestore();
+      expect(spyCreate).toHaveBeenCalledTimes(1);
+      expect(spyCheckEmailAvailability).toHaveBeenCalledTimes(2);
+      spyCreate.mockRestore();
+      spyCheckEmailAvailability.mockRestore();
     });
     it('Should create new user', async () => {
       expectToEqualObject(

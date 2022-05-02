@@ -24,7 +24,7 @@ export class UsersController {
 
   @Post()
   async createHandler(@Body() createUserDto: CreateUserDto): Promise<User> {
-    await this.authService.checkIfEmailAlreadyExists(createUserDto.email);
+    await this.authService.checkEmailAvailability(createUserDto.email);
 
     const hash = await this.authService.hashPassword(createUserDto.password);
 
