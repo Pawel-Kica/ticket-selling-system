@@ -10,14 +10,29 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthService } from './auth.service';
+import { LoginUserDto } from './dto/login-user.dto';
+import { User } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    await this.authService.checkIfEmailAvailable(createUserDto.email);
+
+    const hash = await this.authService.hashPassword(createUserDto.password);
+
+    return this.usersService.create({ ...createUserDto, password: hash });
+  }
+
+  @Post()
+  async login(@Body() loginUserDto: LoginUserDto): Promise<User> {
+    return this.authService.login(loginUserDto);
   }
 
   @Get()
@@ -27,7 +42,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    // return this.usersService.findOne();
   }
 
   @Patch(':id')

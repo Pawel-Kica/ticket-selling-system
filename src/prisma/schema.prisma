@@ -11,5 +11,7 @@ model User {
   id   String @id @default(cuid())
   name String
   surname String
+  email String @unique
+  password String
   dateOfBirth DateTime
 }
