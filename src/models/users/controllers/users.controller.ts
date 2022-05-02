@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  ConflictException,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
@@ -22,11 +21,6 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
   ) {}
-
-  @Get('error')
-  trr() {
-    throw new ConflictException();
-  }
 
   @Post()
   async createHandler(@Body() createUserDto: CreateUserDto): Promise<User> {
