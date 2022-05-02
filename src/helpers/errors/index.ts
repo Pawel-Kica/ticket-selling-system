@@ -1,17 +1,7 @@
-export class InvalidCredentials extends Error {
-  public readonly code: number = 401;
-  public readonly msg: string = 'Invalid credentials';
-  constructor() {
-    super();
-    Object.setPrototypeOf(this, InvalidCredentials.prototype);
-  }
-}
+import { HttpException } from '@nestjs/common';
 
-export class EmailAlreadyExists extends Error {
-  public readonly code: number = 400;
-  public readonly msg: string = 'EmailAlreadyExists';
+export class InvalidCredentials extends HttpException {
   constructor() {
-    super();
-    Object.setPrototypeOf(this, EmailAlreadyExists.prototype);
+    super('Invalid credentials', 400);
   }
 }

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ConflictException,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
@@ -13,7 +14,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthService } from '../services/auth.service';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { InvalidCredentials } from 'src/helpers/errors';
+import { InvalidCredentials } from '../../../helpers/errors';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +23,13 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
+  @Get('error')
+  trr() {
+    throw new ConflictException();
+  }
+
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async createHandler(@Body() createUserDto: CreateUserDto): Promise<User> {
     await this.authService.checkIfEmailAlreadyExists(createUserDto.email);
 
     const hash = await this.authService.hashPassword(createUserDto.password);
@@ -32,8 +38,8 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(@Body() { email, password }: LoginUserDto): Promise<User> {
-    const user = await this.usersService.findOne({ email });
+  async loginHandler(@Body() { email, password }: LoginUserDto): Promise<User> {
+    const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);
 
@@ -41,8 +47,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAllHandler() {
+    return this.usersService.findMany();
   }
 
   @Get(':id')

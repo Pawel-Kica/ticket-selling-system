@@ -12,15 +12,15 @@ import { CreateUserDto } from '../dto/create-user.dto';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({ data: createUserDto });
+  async create(data: CreateUserDto): Promise<User> {
+    return this.prisma.user.create({ data });
   }
 
-  async findAll(): Promise<User[]> {
+  async findMany(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
 
-  async findOne(where: Prisma.UserWhereUniqueInput): Promise<User | null> {
+  async findUnique(where: Prisma.UserWhereUniqueInput): Promise<User | null> {
     return this.prisma.user.findUnique({ where });
   }
 
