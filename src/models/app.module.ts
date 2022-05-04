@@ -5,12 +5,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 // Middlewares
 import { Deserialize } from '../middleware/deserialize';
 import { EmailToLowerCase } from '../middleware/emailToLowerCase';
+// Modules
+import { SessionsModule } from './sessions/sessions.module';
 // Controllers
 import { AppController } from './app.controller';
 // Services
 import { JwtService } from '../utils/jwt/jwt.service';
-import { SessionsModule } from './sessions/sessions.module';
-import { SessionsService } from './sessions/sessions.service';
+import { UsersModule } from './users/users.module';
 
 // datasources: {
 // db: {
@@ -35,6 +36,7 @@ import { SessionsService } from './sessions/sessions.service';
       },
       inject: [ConfigService],
     }),
+    UsersModule,
     SessionsModule,
   ],
   controllers: [AppController],
