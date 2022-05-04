@@ -1,4 +1,4 @@
-import { Employee } from '../../../models/employees/entities/employee.entity';
+import { Employee } from '@prisma/client';
 import { Session } from '../../../models/sessions/entities/session.entity';
 
 export class CreateJwtTokenDto {

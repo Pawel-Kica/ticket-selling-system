@@ -1,1 +1,3 @@
-export class Session {}
+export class Session {
+  id: string;
+}

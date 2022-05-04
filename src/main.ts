@@ -1,18 +1,18 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './models/app.module';
-import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'nestjs-prisma';
+import * as cookieParser from 'cookie-parser';
+import { ConfigService } from '@nestjs/config';
+import { AppModule } from './models/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SeedService } from './prisma/seed/seed.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+  app.use(cookieParser());
 
-  const seedService: SeedService = app.get(SeedService);
   const prismaService: PrismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
-
+  // somewhere in your initialization file
   const config = new DocumentBuilder()
     .setTitle('NestJS ticket selling system')
     .setDescription('nodejs trainee')
@@ -20,8 +20,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  await seedService.main();
 
   const port = configService.get('PORT');
   await app.listen(port);
