@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 // Types
 import { JwtTokenDto } from './dto/jwt-token.dto';
 import { CreateJwtTokenDto } from './dto/create-jwt.dto';
+import { cookiesOptions } from '../../config/cookies.config';
 
 @Injectable()
 export class JwtService {
@@ -13,11 +14,16 @@ export class JwtService {
 
   private readonly SECRET_TOKEN =
     this.configService.get<string>('SECRET_TOKEN');
-  private readonly EXPIRATION_TIME =
-    this.configService.get<number>('EXPIRATION_TIME');
+  private readonly REFRESH_TOKEN_TTL =
+    this.configService.get<string>('REFRESH_TOKEN_TTL');
+  private readonly ACCESS_TOKEN_TTL =
+    this.configService.get<string>('ACCESS_TOKEN_TTL');
 
-  signJWT(data: CreateJwtTokenDto) {
-    return sign(data, this.SECRET_TOKEN, { expiresIn: this.EXPIRATION_TIME });
+  signJWT(data: CreateJwtTokenDto, type: cookiesOptions) {
+    return sign(data, this.SECRET_TOKEN, {
+      expiresIn:
+        type === 'refresh' ? this.REFRESH_TOKEN_TTL : this.ACCESS_TOKEN_TTL,
+    });
   }
 
   verifyJWT(token: string) {

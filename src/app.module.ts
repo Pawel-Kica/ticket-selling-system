@@ -12,6 +12,7 @@ import { AppController } from './app.controller';
 // Services
 import { JwtService } from './utils/jwt/jwt.service';
 import { UsersModule } from './models/users/users.module';
+import { CookiesService } from './utils/cookies/cookies.service';
 
 // datasources: {
 // db: {
@@ -40,7 +41,7 @@ import { UsersModule } from './models/users/users.module';
     SessionsModule,
   ],
   controllers: [AppController],
-  providers: [JwtService],
+  providers: [JwtService, CookiesService],
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {
