@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { RequireUser } from '../guards/auth';
-import { InvalidCredentials } from '../utils/errors';
+import { RequireUser } from './guards/auth';
+import { InvalidCredentials } from './utils/errors';
 
 @Controller()
 @UseGuards(RequireUser)

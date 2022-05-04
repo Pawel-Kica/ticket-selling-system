@@ -16,11 +16,11 @@ export class JwtService {
   private readonly EXPIRATION_TIME =
     this.configService.get<number>('EXPIRATION_TIME');
 
-  private signJWT(data: CreateJwtTokenDto) {
+  signJWT(data: CreateJwtTokenDto) {
     return sign(data, this.SECRET_TOKEN, { expiresIn: this.EXPIRATION_TIME });
   }
 
-  private verifyJWT(token: string) {
+  verifyJWT(token: string) {
     try {
       const decoded = <JwtTokenDto>verify(token, this.SECRET_TOKEN);
       return {

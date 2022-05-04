@@ -13,14 +13,14 @@ model User {
   surname     String
   email       String   @unique
   password    String
-  role        Roles
+  role        Role
   dateOfBirth DateTime
 
   // relations
   session Session[]
 }
 
-enum Roles {
+enum Role {
   admin
   manager
   boss

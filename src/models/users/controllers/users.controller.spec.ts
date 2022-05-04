@@ -12,20 +12,20 @@ import {
   ConflictExceptionInstance,
   InvalidCredentialsInstance,
 } from '../../../tests/helpers/errors';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { User } from '../entities/user.entity';
 import { SeedService } from '../../../prisma/seed/seed.service';
 import { createUserOmitProperties } from '../../../tests/helpers/omitProperties';
-import { Prisma } from '@prisma/client';
+import { User } from '@prisma/client';
+import { CreateUserDto, WhereUniqueUserDto } from '../users.types';
 
 const example_login = {
   email: 'email@example.com',
   password: 'strongpassword',
 };
-const example_user = {
+const example_user: CreateUserDto = {
   name: 'name',
   surname: 'surname',
   ...example_login,
+  role: 'admin',
   dateOfBirth: new Date(),
 };
 const example_user_response = pureOmit(example_user, ['password']);
@@ -91,7 +91,7 @@ describe('UsersController', () => {
   describe('login', () => {
     let findUniqueSpy: jest.SpyInstance<
       Promise<User>,
-      [where: Prisma.UserWhereUniqueInput]
+      [where: WhereUniqueUserDto]
     >;
     let verifyPasswordSpy: jest.SpyInstance<
       Promise<void>,

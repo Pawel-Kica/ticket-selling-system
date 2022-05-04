@@ -9,11 +9,9 @@ import {
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthService } from '../services/auth.service';
-import { LoginUserDto } from '../dto/login-user.dto';
 import { InvalidCredentials } from '../../../utils/errors';
+import { CreateUserDto, LoginUserDto, UpdateUserDto } from '../users.types';
 
 @Controller('users')
 export class UsersController {

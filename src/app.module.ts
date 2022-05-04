@@ -3,15 +3,15 @@ import { PrismaModule } from 'nestjs-prisma';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 // Middlewares
-import { Deserialize } from '../middleware/deserialize';
-import { EmailToLowerCase } from '../middleware/emailToLowerCase';
+import { Deserialize } from './middleware/deserialize';
+import { EmailToLowerCase } from './middleware/emailToLowerCase';
 // Modules
-import { SessionsModule } from './sessions/sessions.module';
+import { SessionsModule } from './models/sessions/sessions.module';
 // Controllers
 import { AppController } from './app.controller';
 // Services
-import { JwtService } from '../utils/jwt/jwt.service';
-import { UsersModule } from './users/users.module';
+import { JwtService } from './utils/jwt/jwt.service';
+import { UsersModule } from './models/users/users.module';
 
 // datasources: {
 // db: {

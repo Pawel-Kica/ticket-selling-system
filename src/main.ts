@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { PrismaService } from 'nestjs-prisma';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
-import { AppModule } from './models/app.module';
+import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {

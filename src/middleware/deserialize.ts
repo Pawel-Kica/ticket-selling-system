@@ -9,14 +9,21 @@ export class Deserialize implements NestMiddleware {
     private readonly jwtService: JwtService,
     private readonly sessionService: SessionsService,
   ) {}
-  async use(req: Request, _res: Response, next: NextFunction) {
+  async use(req: Request, res: Response, next: NextFunction) {
     const { accessToken, refreshToken } = req.cookies;
 
-    const session = await this.sessionService.findUnique({
-      id: accessToken,
-    });
-    console.log(session);
-    console.log('tu');
+    const { decoded: decodedAccess, expired: expiredAccess } =
+      this.jwtService.verifyJWT(accessToken);
+
+    if (decodedAccess) {
+      const session = await this.sessionService.findUnique({
+        id: accessToken,
+      });
+      if (!session) return next();
+
+      res.locals.user = decodedAccess;
+    }
+
     next();
   }
 }
