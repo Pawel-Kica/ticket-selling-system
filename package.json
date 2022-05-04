@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./src/tests/jest-e2e.json",
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
+    "format:prisma": "npx prisma format",
     "push": "npx prisma db push",
     "upt:prisma": "npm run generate && npm run push",
     "studio": "npx prisma studio",

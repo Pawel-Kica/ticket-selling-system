@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { PrismaModule } from 'nestjs-prisma';
 import { AppController } from './app.controller';
@@ -30,7 +29,6 @@ import { EmailToLowerCaseMiddleware } from '../middleware/emailToLowerCase';
       inject: [ConfigService],
     }),
     SeedModule,
-    UsersModule,
     SessionsModule,
   ],
   controllers: [AppController],

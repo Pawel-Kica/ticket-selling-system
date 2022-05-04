@@ -7,60 +7,141 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id          String   @id @default(cuid())
-  name        String
-  surname     String
-  email       String   @unique
-  password    String
-  dateOfBirth DateTime
-}
+// model User {
+//   id          String   @id @default(cuid())
+//   name        String
+//   surname     String
+//   email       String   @unique
+//   password    String
+//   dateOfBirth DateTime
+// }
 
-model Userr {
-  id              String    @id @default(cuid())
+model Employee {
+  id              String   @id @default(cuid())
   name            String
   surname         String
+  email           String   @unique
+  password        String
   dateOfBirth     DateTime
   address         String
   telephoneNumber String
-  position        roles
+  position        Roles
   photoPath       String
-  // relations
-  Train           Train[]
-  Session         Session[]
+
+  //relations
+  Session     Session[]
+  Train       Train[]
+  conductors1 Carriage[] @relation("conductor1")
+  conductors2 Carriage[] @relation("conductor2")
 }
-enum roles {
+
+enum Roles {
   admin
   manager
   boss
 }
 
 model Session {
-  id      String @id @default(cuid())
-  userId String
-  // relations
-  user    Userr  @relation(fields: [userId], references: [id])
+  id         String @id @default(cuid())
+  employeeId String
+
+  //relations
+  employee Employee @relation(fields: [employeeId], references: [id])
 }
 
-
 model Train {
-  id            String     @id @default(cuid())
-  // trainNumber   String     @id @default(cuid())
-  routeNumber   Int
+  id           String @id @default(cuid())
+  routeId      String
+  bossId       String
+  ticketsLimit Int
+
+  //flag
+  // departure time
+  // driver
+  // driver-helper
+
+  //relations
+  Route    Route      @relation(fields: [routeId], references: [id])
+  Boss     Employee   @relation(fields: [bossId], references: [id])
+  Carriage Carriage[]
+  Ticket   Ticket[]
+}
+
+model Route {
+  id            String   @id @default(cuid())
+  arrivalTime   DateTime
   departureTime DateTime
-  bossId        String
-  // relations
-  trainBoss     Userr      @relation(fields: [bossId], references: [id])
-  Carriage      Carriage[]
+  Train         Train[]
 }
 
 model Carriage {
-  id      String @id @default(cuid())
-  // carriageNumber   String @id @default(cuid())
-  trainId String
-  type    String
+  id           String       @id @default(cuid())
+  trainId      String
+  type         CarriageType
+  conductor1Id String
+  conductor2Id String
 
-  // relations
-  train Train @relation(fields: [trainId], references: [id])
+  //relations
+  train      Train    @relation(fields: [trainId], references: [id])
+  conductor1 Employee @relation("conductor1", fields: [conductor1Id], references: [id])
+  conductor2 Employee @relation("conductor2", fields: [conductor2Id], references: [id])
+  Ticket     Ticket[]
 }
 
+enum CarriageType {
+  heavy
+  normal
+  light
+}
+
+model Ticket {
+  id                  String   @id @default(cuid())
+  seat                Int      @unique @default(autoincrement())
+  carriageId          String
+  trainId             String
+  startStationId      String
+  endStationId        String
+  state               State
+  dateTimeOfOperation DateTime @updatedAt
+
+  //relations
+  carriageNumber Carriage @relation(fields: [carriageId], references: [id])
+  train          Train    @relation(fields: [trainId], references: [id])
+  startStation   Station  @relation("startStations", fields: [startStationId], references: [id])
+  endStation     Station  @relation("endStations", fields: [endStationId], references: [id])
+}
+
+enum State {
+  booked
+  bought
+}
+
+model Price {
+  id             String       @id @default(cuid())
+  startStationId String
+  endStationId   String
+  trainType      TrainType
+  carriageType   CarriageType
+  price          Int
+
+  //relations
+  startStation Station @relation("priceStartStations", fields: [startStationId], references: [id])
+  endStation   Station @relation("priceEndStations", fields: [endStationId], references: [id])
+}
+
+enum TrainType {
+  fast
+  medium
+  regional
+}
+
+model Station {
+  id                 String   @id @default(cuid())
+  name               String
+  
+  //relations
+  priceStartStations Price[]  @relation("priceStartStations")
+  priceEndStations   Price[]  @relation("priceEndStations")
+  startStations      Ticket[] @relation("startStations")
+  endStations        Ticket[] @relation("endStations")
+}

@@ -1,7 +1,3 @@
-import * as request from 'supertest';
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../../models/app.module';
 import { SeedService } from '../../prisma/seed/seed.service';
 import { InvalidCredentialsInstance } from '../helpers/errors';
 import { testGETRequest } from '../helpers/testEndpoint';
