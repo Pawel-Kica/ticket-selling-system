@@ -1,11 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
-
 import { User } from '@prisma/client';
-import { ConflictException, Injectable } from '@nestjs/common';
+import { UsersService } from './users.service';
 import { hash as hashFn, verify } from 'argon2';
 import { InvalidCredentials } from '../../../utils/errors';
-import { UsersService } from './users.service';
+import { ConflictException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {

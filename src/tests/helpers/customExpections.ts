@@ -1,6 +1,6 @@
 import pureOmit from '../../utils/pureOmit';
 import { HttpException } from '@nestjs/common';
-import { equalToRes } from '../../@types/tests';
+import { equalToRes } from '../../@types/tests/exceptions.types';
 
 export function expectToEqualObject(
   data: any,

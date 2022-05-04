@@ -45,7 +45,7 @@ import { CookiesService } from './utils/cookies/cookies.service';
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(Deserialize).forRoutes('*');
     consumer.apply(EmailToLowerCase).forRoutes('*');
+    consumer.apply(Deserialize).forRoutes('*');
   }
 }

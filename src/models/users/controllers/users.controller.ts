@@ -7,11 +7,14 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../services/auth.service';
 import { InvalidCredentials } from '../../../utils/errors';
-import { CreateUserDto, LoginUserDto, UpdateUserDto } from '../users.types';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  UpdateUserDto,
+} from '../../../@types/models/users.types';
 
 @Controller('users')
 export class UsersController {
@@ -21,7 +24,7 @@ export class UsersController {
   ) {}
 
   @Post()
-  async createHandler(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async createHandler(@Body() createUserDto: CreateUserDto) {
     await this.authService.checkEmailAvailability(createUserDto.email);
 
     const hash = await this.authService.hashPassword(createUserDto.password);
@@ -30,7 +33,7 @@ export class UsersController {
   }
 
   @Post('login')
-  async loginHandler(@Body() { email, password }: LoginUserDto): Promise<User> {
+  async loginHandler(@Body() { email, password }: LoginUserDto) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);

@@ -41,6 +41,9 @@ export class Deserialize implements NestMiddleware {
       pureOmit(decodedRefresh, ['canRefresh']),
       'access',
     );
+
+    res.locals.user = decodedRefresh;
+
     next();
   }
 }

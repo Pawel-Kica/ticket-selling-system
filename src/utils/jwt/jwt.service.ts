@@ -4,9 +4,8 @@ import { sign, verify } from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 // Types
-import { JwtTokenDto } from './dto/jwt-token.dto';
-import { CreateJwtTokenDto } from './dto/create-jwt.dto';
 import { cookiesOptions } from '../../config/cookies.config';
+import { CreateJwtTokenDto, JwtTokenDto } from '../../@types/utils/jwt.types';
 
 @Injectable()
 export class JwtService {

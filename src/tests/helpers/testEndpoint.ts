@@ -1,4 +1,4 @@
-import { equalToRes, equalToType } from '../../@types/tests';
+import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
 import { COOKIES_NAME } from '../../config/cookies.config';
 import { expectToEqualError, expectToEqualRes } from './customExpections';
 import { setAuthGlobals } from './setGlobals';
