@@ -8,10 +8,14 @@ import {
   CreateUserDto,
   UpdateUserDto,
 } from '../../../@types/models/users.types';
+import { omit } from '../../../utils/objects';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
+  formattedUser(user: User) {
+    return omit(user, 'password');
+  }
 
   async create(data: CreateUserDto) {
     return this.prisma.user.create({ data });

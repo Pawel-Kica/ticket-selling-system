@@ -28,6 +28,6 @@ export class AuthService {
   }
   setAuthToken(res: Response, data: JwtTokenDto) {
     const token = this.jwtService.signJWT(data);
-    res.setHeader('Authorization', token);
+    res.setHeader('Authorization', `Bearer ${token}`);
   }
 }

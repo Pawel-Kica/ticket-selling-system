@@ -2,9 +2,10 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
 import { expectToEqualError, expectToEqualRes } from './customExpections';
-import { getTestToken } from './setGlobals';
+import { getTestToken, setTestToken } from './setGlobals';
 
 export const afterTest = (res: any, equalTo: equalToType) => {
+  setTestToken(res);
   if ('omit' in equalTo) return expectToEqualRes(res, equalTo as equalToRes);
   expectToEqualError(res, equalTo);
 };

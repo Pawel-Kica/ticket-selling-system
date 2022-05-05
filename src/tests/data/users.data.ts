@@ -12,7 +12,9 @@ export const createUserData = {
 };
 export const userResponseData = {
   ...omit(createUserData, ['password', 'passwordRepetition']),
+  //emailToLowerCase middleware
   email: createUserData.email.toLowerCase(),
+  //default user role
   role: 'default',
 };
 

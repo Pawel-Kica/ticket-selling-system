@@ -1,16 +1,20 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 export function removeTestToken() {
   global.test_token = '';
 }
-export function setTestToken(token: string) {
-  global.test_token = token;
+export function setTestToken(res: Response) {
+  global.test_token = getAuthToken(res);
 }
-export function getTestToken() {
+export function getTestToken(): string {
   return global.test_token;
 }
-export function getAuthToken(req: Request) {
-  return req.headers.authorization.split(' ').reverse()[0];
+export function getAuthToken(resq: any): string {
+  try {
+    return resq.headers.authorization.split(' ').reverse()[0];
+  } catch (_e) {
+    return '';
+  }
 }
 export function setAuthToken(res: Response, token: string) {
   res.setHeader('Bearer', token);

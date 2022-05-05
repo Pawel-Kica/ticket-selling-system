@@ -45,7 +45,7 @@ export class UsersController {
       omit(data, 'passwordRepetition'),
     );
     this.authService.setAuthToken(res, { id: user.id, role: user.role });
-    return omit(user, 'password');
+    return this.usersService.formattedUser(user);
   }
 
   @Post('login')
@@ -54,8 +54,7 @@ export class UsersController {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);
-
-    return user;
+    return this.usersService.formattedUser(user);
   }
 
   @Get()

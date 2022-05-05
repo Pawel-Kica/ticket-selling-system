@@ -8,7 +8,6 @@ export const RequireRole = (role: string): any => {
       return user.role === role;
     }
   }
-
   const guard = mixin(RoleGuardMixin);
   return guard;
 };
