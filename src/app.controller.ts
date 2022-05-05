@@ -1,16 +1,21 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { RequireUser } from './guards/auth';
+import { User } from '@prisma/client';
+import { FormatUser } from './decorators/user.decorator';
+import { RequireUser } from './guards/requireUser';
+import { RoleGuard } from './guards/roles.';
 import { InvalidCredentials } from './utils/errors';
 
 @Controller()
 @UseGuards(RequireUser)
+@UseGuards(RoleGuard('admin'))
 export class AppController {
   @Get()
-  welcome() {
+  welcome(@FormatUser() user: User) {
+    console.log(user);
     return { msg: 'Welcome' };
   }
   @Get('err')
-  welcome1() {
+  welcome1(): any {
     throw new InvalidCredentials();
   }
 }

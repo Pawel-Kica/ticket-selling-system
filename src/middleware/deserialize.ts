@@ -15,6 +15,8 @@ export class Deserialize implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
+      res.locals.user = { id: '12', role: 'admin' };
+
       const { accessToken, refreshToken } = req.cookies;
 
       const { decoded: decodedAccess, expired: expiredAccess } =
