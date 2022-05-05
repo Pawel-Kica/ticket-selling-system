@@ -3,7 +3,7 @@ import { HttpException } from '@nestjs/common';
 export type equalToRes = {
   data: { [key: string]: any };
   status: number;
-  omit: string[];
+  omit: string[] | string;
 };
 export type equalToError = HttpException;
 

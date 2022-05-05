@@ -3,7 +3,11 @@ import { InvalidRequestedBody } from '../utils/errors';
 import { PipeTransform, Injectable } from '@nestjs/common';
 import createBetterJoiErrors from './helpers/betterJoiError';
 
-export const validateSchema = (schema: ObjectSchema, dataToValidate: any) => {
+// could be BetterJoiError[] | boolean
+export const validateSchema = (
+  schema: ObjectSchema,
+  dataToValidate: any,
+): any => {
   const { error } = schema.validate(dataToValidate, { abortEarly: false });
   if (error) return createBetterJoiErrors(error);
   return true;

@@ -1,5 +1,6 @@
-export function omit(obj: any, props: string[] | string) {
+export function omit(obj: any, props?: string[] | string) {
   const result = { ...obj };
+  if (!props) return result;
   if (typeof props === 'string') {
     delete result[props];
     return result;

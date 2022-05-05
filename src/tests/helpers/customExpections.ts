@@ -11,10 +11,13 @@ export function expectToEqualObject(
 export function expectToEqualRes({ body, status }: any, equalTo: equalToRes) {
   expectToEqualObject(body, equalTo);
   expect(equalTo.status).toEqual(status);
-
-  equalTo.omit.forEach((property) => {
-    expect(body).toHaveProperty(property);
-  });
+  if (typeof equalTo.omit === 'string') {
+    expect(body).toHaveProperty(equalTo.omit);
+  } else {
+    equalTo.omit.forEach((property) => {
+      expect(body).toHaveProperty(property);
+    });
+  }
 }
 
 export function expectToEqualError({ body, status }: any, err: equalToError) {

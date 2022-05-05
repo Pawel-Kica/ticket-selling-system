@@ -16,6 +16,7 @@ export async function testGETRequest(endpoint: string, equalTo: equalToType) {
   afterTest(res, equalTo);
   return res;
 }
+
 export async function testPOSTRequest(
   endpoint: string,
   data: any,
