@@ -7,21 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Session {
-//   id     String @id @default(cuid())
-//   userId String
-
-//   //relations
-//   user User @relation(fields: [userId], references: [id])
-// }
-
 model User {
-  id       String    @id @default(cuid())
+  id       String  @id @default(cuid())
   name     String
   surname  String
-  email    String    @unique
+  email    String  @unique
   password String
   role     Role
+  //relations
+  Train    Train[]
 }
 
 enum Role {
@@ -32,7 +26,7 @@ enum Role {
 }
 
 model Employee {
-  id              String   @id @default(cuid())
+  id              String     @id @default(cuid())
   name            String
   surname         String
   dateOfBirth     DateTime
@@ -40,39 +34,32 @@ model Employee {
   telephoneNumber String
   position        Position
   photoPath       String
-
   //relations
-  boss         Train[]    @relation("boss")
-  driver       Train[]    @relation("driver")
-  driverHelper Train[]    @relation("driverHelper")
-  conductor1   Carriage[] @relation("conductor1")
-  conductor2   Carriage[] @relation("conductor2")
+  driver          Train[]    @relation("driver")
+  driverHelper    Train[]    @relation("driverHelper")
+  conductor1      Carriage[] @relation("conductor1")
+  conductor2      Carriage[] @relation("conductor2")
 }
 
 enum Position {
   conductor
   driver
-  driverHelper
 }
 
-
 model Train {
-  id             String @id @default(cuid())
+  id             String     @id @default(cuid())
   routeId        String
   bossId         String
-  ticketsLimit   Int
   driverId       String
   driverHelperId String
-
-  //flag
-  // departure time
+  numberOfSeats  Int
   //relations
-  route        Route      @relation(fields: [routeId], references: [id])
-  boss         Employee   @relation("boss", fields: [bossId], references: [id])
-  driver       Employee   @relation("driver", fields: [driverId], references: [id])
-  driverHelper Employee   @relation("driverHelper", fields: [driverHelperId], references: [id])
-  carriage     Carriage[]
-  ticket       Ticket[]
+  route          Route      @relation(fields: [routeId], references: [id])
+  boss           User       @relation(fields: [bossId], references: [id])
+  driver         Employee   @relation("driver", fields: [driverId], references: [id])
+  driverHelper   Employee   @relation("driverHelper", fields: [driverHelperId], references: [id])
+  carriage       Carriage[]
+  ticket         Ticket[]
 }
 
 model Route {
@@ -85,15 +72,14 @@ model Route {
 model Carriage {
   id           String       @id @default(cuid())
   trainId      String
-  type         CarriageType
   conductor1Id String
   conductor2Id String
-
+  type         CarriageType
   //relations
-  train      Train    @relation(fields: [trainId], references: [id])
-  conductor1 Employee @relation("conductor1", fields: [conductor1Id], references: [id])
-  conductor2 Employee @relation("conductor2", fields: [conductor2Id], references: [id])
-  ticket     Ticket[]
+  train        Train        @relation(fields: [trainId], references: [id])
+  conductor1   Employee     @relation("conductor1", fields: [conductor1Id], references: [id])
+  conductor2   Employee     @relation("conductor2", fields: [conductor2Id], references: [id])
+  ticket       Ticket[]
 }
 
 enum CarriageType {
@@ -110,12 +96,11 @@ model Ticket {
   endStationId        String
   state               State
   dateTimeOfOperation DateTime @updatedAt
-
   //relations
-  carriage     Carriage @relation(fields: [carriageId], references: [id])
-  train        Train    @relation(fields: [trainId], references: [id])
-  startStation Station  @relation("startStations", fields: [startStationId], references: [id])
-  endStation   Station  @relation("endStations", fields: [endStationId], references: [id])
+  carriage            Carriage @relation(fields: [carriageId], references: [id])
+  train               Train    @relation(fields: [trainId], references: [id])
+  startStation        Station  @relation("startStations", fields: [startStationId], references: [id])
+  endStation          Station  @relation("endStations", fields: [endStationId], references: [id])
 }
 
 enum State {
@@ -127,25 +112,23 @@ model Price {
   id             String       @id @default(cuid())
   startStationId String
   endStationId   String
+  price          Int
   trainType      TrainType
   carriageType   CarriageType
-  price          Int
-
   //relations
-  startStation Station @relation("priceStartStations", fields: [startStationId], references: [id])
-  endStation   Station @relation("priceEndStations", fields: [endStationId], references: [id])
+  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id])
+  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id])
 }
 
 enum TrainType {
-  fast
+  highSpeed
+  passenger
   regional
-  longDistance
 }
 
 model Station {
-  id   String @id @default(cuid())
-  name String
-
+  id                 String   @id @default(cuid())
+  name               String
   //relations
   priceStartStations Price[]  @relation("priceStartStations")
   priceEndStations   Price[]  @relation("priceEndStations")

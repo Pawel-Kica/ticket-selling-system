@@ -20,7 +20,6 @@ import { JwtModule } from './utils/jwt/jwt.module';
 //   : configService.get('DATABASE_URL'),
 // },
 // },
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
