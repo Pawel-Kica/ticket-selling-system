@@ -6,13 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Deserialize } from './middleware/deserialize';
 import { EmailToLowerCase } from './middleware/emailToLowerCase';
 // Modules
-import { SessionsModule } from './models/sessions/sessions.module';
 // Controllers
 import { AppController } from './app.controller';
 // Services
-import { JwtService } from './utils/jwt/jwt.service';
 import { UsersModule } from './models/users/users.module';
-import { CookiesService } from './utils/cookies/cookies.service';
+import { JwtModule } from './utils/jwt/jwt.module';
 
 // datasources: {
 // db: {
@@ -37,11 +35,11 @@ import { CookiesService } from './utils/cookies/cookies.service';
       },
       inject: [ConfigService],
     }),
+    JwtModule,
     UsersModule,
-    SessionsModule,
   ],
   controllers: [AppController],
-  providers: [JwtService, CookiesService],
+  providers: [],
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {

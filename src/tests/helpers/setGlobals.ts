@@ -1,35 +1,14 @@
-import { Response } from 'express';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../config/cookies.config';
+import { Request } from 'express';
 
-export function removeAuthGlobals() {
-  global.test_accessToken = '';
-  global.test_refreshToken = '';
+export function removeTestToken() {
+  global.test_token = '';
 }
-
-export function serializeCookies(cookies: string) {
-  const serialized = cookies.split(';').map((e: any) => e.trim().split('='));
-  const cookies_object: { [key: string]: string } = {};
-
-  serialized.forEach((e: any) => {
-    if (e[0] === ACCESS_TOKEN || e[0] === REFRESH_TOKEN) {
-      const type = e[0] === ACCESS_TOKEN ? ACCESS_TOKEN : REFRESH_TOKEN;
-      cookies_object[type] = e[1];
-    }
-  });
-  return cookies_object;
+export function setTestToken(token: string) {
+  global.test_token = token;
 }
-
-export function getAuthCookies(res: Response) {
-  try {
-    const cookies_header = res.header['set-cookie'];
-    return serializeCookies(cookies_header);
-  } catch (_e) {
-    return {};
-  }
+export function getTestToken() {
+  return global.test_token;
 }
-
-export function setAuthGlobals(res: Response) {
-  const { accessToken, refreshToken } = getAuthCookies(res);
-  global.test_accessToken = accessToken;
-  global.test_refreshToken = refreshToken;
+export function getAuthToken(req: Request) {
+  return req.headers.authorization.split(' ').reverse()[0];
 }

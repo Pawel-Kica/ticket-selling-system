@@ -7,17 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id          String   @id @default(cuid())
-  name        String
-  surname     String
-  email       String   @unique
-  password    String
-  role        Role
-  dateOfBirth DateTime
+// model Session {
+//   id     String @id @default(cuid())
+//   userId String
 
-  // relations
-  session Session[]
+//   //relations
+//   user User @relation(fields: [userId], references: [id])
+// }
+
+model User {
+  id       String    @id @default(cuid())
+  name     String
+  surname  String
+  email    String    @unique
+  password String
+  role     Role
 }
 
 enum Role {
@@ -51,13 +55,6 @@ enum Position {
   driverHelper
 }
 
-model Session {
-  id     String @id @default(cuid())
-  userId String
-
-  //relations
-  user User @relation(fields: [userId], references: [id])
-}
 
 model Train {
   id             String @id @default(cuid())
@@ -69,8 +66,6 @@ model Train {
 
   //flag
   // departure time
-
-
   //relations
   route        Route      @relation(fields: [routeId], references: [id])
   boss         Employee   @relation("boss", fields: [bossId], references: [id])

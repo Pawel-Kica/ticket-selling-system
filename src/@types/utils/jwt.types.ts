@@ -1,11 +1,6 @@
-import { User, Session } from '@prisma/client';
+import { User } from '@prisma/client';
 
-export class CreateJwtTokenDto {
+export class JwtTokenDto {
   userId: User['id'];
-  sessionId: Session['id'];
   role: User['role'];
-}
-
-export class JwtTokenDto extends CreateJwtTokenDto {
-  canRefresh: boolean;
 }
