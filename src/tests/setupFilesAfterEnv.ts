@@ -1,3 +1,3 @@
 global.request = null;
-global.accessToken = '';
-global.refreshToken = '';
+global.test_accessToken = '';
+global.test_refreshToken = '';

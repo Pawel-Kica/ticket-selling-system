@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { cookiesOptions, COOKIES_NAME } from './../../config/cookies.config';
+import {
+  ACCESS_TOKEN,
+  cookiesOptions,
+  REFRESH_TOKEN,
+} from './../../config/cookies.config';
 import { CookieOptions, Response } from 'express';
-import { CreateJwtTokenDto } from '../jwt/dto/create-jwt.dto';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '../jwt/jwt.service';
-
-const { ACCESS_TOKEN, REFRESH_TOKEN } = COOKIES_NAME;
+import { CreateJwtTokenDto } from '../../@types/utils/jwt.types';
 
 @Injectable()
 export class CookiesService {
@@ -14,7 +16,7 @@ export class CookiesService {
     private readonly configService: ConfigService,
   ) {}
 
-  // naming COOKIE_MAX_AGE just for readibility, it should be the same value as REFRESH_TOKEN_TTL (security reasons)
+  // naming COOKIE_MAX_AGE just for better readibility, it should be the same value as REFRESH_TOKEN_TTL (security reasons)
   private readonly COOKIE_MAX_AGE =
     this.configService.get<number>('REFRESH_TOKEN_TTL');
 

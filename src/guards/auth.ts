@@ -1,10 +1,11 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { serializeCookies } from '../tests/helpers/setGlobals';
 
 @Injectable()
 export class RequireUser implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    console.log(request.headers.cookie);
+    const cookies = serializeCookies(request.headers.cookie);
 
     return true;
   }

@@ -1,9 +1,7 @@
 import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
-import { COOKIES_NAME } from '../../config/cookies.config';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../config/cookies.config';
 import { expectToEqualError, expectToEqualRes } from './customExpections';
 import { setAuthGlobals } from './setGlobals';
-
-const { ACCESS_TOKEN, REFRESH_TOKEN } = COOKIES_NAME;
 
 export const afterTest = (res: any, equalTo: equalToType) => {
   setAuthGlobals(res);

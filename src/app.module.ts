@@ -25,7 +25,7 @@ import { CookiesService } from './utils/cookies/cookies.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, cache: true }),
+    ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule.forRootAsync({
       isGlobal: true,
       useFactory: async (configService: ConfigService) => {

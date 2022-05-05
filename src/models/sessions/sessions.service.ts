@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import { CreateSessionDto } from './dto/create-session.dto';
-import { UpdateSessionDto } from './dto/update-session.dto';
-
+import { CreateSessionDto } from '../../@types/models/sessions.types';
 @Injectable()
 export class SessionsService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createSessionDto: CreateSessionDto) {
+    createSessionDto;
     return 'This action adds a new session';
   }
 
@@ -18,10 +17,6 @@ export class SessionsService {
 
   findUnique(where: Prisma.SessionWhereUniqueInput) {
     return this.prisma.session.findUnique({ where });
-  }
-
-  update(id: number, updateSessionDto: UpdateSessionDto) {
-    return `This action updates a #${id} session`;
   }
 
   remove(id: number) {
