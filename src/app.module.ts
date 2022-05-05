@@ -11,6 +11,7 @@ import { AppController } from './app.controller';
 // Services
 import { UsersModule } from './models/users/users.module';
 import { JwtModule } from './utils/jwt/jwt.module';
+import { Trimmer } from './middleware/trimmer';
 
 // datasources: {
 // db: {
@@ -42,6 +43,7 @@ import { JwtModule } from './utils/jwt/jwt.module';
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(Trimmer).forRoutes('*');
     consumer.apply(EmailToLowerCase).forRoutes('*');
     consumer.apply(Deserialize).forRoutes('*');
   }

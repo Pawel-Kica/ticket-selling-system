@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UsePipes,
+  Res,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../services/auth.service';
@@ -15,6 +17,13 @@ import {
   LoginUserDto,
   UpdateUserDto,
 } from '../../../@types/models/users.types';
+import {
+  createUserSchema,
+  loginSchema,
+} from '../../../validation/schemas/user.schema';
+import { Validate } from '../../../validation/validationPipe';
+import { Response } from 'express';
+import pureOmit from '../../../utils/pureOmit';
 
 @Controller('users')
 export class UsersController {
@@ -24,15 +33,17 @@ export class UsersController {
   ) {}
 
   @Post()
-  async createHandler(@Body() createUserDto: CreateUserDto) {
-    await this.authService.checkEmailAvailability(createUserDto.email);
-
-    const hash = await this.authService.hashPassword(createUserDto.password);
-
-    return this.usersService.create({ ...createUserDto, password: hash });
+  @UsePipes(Validate(createUserSchema))
+  async createHandler(@Res() res: Response, @Body() body: CreateUserDto) {
+    await this.authService.checkEmailAvailability(body.email);
+    const hash = await this.authService.hashPassword(body.password);
+    const user = await this.usersService.create({ ...body, password: hash });
+    this.authService.setAuthToken(res, { id: user.id, role: user.role });
+    return user;
   }
 
   @Post('login')
+  @UsePipes(Validate(loginSchema))
   async loginHandler(@Body() { email, password }: LoginUserDto) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();

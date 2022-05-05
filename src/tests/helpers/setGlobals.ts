@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 export function removeTestToken() {
   global.test_token = '';
@@ -11,4 +11,7 @@ export function getTestToken() {
 }
 export function getAuthToken(req: Request) {
   return req.headers.authorization.split(' ').reverse()[0];
+}
+export function setAuthToken(res: Response, token: string) {
+  res.setHeader('Bearer', token);
 }

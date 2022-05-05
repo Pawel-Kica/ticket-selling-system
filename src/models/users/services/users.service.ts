@@ -8,13 +8,14 @@ import {
   CreateUserDto,
   UpdateUserDto,
 } from '../../../@types/models/users.types';
+import pureOmit from '../../../utils/pureOmit';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserDto) {
-    return this.prisma.user.create({ data });
+    return pureOmit(this.prisma.user.create({ data }), ['password']);
   }
 
   async findMany(): Promise<User[]> {
