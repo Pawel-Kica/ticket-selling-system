@@ -21,9 +21,9 @@ import {
   createUserSchema,
   loginSchema,
 } from '../../../validation/schemas/user.schema';
-import { Validate } from '../../../validation/validationPipe';
+import { ApplyValidation } from '../../../validation/validationPipe';
 import { Response } from 'express';
-import pureOmit from '../../../utils/pureOmit';
+import { omit } from '../../../utils/objects';
 
 @Controller('users')
 export class UsersController {
@@ -33,17 +33,23 @@ export class UsersController {
   ) {}
 
   @Post()
-  @UsePipes(Validate(createUserSchema))
-  async createHandler(@Res() res: Response, @Body() body: CreateUserDto) {
+  @UsePipes(ApplyValidation(createUserSchema))
+  async createHandler(
+    @Res({ passthrough: true }) res: Response,
+    @Body() body: CreateUserDto,
+  ) {
     await this.authService.checkEmailAvailability(body.email);
     const hash = await this.authService.hashPassword(body.password);
-    const user = await this.usersService.create({ ...body, password: hash });
+    const data = { ...body, password: hash, role: 'default' };
+    const user = await this.usersService.create(
+      omit(data, 'passwordRepetition'),
+    );
     this.authService.setAuthToken(res, { id: user.id, role: user.role });
-    return user;
+    return omit(user, 'password');
   }
 
   @Post('login')
-  @UsePipes(Validate(loginSchema))
+  @UsePipes(ApplyValidation(loginSchema))
   async loginHandler(@Body() { email, password }: LoginUserDto) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();

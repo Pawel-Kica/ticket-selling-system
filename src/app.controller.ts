@@ -4,7 +4,6 @@ import { Role, User } from '@prisma/client';
 import { UserObj } from './decorators/user.decorator';
 import { RequireUser } from './guards/requireUser';
 import { RequireRole } from './guards/roles.';
-import { InvalidCredentials } from './utils/errors';
 
 @Controller()
 @UseGuards(RequireUser, RequireRole(Role.admin))
@@ -14,9 +13,5 @@ export class AppController {
   welcome(@UserObj() user: User) {
     console.log(user);
     return { msg: 'Welcome' };
-  }
-  @Get('err')
-  welcome1(): any {
-    throw new InvalidCredentials();
   }
 }
