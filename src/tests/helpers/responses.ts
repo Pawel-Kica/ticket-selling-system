@@ -17,6 +17,7 @@ export const NotFoundError = new NotFoundException();
 export const BlockedResourceError = new BlockedResourceException();
 
 export const TokenResponse = { data: {}, status: 200, omit: 'token' };
+
 export const SuccessTestResponse = {
   data: SuccessResponse,
   status: HttpStatus.OK,

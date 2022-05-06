@@ -1,3 +1,5 @@
+import { adminId, blockedUserId } from '../../../tests/data/admin.test.data';
+
 export const adminLoginData = {
   email: 'admin@example.com',
   password: 'Admin1234!',
@@ -5,14 +7,14 @@ export const adminLoginData = {
 
 const usersSeedData = [
   {
-    id: '1',
+    id: adminId,
     name: 'Admin',
     surname: 'Admin',
     role: 'admin',
     ...adminLoginData,
   },
   {
-    id: '2',
+    id: blockedUserId,
     name: 'Kamil',
     surname: 'Mysliwiec',
     email: 'kamil@example.com',

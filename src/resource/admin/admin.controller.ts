@@ -9,10 +9,15 @@ export class AdminController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('blockUser/:id')
-  @ApiBearerAuth()
   @UseGuards(RequireAdmin)
   async blockUser(@Param('id') id: string) {
     await this.usersService.update({ id }, { blocked: true });
+    return SuccessResponse;
+  }
+  @Post('unblockUser/:id')
+  @UseGuards(RequireAdmin)
+  async unblockUser(@Param('id') id: string) {
+    await this.usersService.update({ id }, { blocked: false });
     return SuccessResponse;
   }
 

@@ -1,13 +1,16 @@
 import { Response } from 'supertest';
+import { sign } from 'jsonwebtoken';
 
 export function removeTestToken() {
   global.test_token = '';
 }
 export function setTestTokenRes(res: Response) {
-  if (res.body.token) setTestToken(res.body.token);
+  if (res.body.token) global.test_token = res.body.token;
 }
-export function setTestToken(token: string) {
-  global.test_token = token;
+export function generateTestToken(id: string) {
+  global.test_token = sign({ id }, process.env.SECRET_TOKEN, {
+    expiresIn: process.env.TOKEN_TTL,
+  });
 }
 export function getTestToken(): string {
   return global.test_token;
