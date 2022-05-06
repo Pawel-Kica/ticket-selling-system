@@ -1,8 +1,8 @@
 import startTestServer from '../startTestServer';
 import { SeedService } from '../../prisma/seed/seed.service';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
-import { createUserObj } from '../data/users.data';
-import { logInUserObj } from './../data/users.data';
+import { createUserObj } from '../data/users.test.data';
+import { logInUserObj } from '../data/users.test.data';
 import { removeTestToken } from '../helpers/setGlobals';
 
 describe('USERS CRUD', () => {

@@ -1,3 +1,4 @@
+import users from './data/users.seed.data';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -8,6 +9,15 @@ export class SeedService {
   private readonly models = Reflect.ownKeys(this.prisma).filter(
     (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
   );
+
+  async seedModel(modelName: string, data: any) {
+    if (!this.models.includes(modelName)) return;
+    return Promise.all(
+      data.map((record: any) =>
+        this.prisma[modelName].create({ data: record }),
+      ),
+    );
+  }
 
   async removeTables() {
     return Promise.all(
@@ -21,5 +31,6 @@ export class SeedService {
 
   async main() {
     await this.removeTables();
+    await this.seedModel('user', users);
   }
 }

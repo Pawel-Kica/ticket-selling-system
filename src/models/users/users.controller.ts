@@ -28,12 +28,14 @@ import { Response } from 'express';
 import { omit } from '../../utils/objects';
 import { RequireUser } from '../../guards/requireUser';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtService } from '../../utils/jwt/jwt.service';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @Post()
@@ -44,12 +46,10 @@ export class UsersController {
     @Body() body: CreateUserDto,
   ) {
     await this.authService.checkEmailAvailability(body.email);
-    const hash = await this.authService.hashPassword(body.password);
-    const data = { ...body, password: hash, role: 'default' };
     const user = await this.usersService.create(
-      omit(data, 'passwordRepetition'),
+      omit(body, 'passwordRepetition'),
     );
-    this.authService.setAuthToken(res, { id: user.id, role: user.role });
+    this.authService.createAuthToken(res, { id: user.id, role: user.role });
     return this.usersService.formattedUser(user);
   }
 
@@ -62,9 +62,12 @@ export class UsersController {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);
-
-    this.authService.setAuthToken(res, { id: user.id, role: user.role });
-    return this.usersService.formattedUser(user);
+    return {
+      token: this.authService.createAuthToken(res, {
+        id: user.id,
+        role: user.role,
+      }),
+    };
   }
 
   @Get()

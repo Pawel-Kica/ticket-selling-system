@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { pick } from './../../utils/objects';
+import { pick } from '../../utils/objects';
 import { InvalidRequestedBody } from '../../utils/errors';
 import { addToObject, omit } from '../../utils/objects';
 import { createUserSchema } from '../../validation/schemas/user.schema';
@@ -53,7 +53,7 @@ export const createUserObj = {
 export const logInUserObj = {
   valid: {
     body: pick(createUserData, ['email', 'password']),
-    response: userResponse,
+    response: { data: {}, status: 200, omit: 'token' },
   },
   invalid: {
     credentials: {

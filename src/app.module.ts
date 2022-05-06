@@ -1,7 +1,7 @@
 // Nest
 import { PrismaModule } from 'nestjs-prisma';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 // Middlewares
 import { Trimmer } from './middleware/trimmer';
 import { Deserialize } from './middleware/deserialize';
@@ -13,29 +13,18 @@ import { UsersModule } from './models/users/users.module';
 import { AppController } from './app.controller';
 import { PostInterceptor } from './interceptors/postMethod';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassoword';
 
 // datasources: {
-// db: {
-// url:
-// configService.get('NODE_ENV') === 'test'
-//   ? configService.get('DATABASE_URL_TEST')
-//   : configService.get('DATABASE_URL'),
-// },
-// },
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    PrismaModule.forRootAsync({
+    PrismaModule.forRoot({
       isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return {
-          prismaOptions: {
-            log: configService.get('NODE_ENV') === 'test' ? [] : ['info'],
-          },
-        };
+      prismaServiceOptions: {
+        middlewares: [prismaHashPasswordMiddleware()],
       },
-      inject: [ConfigService],
     }),
     JwtModule,
     UsersModule,

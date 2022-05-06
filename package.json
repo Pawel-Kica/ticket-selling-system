@@ -23,9 +23,11 @@
     "migrate": "npx prisma migrate dev",
     "format:prisma": "npx prisma format",
     "push": "npx prisma db push",
+    "push:test": "NODE_ENV=test npx prisma db push",
     "upt:prisma": "npm run generate && npm run push",
     "studio": "npx prisma studio",
-    "dockerdb": "docker-compose up db -d && npm run generate && npm run push"
+    "dockerdb": "docker-compose up db -d && npm run generate && npm run push",
+    "seed": "ts-node ./src/prisma/seed/index.ts"
   },
   "dependencies": {
     "@joi/date": "^2.1.0",
