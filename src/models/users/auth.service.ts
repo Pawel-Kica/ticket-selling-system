@@ -26,9 +26,7 @@ export class AuthService {
     const valid = await verify(hash, passwordToVerify);
     if (!valid) throw new InvalidCredentials();
   }
-  createAuthToken(res: Response, data: JwtTokenDto) {
-    const token = this.jwtService.signJWT(data);
-    res.setHeader('Authorization', `Bearer ${token}`);
-    return token;
+  createAuthToken(data: JwtTokenDto) {
+    return this.jwtService.signJWT(data);
   }
 }

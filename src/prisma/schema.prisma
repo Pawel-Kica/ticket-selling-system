@@ -13,7 +13,8 @@ model User {
   surname  String
   email    String  @unique
   password String
-  role     Role @default(default)
+  role     Role    @default(default)
+  blocked  Boolean @default(false)
   //relations
   Train    Train[]
 }

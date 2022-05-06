@@ -1,12 +1,13 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import { Response } from 'supertest';
 import { ForbiddenError } from './errors';
 import { getTestToken, setTestToken } from './setGlobals';
 import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
 import { expectToEqualRes, expectToEqualError } from './betterExceptions';
 import { HttpStatus } from '@nestjs/common';
 
-export const afterTest = (res: any, equalTo: equalToType) => {
+export const afterTest = (res: Response, equalTo: equalToType) => {
   setTestToken(res);
   if ('omit' in equalTo) return expectToEqualRes(res, equalTo as equalToRes);
   expectToEqualError(res, equalTo);

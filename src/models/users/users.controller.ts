@@ -28,14 +28,12 @@ import { Response } from 'express';
 import { omit } from '../../utils/objects';
 import { RequireUser } from '../../guards/requireUser';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { JwtService } from '../../utils/jwt/jwt.service';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
-    private readonly jwtService: JwtService,
   ) {}
 
   @Post()
@@ -49,7 +47,6 @@ export class UsersController {
     const user = await this.usersService.create(
       omit(body, 'passwordRepetition'),
     );
-    this.authService.createAuthToken(res, { id: user.id, role: user.role });
     return this.usersService.formattedUser(user);
   }
 
@@ -63,7 +60,7 @@ export class UsersController {
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);
     return {
-      token: this.authService.createAuthToken(res, {
+      token: this.authService.createAuthToken({
         id: user.id,
         role: user.role,
       }),
