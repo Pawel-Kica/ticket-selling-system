@@ -1,7 +1,31 @@
 import { adminLoginData } from '../../prisma/seed/data/users.seed.data';
-import { tokenResponse } from '../helpers/responses';
+import {
+  NotFoundError,
+  SuccessTestResponse,
+  TokenResponse,
+} from '../helpers/responses';
 
-export const adminLogInObj = {
+export const adminLoginObj = {
   body: adminLoginData,
-  response: tokenResponse,
+  response: TokenResponse,
+};
+
+export const blockUserObj = {
+  valid: {
+    param: '2',
+    response: SuccessTestResponse,
+  },
+  invalid: {
+    notFound: {
+      id: '3',
+    },
+    response: NotFoundError,
+  },
+};
+
+export const unblockUserObj = {
+  valid: {
+    param: '2',
+    response: SuccessTestResponse,
+  },
 };

@@ -4,7 +4,6 @@ import { hash as hashFn, verify } from 'argon2';
 import { InvalidCredentials } from '../../utils/responses/errors';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '../../utils/jwt/jwt.service';
-import { JwtTokenDto } from '../../@types/utils/jwt.types';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +24,7 @@ export class AuthService {
     const valid = await verify(hash, passwordToVerify);
     if (!valid) throw new InvalidCredentials();
   }
-  createAuthToken(data: JwtTokenDto) {
-    return this.jwtService.signJWT(data);
+  createAuthToken(id: string) {
+    return this.jwtService.signJWT({ id });
   }
 }

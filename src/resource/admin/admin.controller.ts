@@ -1,16 +1,24 @@
-import { Controller, Post } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
 import { SuccessResponse } from '../../utils/responses';
-import { RequireAdmin } from '../../decorators/roles.decorators';
+import { RequireAdmin } from '../../guards/roles.';
 
 @Controller('admin')
 export class AdminController {
-  @Post()
-  create() {
-    return 'user blocked';
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post('blockUser/:id')
+  @ApiBearerAuth()
+  @UseGuards(RequireAdmin)
+  async blockUser(@Param('id') id: string) {
+    await this.usersService.update({ id }, { blocked: true });
+    return SuccessResponse;
   }
 
   @Post('auth')
-  @RequireAdmin()
+  @ApiBearerAuth()
+  @UseGuards(RequireAdmin)
   auth() {
     return SuccessResponse;
   }

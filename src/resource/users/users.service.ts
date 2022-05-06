@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 // Dto
-import { CreateUserDto, UpdateUserDto } from '../../@types/models/users.types';
+import { CreateUserDto } from '../../@types/models/users.types';
 // Tools
 import { omit } from '../../utils/objects';
 
@@ -27,8 +27,11 @@ export class UsersService {
     return this.prisma.user.findUnique({ where });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+  ) {
+    return this.prisma.user.update({ where, data });
   }
 
   async remove(id: number) {

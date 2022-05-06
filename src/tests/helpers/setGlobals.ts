@@ -3,8 +3,11 @@ import { Response } from 'supertest';
 export function removeTestToken() {
   global.test_token = '';
 }
-export function setTestToken(res: Response) {
-  if (res.body.token) global.test_token = res.body.token;
+export function setTestTokenRes(res: Response) {
+  if (res.body.token) setTestToken(res.body.token);
+}
+export function setTestToken(token: string) {
+  global.test_token = token;
 }
 export function getTestToken(): string {
   return global.test_token;

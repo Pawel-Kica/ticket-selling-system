@@ -3,22 +3,22 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-  mixin,
+  Injectable,
 } from '@nestjs/common';
+import { UsersService } from '../resource/users/users.service';
 
-//flag
-export const RequireRole = (role: Role): any => {
-  class RoleGuardMixin implements CanActivate {
-    canActivate(context: ExecutionContext) {
-      const user = context.switchToHttp().getResponse().locals.user;
-      if (user?.role !== role) throw new ForbiddenException();
+@Injectable()
+export class RequireAdmin implements CanActivate {
+  constructor(private readonly usersService: UsersService) {}
+  async canActivate(context: ExecutionContext) {
+    try {
+      const { id } = context.switchToHttp().getResponse().locals.user;
+      const { role } = await this.usersService.findUnique({ id });
+
+      if (role !== Role.admin) throw new Error();
       return true;
+    } catch (_e) {
+      throw new ForbiddenException();
     }
   }
-  return RoleGuardMixin;
-};
-
-export const RequireAdminGuard = (): any => {
-  const guard = mixin(RequireRole(Role.admin));
-  return guard;
-};
+}

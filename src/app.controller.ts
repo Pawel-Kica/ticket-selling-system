@@ -1,13 +1,7 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserObj } from './decorators/user.decorator';
-import { RequireAdminGuard } from './guards/roles.';
-
-// @ApiBearerAuth('jwt')
-// @UseGuards(RequireUser, RequireRole(Role.admin))
-// @UseGuards(RequireAdminRole())
+import { Controller, Get } from '@nestjs/common';
 @Controller()
-@UseGuards(RequireAdminGuard())
 export class AppController {
   @Get()
   welcome(@UserObj() user: User) {

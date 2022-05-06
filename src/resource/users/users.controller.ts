@@ -50,12 +50,8 @@ export class UsersController {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);
-    return {
-      token: this.authService.createAuthToken({
-        id: user.id,
-        role: user.role,
-      }),
-    };
+
+    return { token: this.authService.createAuthToken(user.id) };
   }
 
   @Get()
@@ -68,7 +64,7 @@ export class UsersController {
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    // return this.usersService.update(+id, updateUserDto);
   }
   @Delete(':id')
   remove(@Param('id') id: string) {

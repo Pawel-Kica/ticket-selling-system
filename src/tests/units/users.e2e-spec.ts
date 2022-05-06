@@ -2,13 +2,14 @@ import startTestServer from '../startTestServer';
 import { SeedService } from '../../prisma/seed/seed.service';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
 import { createUserObj } from '../data/users.test.data';
-import { logInUserObj } from '../data/users.test.data';
-import { getTestToken, removeTestToken } from '../helpers/setGlobals';
+import { loginUserObj } from '../data/users.test.data';
+import { removeTestToken } from '../helpers/setGlobals';
 
 describe('USERS CRUD', () => {
   let seedService: SeedService;
   beforeAll(async () => {
-    seedService = await startTestServer();
+    const app = await startTestServer();
+    seedService = app.get(SeedService);
   });
   afterAll(async () => {
     await seedService.removeSpecificTable('user');
@@ -38,7 +39,7 @@ describe('USERS CRUD', () => {
     });
   });
   describe('LOG IN', () => {
-    const { valid, invalid } = logInUserObj;
+    const { valid, invalid } = loginUserObj;
     it('USER should NOT be able to access USER AUTH endpoint before logging in', async () => {
       await testAuthEndpoint(false, 'users');
     });

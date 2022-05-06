@@ -11,6 +11,14 @@ const usersSeedData = [
     role: 'admin',
     ...adminLoginData,
   },
+  {
+    id: '2',
+    name: 'Kamil',
+    surname: 'Mysliwiec',
+    email: 'kamil@example.com',
+    password: 'Passoword1!',
+    role: 'default',
+  },
 ];
 
 export default usersSeedData;

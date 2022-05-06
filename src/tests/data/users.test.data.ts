@@ -7,7 +7,7 @@ import { validateSchema } from '../../validation/validationPipe';
 import {
   ConflictExceptionError,
   InvalidCredentialsError,
-  tokenResponse,
+  TokenResponse,
 } from '../helpers/responses';
 
 export const createUserData = {
@@ -52,10 +52,10 @@ export const createUserObj = {
   },
 };
 
-export const logInUserObj = {
+export const loginUserObj = {
   valid: {
     body: pick(createUserData, ['email', 'password']),
-    response: tokenResponse,
+    response: TokenResponse,
   },
   invalid: {
     credentials: {
