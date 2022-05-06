@@ -4,7 +4,8 @@ export function removeTestToken() {
   global.test_token = '';
 }
 export function setTestToken(res: Response) {
-  global.test_token = getAuthToken(res);
+  const token = getAuthToken(res);
+  global.test_token = token ? token : global.test_token;
 }
 export function getTestToken(): string {
   return global.test_token;

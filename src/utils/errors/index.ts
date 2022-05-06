@@ -3,7 +3,7 @@ import { BetterJoiError } from '../../validation/helpers/betterJoiError';
 
 export class InvalidCredentials extends HttpException {
   constructor() {
-    super('Invalid credentials', 400);
+    super({ message: 'Invalid Credentials' }, 400);
   }
 }
 export class InvalidRequestedBody extends HttpException {

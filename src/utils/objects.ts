@@ -18,3 +18,10 @@ export function addToObject(spy: { [x: string]: string }, str: string) {
   });
   return newObj;
 }
+
+export function pick(obj: { [x: string]: any }, props: string[]) {
+  return props.reduce(function (result, prop) {
+    result[prop] = obj[prop];
+    return result;
+  }, {});
+}

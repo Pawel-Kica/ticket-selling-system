@@ -8,22 +8,26 @@ import {
   Delete,
   UsePipes,
   Res,
+  UseGuards,
+  HttpCode,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
-import { AuthService } from '../services/auth.service';
-import { InvalidCredentials } from '../../../utils/errors';
+import { UsersService } from './users.service';
+import { AuthService } from './auth.service';
+import { InvalidCredentials } from '../../utils/errors';
 import {
   CreateUserDto,
   LoginUserDto,
   UpdateUserDto,
-} from '../../../@types/models/users.types';
+} from '../../@types/models/users.types';
 import {
   createUserSchema,
   loginSchema,
-} from '../../../validation/schemas/user.schema';
-import { ApplyValidation } from '../../../validation/validationPipe';
+} from '../../validation/schemas/user.schema';
+import { ApplyValidation } from '../../validation/validationPipe';
 import { Response } from 'express';
-import { omit } from '../../../utils/objects';
+import { omit } from '../../utils/objects';
+import { RequireUser } from '../../guards/requireUser';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -33,6 +37,7 @@ export class UsersController {
   ) {}
 
   @Post()
+  @HttpCode(201)
   @UsePipes(ApplyValidation(createUserSchema))
   async createHandler(
     @Res({ passthrough: true }) res: Response,
@@ -50,10 +55,15 @@ export class UsersController {
 
   @Post('login')
   @UsePipes(ApplyValidation(loginSchema))
-  async loginHandler(@Body() { email, password }: LoginUserDto) {
+  async loginHandler(
+    @Res({ passthrough: true }) res: Response,
+    @Body() { email, password }: LoginUserDto,
+  ) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
     await this.authService.verifyPassword(password, user.password);
+
+    this.authService.setAuthToken(res, { id: user.id, role: user.role });
     return this.usersService.formattedUser(user);
   }
 
@@ -66,7 +76,6 @@ export class UsersController {
   findOne(@Param('id') id: string) {
     // return this.usersService.findOne();
   }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
@@ -75,5 +84,12 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Post('auth')
+  @ApiBearerAuth()
+  @UseGuards(RequireUser)
+  auth() {
+    return { success: true };
   }
 }

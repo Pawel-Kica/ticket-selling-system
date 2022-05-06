@@ -1,8 +1,10 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
-import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
-import { expectToEqualError, expectToEqualRes } from './customExpections';
+import { ForbiddenError } from './errors';
 import { getTestToken, setTestToken } from './setGlobals';
+import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
+import { expectToEqualRes, expectToEqualError } from './betterExceptions';
+import { HttpStatus } from '@nestjs/common';
 
 export const afterTest = (res: any, equalTo: equalToType) => {
   setTestToken(res);
@@ -35,4 +37,12 @@ export async function testPOSTRequest(
 
   afterTest(res, equalTo);
   return res;
+}
+
+export async function testAuthEndpoint(success: boolean) {
+  const result = success
+    ? { data: { success: true }, status: HttpStatus.OK, omit: [] }
+    : ForbiddenError;
+
+  await testPOSTRequest('/users/auth', {}, result);
 }

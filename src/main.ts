@@ -17,14 +17,11 @@ async function bootstrap() {
     .setTitle('NestJS ticket selling system')
     .setDescription('nodejs trainee')
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        name: 'JWT',
-        description: 'Enter JWT token',
-      },
-      'jwt',
-    )
+    .addBearerAuth({
+      type: 'http',
+      name: 'JWT',
+      description: 'Enter JWT token',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

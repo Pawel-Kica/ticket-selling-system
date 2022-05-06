@@ -1,5 +1,5 @@
-import { equalToError, equalToRes } from '../../@types/tests/exceptions.types';
 import { omit } from '../../utils/objects';
+import { equalToError, equalToRes } from '../../@types/tests/exceptions.types';
 
 export function expectToEqualObject(
   data: any,
@@ -11,6 +11,7 @@ export function expectToEqualObject(
 export function expectToEqualRes({ body, status }: any, equalTo: equalToRes) {
   expectToEqualObject(body, equalTo);
   expect(equalTo.status).toEqual(status);
+
   if (typeof equalTo.omit === 'string') {
     expect(body).toHaveProperty(equalTo.omit);
   } else {
