@@ -1,5 +1,5 @@
 import { ObjectSchema } from 'joi';
-import { InvalidRequestedBody } from '../utils/errors';
+import { InvalidRequestedBody } from '../utils/responses/errors';
 import { PipeTransform, Injectable } from '@nestjs/common';
 import createBetterJoiErrors from './helpers/betterJoiError';
 

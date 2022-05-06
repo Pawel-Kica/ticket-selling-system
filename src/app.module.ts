@@ -6,14 +6,15 @@ import { ConfigModule } from '@nestjs/config';
 import { Trimmer } from './middleware/trimmer';
 import { Deserialize } from './middleware/deserialize';
 import { EmailToLowerCase } from './middleware/emailToLowerCase';
+import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassoword';
 // Modules
 import { JwtModule } from './utils/jwt/jwt.module';
-import { UsersModule } from './models/users/users.module';
+import { UsersModule } from './resource/users/users.module';
+import { AdminModule } from './resource/admin/admin.module';
 // Controllers
 import { AppController } from './app.controller';
 import { PostInterceptor } from './interceptors/postMethod';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassoword';
 
 // datasources: {
 
@@ -28,6 +29,7 @@ import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassoword';
     }),
     JwtModule,
     UsersModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,11 +1,12 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
 import { Response } from 'supertest';
-import { ForbiddenError } from './errors';
+import { ForbiddenError } from './responses';
 import { getTestToken, setTestToken } from './setGlobals';
 import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
 import { expectToEqualRes, expectToEqualError } from './betterExceptions';
 import { HttpStatus } from '@nestjs/common';
+import { SuccessResponse } from '../../utils/responses';
 
 export const afterTest = (res: Response, equalTo: equalToType) => {
   setTestToken(res);
@@ -40,10 +41,10 @@ export async function testPOSTRequest(
   return res;
 }
 
-export async function testAuthEndpoint(success: boolean) {
+export async function testAuthEndpoint(success: boolean, url: string) {
   const result = success
-    ? { data: { success: true }, status: HttpStatus.OK, omit: [] }
+    ? { data: SuccessResponse, status: HttpStatus.OK, omit: [] }
     : ForbiddenError;
 
-  await testPOSTRequest('/users/auth', {}, result);
+  await testPOSTRequest(`/${url}/auth`, {}, result);
 }

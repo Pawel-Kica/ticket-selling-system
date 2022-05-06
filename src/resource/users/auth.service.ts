@@ -1,11 +1,10 @@
 import { User } from '@prisma/client';
 import { UsersService } from './users.service';
 import { hash as hashFn, verify } from 'argon2';
-import { InvalidCredentials } from '../../utils/errors';
+import { InvalidCredentials } from '../../utils/responses/errors';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '../../utils/jwt/jwt.service';
 import { JwtTokenDto } from '../../@types/utils/jwt.types';
-import { Response } from 'express';
 
 @Injectable()
 export class AuthService {

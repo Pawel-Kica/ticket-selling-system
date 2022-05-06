@@ -1,13 +1,14 @@
 import { HttpStatus } from '@nestjs/common';
 import { pick } from '../../utils/objects';
-import { InvalidRequestedBody } from '../../utils/errors';
+import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { addToObject, omit } from '../../utils/objects';
 import { createUserSchema } from '../../validation/schemas/user.schema';
 import { validateSchema } from '../../validation/validationPipe';
 import {
   ConflictExceptionError,
   InvalidCredentialsError,
-} from '../helpers/errors';
+  tokenResponse,
+} from '../helpers/responses';
 
 export const createUserData = {
   name: 'Elon',
@@ -21,8 +22,9 @@ export const userResponse = {
     ...omit(createUserData, ['password', 'passwordRepetition']),
     //emailToLowerCase middleware
     email: createUserData.email.toLowerCase(),
-    //default user role
+    //default properties
     role: 'default',
+    blocked: false,
   },
   status: HttpStatus.OK,
   omit: 'id',
@@ -53,7 +55,7 @@ export const createUserObj = {
 export const logInUserObj = {
   valid: {
     body: pick(createUserData, ['email', 'password']),
-    response: { data: {}, status: 200, omit: 'token' },
+    response: tokenResponse,
   },
   invalid: {
     credentials: {

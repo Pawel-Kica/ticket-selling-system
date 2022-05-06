@@ -10,8 +10,7 @@ export class Deserialize implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     try {
       const token = getAuthToken(req);
-      const decoded = this.jwtService.verifyJWT(token);
-      res.locals.user = decoded;
+      res.locals.user = this.jwtService.verifyJWT(token);
     } catch (_e) {}
     next();
   }
