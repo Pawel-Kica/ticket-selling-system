@@ -31,14 +31,14 @@ export class AdminController {
     return SuccessResponse;
   }
 
-  @Patch('updateRole/:id/:role')
+  @Patch('userRole/:id/:role')
   async updateUserRole(@Param('id') id: string, @Param('role') role: Role) {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { role });
     return SuccessResponse;
   }
 
-  @Delete('deleteUser/:id')
+  @Delete('users/:id')
   async deleteUser(@Param('id') id: string) {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.remove({ id });

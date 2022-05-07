@@ -50,6 +50,19 @@ export async function testPATCHRequest(
   afterTest(res, equalTo);
   return res;
 }
+export async function testDELETERequest(
+  endpoint: string,
+  data: any,
+  equalTo: equalToType,
+) {
+  const res = await global.request
+    .delete(`${endpoint}`)
+    .set('Authorization', getTestToken())
+    .send(data);
+
+  afterTest(res, equalTo);
+  return res;
+}
 
 export async function testAuthEndpoint(
   success: boolean,

@@ -6,11 +6,13 @@ import { SeedService } from '../../prisma/seed/seed.service';
 import { adminLoginData } from '../../prisma/seed/data/users.seed.data';
 import {
   testAuthEndpoint,
+  testDELETERequest,
   testPATCHRequest,
   testPOSTRequest,
 } from '../helpers/testEndpoint';
 import {
   blockUserObj,
+  removeUserObj,
   unblockUserObj,
   updateRolesObj,
 } from '../data/admin.test.data';
@@ -44,7 +46,7 @@ describe('USERS CRUD', () => {
       await testPATCHRequest(
         `/admin/blockUser/${invalid.notFound.param}`,
         {},
-        invalid.response,
+        invalid.notFound.response,
       );
     });
     it('ADMIN should be able to block users', async () => {
@@ -66,7 +68,7 @@ describe('USERS CRUD', () => {
       await testPATCHRequest(
         `/admin/unblockUser/${invalid.notFound.param}`,
         {},
-        invalid.response,
+        invalid.notFound.response,
       );
     });
     it('ADMIN should be able to unblock users', async () => {
@@ -83,10 +85,17 @@ describe('USERS CRUD', () => {
   });
   describe('SET ROLES', () => {
     const { valid, invalid } = updateRolesObj;
-    it('ADMIN should be able to update roles', async () => {
+    it('ADMIN should NOT be able to update non existings users roles', async () => {
       generateAdminToken();
       await testPATCHRequest(
-        `/admin/updateRole/${valid.param}/${valid.role}`,
+        `/admin/userRole/${invalid.notFound.param}/inv`,
+        {},
+        invalid.notFound.response,
+      );
+    });
+    it('ADMIN should be able to update users roles', async () => {
+      await testPATCHRequest(
+        `/admin/userRole/${valid.param}/${valid.role}`,
         {},
         valid.response,
       );
@@ -94,6 +103,28 @@ describe('USERS CRUD', () => {
     it(`UPDATED USER should be able to access ${valid.role} AUTH endpoint`, async () => {
       generateTestToken(valid.param);
       await testAuthEndpoint(true, valid.role);
+    });
+  });
+  describe('REMOVE USER', () => {
+    const { valid, invalid } = removeUserObj;
+    it('ADMIN should NOT be able to remove non existings users', async () => {
+      generateAdminToken();
+      await testDELETERequest(
+        `/admin/users/${invalid.notFound.param}`,
+        {},
+        invalid.notFound.response,
+      );
+    });
+    it('ADMIN should be able to remove users', async () => {
+      await testDELETERequest(
+        `/admin/users/${valid.param}`,
+        {},
+        valid.response,
+      );
+    });
+    it(`REMOVED USER should NOT be able to access USER AUTH endpoint`, async () => {
+      generateTestToken(valid.param);
+      await testAuthEndpoint(false, 'users');
     });
   });
 });

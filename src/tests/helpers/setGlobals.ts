@@ -5,8 +5,8 @@ import { adminId } from '../data/admin.test.data';
 export function removeTestToken() {
   global.test_token = '';
 }
-export function setTestTokenRes(res: Response) {
-  if (res.body.token) global.test_token = res.body.token;
+export function getTestToken(): string {
+  return global.test_token;
 }
 export function generateTestToken(id: string) {
   global.test_token = sign({ id }, process.env.SECRET_TOKEN, {
@@ -16,8 +16,9 @@ export function generateTestToken(id: string) {
 export function generateAdminToken() {
   generateTestToken(adminId);
 }
-export function getTestToken(): string {
-  return global.test_token;
+
+export function setTestTokenRes(res: Response) {
+  if (res.body.token) global.test_token = res.body.token;
 }
 export function getAuthToken(req: any): string {
   try {

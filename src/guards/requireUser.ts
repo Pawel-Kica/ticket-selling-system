@@ -11,12 +11,15 @@ import { BlockedResourceException } from '../utils/responses/errors';
 export class RequireUser implements CanActivate {
   constructor(private readonly usersService: UsersService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const user = context.switchToHttp().getResponse().locals.user;
-    if (!user) throw new ForbiddenException();
+    try {
+      const { id } = context.switchToHttp().getResponse().locals.user;
+      const { blocked } = await this.usersService.findUnique({ id });
 
-    const usrObj = await this.usersService.findUnique({ id: user.id });
-    if (usrObj?.blocked) throw new BlockedResourceException();
-
-    return true;
+      if (blocked) throw new BlockedResourceException();
+      return true;
+    } catch (e) {
+      if (e instanceof BlockedResourceException) throw e;
+      throw new ForbiddenException();
+    }
   }
 }

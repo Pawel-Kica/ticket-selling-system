@@ -10,11 +10,12 @@ export const blockUserObj = {
   },
   invalid: {
     notFound: {
-      param: '123123',
+      param: '2115',
+      response: NotFoundError,
     },
-    response: NotFoundError,
   },
 };
+
 export const unblockUserObj = blockUserObj;
 export const updateRolesObj = {
   ...blockUserObj,
@@ -23,3 +24,5 @@ export const updateRolesObj = {
     role: 'admin',
   },
 };
+
+export const removeUserObj = blockUserObj;
