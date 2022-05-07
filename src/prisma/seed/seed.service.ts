@@ -1,6 +1,7 @@
 import usersSeedData from './data/users.seed.data';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import stationsSeedData from './data/stations.seed.data';
 
 @Injectable()
 export class SeedService {
@@ -8,6 +9,7 @@ export class SeedService {
 
   private readonly dataToSeed = {
     user: usersSeedData,
+    station: stationsSeedData,
   };
   private readonly models = Reflect.ownKeys(this.prisma).filter(
     (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
@@ -33,5 +35,6 @@ export class SeedService {
 
   async main() {
     await this.seedModel('user');
+    await this.seedModel('station');
   }
 }

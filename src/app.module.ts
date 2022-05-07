@@ -15,6 +15,7 @@ import { AdminModule } from './resource/admin/admin.module';
 import { AppController } from './app.controller';
 import { PostInterceptor } from './interceptors/postMethod';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { StationsModule } from './resource/stations/stations.module';
 
 // datasources: {
 
@@ -30,6 +31,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     JwtModule,
     UsersModule,
     AdminModule,
+    StationsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -15,9 +15,27 @@ import { omit } from '../../utils/objects';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
+  async create(data: CreateUserDto) {
+    return this.prisma.user.create({ data });
+  }
+  async findMany(): Promise<User[]> {
+    return this.prisma.user.findMany();
+  }
+  async findUnique(where: Prisma.UserWhereUniqueInput) {
+    return this.prisma.user.findUnique({ where });
+  }
+  async update(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+  ) {
+    return this.prisma.user.update({ where, data });
+  }
+  async remove(where: Prisma.UserWhereUniqueInput) {
+    return this.prisma.user.delete({ where });
+  }
 
-  formatUser(user: User) {
-    return omit(user, 'password');
+  async checkIfUserExists(where: Prisma.UserWhereUniqueInput) {
+    if (!(await this.findUnique(where))) throw new NotFoundException();
   }
   async checkEmailAvailability(email: string): Promise<User | void> {
     const user = await this.findUnique({ email });
@@ -30,30 +48,7 @@ export class UsersService {
     return this.formatUser(user);
   }
 
-  async create(data: CreateUserDto) {
-    return this.prisma.user.create({ data });
-  }
-
-  async findMany(): Promise<User[]> {
-    return this.prisma.user.findMany();
-  }
-
-  async findUnique(where: Prisma.UserWhereUniqueInput): Promise<User | null> {
-    return this.prisma.user.findUnique({ where });
-  }
-
-  async update(
-    where: Prisma.UserWhereUniqueInput,
-    data: Prisma.UserUpdateInput,
-  ) {
-    return this.prisma.user.update({ where, data });
-  }
-
-  async remove(where: Prisma.UserWhereUniqueInput) {
-    return this.prisma.user.delete({ where });
-  }
-
-  async checkIfUserExists(where: Prisma.UserWhereUniqueInput) {
-    if (!(await this.findUnique(where))) throw new NotFoundException();
+  formatUser(user: User) {
+    return omit(user, 'password');
   }
 }
