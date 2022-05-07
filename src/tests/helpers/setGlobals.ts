@@ -1,5 +1,6 @@
 import { Response } from 'supertest';
 import { sign } from 'jsonwebtoken';
+import { adminId } from '../data/admin.test.data';
 
 export function removeTestToken() {
   global.test_token = '';
@@ -11,6 +12,9 @@ export function generateTestToken(id: string) {
   global.test_token = sign({ id }, process.env.SECRET_TOKEN, {
     expiresIn: process.env.TOKEN_TTL,
   });
+}
+export function generateAdminToken() {
+  generateTestToken(adminId);
 }
 export function getTestToken(): string {
   return global.test_token;

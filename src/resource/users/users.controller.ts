@@ -27,6 +27,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { SuccessResponse } from '../../utils/responses';
 import { RequireUser } from '../../guards/requireUser';
 
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(
@@ -68,11 +69,10 @@ export class UsersController {
   }
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    //
   }
 
   @Post('auth')
-  @ApiBearerAuth()
   @UseGuards(RequireUser)
   auth() {
     return SuccessResponse;

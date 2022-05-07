@@ -16,3 +16,10 @@ export const blockUserObj = {
   },
 };
 export const unblockUserObj = blockUserObj;
+export const updateRolesObj = {
+  ...blockUserObj,
+  valid: {
+    ...blockUserObj.valid,
+    role: 'admin',
+  },
+};

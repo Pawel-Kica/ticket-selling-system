@@ -1,5 +1,3 @@
-import { join } from 'path';
-import { readFileSync } from 'fs';
 import { Response } from 'supertest';
 import { ForbiddenError, SuccessTestResponse } from './responses';
 import { getTestToken, setTestTokenRes } from './setGlobals';
@@ -26,12 +24,26 @@ export async function testPOSTRequest(
   equalTo: equalToType,
   fileName = '',
 ) {
-  let buffer: any = '';
-  if (fileName)
-    buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
+  // let buffer: any = '';
+  // if (fileName)
+  //   buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
 
   const res = await global.request
     .post(`${endpoint}`)
+    .set('Authorization', getTestToken())
+    .send(data);
+
+  afterTest(res, equalTo);
+  return res;
+}
+
+export async function testPATCHRequest(
+  endpoint: string,
+  data: any,
+  equalTo: equalToType,
+) {
+  const res = await global.request
+    .patch(`${endpoint}`)
     .set('Authorization', getTestToken())
     .send(data);
 
