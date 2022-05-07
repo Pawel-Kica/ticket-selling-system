@@ -100,8 +100,8 @@ model Ticket {
   //relations
   carriage            Carriage @relation(fields: [carriageId], references: [id])
   train               Train    @relation(fields: [trainId], references: [id])
-  startStation        Station  @relation("startStations", fields: [startStationId], references: [id])
-  endStation          Station  @relation("endStations", fields: [endStationId], references: [id])
+  startStation        Station  @relation("startStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation          Station  @relation("endStations", fields: [endStationId], references: [id], onDelete: Cascade)
 }
 
 enum State {
@@ -113,12 +113,13 @@ model Price {
   id             String       @id @default(cuid())
   startStationId String
   endStationId   String
-  price          Int
+  value          Int
   trainType      TrainType
   carriageType   CarriageType
+  
   //relations
-  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id])
-  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id])
+  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id],onDelete: Cascade)
+  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id],onDelete: Cascade)
 }
 
 enum TrainType {

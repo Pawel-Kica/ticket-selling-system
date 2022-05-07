@@ -1,4 +1,3 @@
-import e from 'express';
 import generateIdPrefixes from './generateData';
 
 const stationsNames = [
@@ -7,11 +6,12 @@ const stationsNames = [
   'Toronto Union Station',
   'Jamaica Station',
   'Chicago Union Station',
+  'Ogilvie Transporation Center',
 ];
 const stationsData = stationsNames.map((e) => {
   return { name: e };
 });
 
-const stationsSeedData = generateIdPrefixes(stationsData, 'station');
+export const stationPrefix = 'station';
 
-export default stationsSeedData;
+export const stationsSeedData = generateIdPrefixes(stationsData, stationPrefix);

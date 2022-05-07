@@ -3,16 +3,17 @@ import {
   adminLoginBody,
   testUserId,
 } from '../../../tests/data/admin.test.data';
+import { Role } from '@prisma/client';
 
 export const adminSeedData = {
   id: adminId,
   name: 'Admin',
   surname: 'Admin',
-  role: 'admin',
+  role: Role.admin,
   ...adminLoginBody,
 };
 
-const usersSeedData = [
+export const usersSeedData = [
   adminSeedData,
   {
     id: testUserId,
@@ -20,8 +21,6 @@ const usersSeedData = [
     surname: 'Depp',
     email: 'johnnyDeep@example.com',
     password: 'Password1!',
-    role: 'default',
+    role: Role.default,
   },
 ];
-
-export default usersSeedData;
