@@ -10,14 +10,13 @@ import {
   testPOSTRequest,
 } from '../helpers/testEndpoint';
 import {
+  adminLoginBody,
   blockUserObj,
+  createUserByAdminObj,
   removeUserObj,
   unblockUserObj,
   updateRolesObj,
 } from '../data/admin.test.data';
-import usersSeedData, {
-  adminLoginData,
-} from '../../prisma/seed/data/users.seed.data';
 
 describe('USERS CRUD', () => {
   let seedService: SeedService;
@@ -25,22 +24,33 @@ describe('USERS CRUD', () => {
   beforeAll(async () => {
     const app = await startTestServer();
     seedService = app.get(SeedService);
-    await seedService.seedModel('user', usersSeedData);
+
+    await seedService.main();
   });
 
   describe('AUTHORIZATION', () => {
-    it('anonymous should not be able to access admin auth route', async () => {
+    it('ANONYMOUS should not be able to access admin auth route', async () => {
       await testAuthEndpoint(false, 'admin');
     });
     it('ADMIN should be able to login', async () => {
-      await testPOSTRequest('/users/login', adminLoginData, TokenResponse);
+      await testPOSTRequest('/users/login', adminLoginBody, TokenResponse);
     });
-    it('ADMIN should be able to access ADMIN AUTH route', async () => {
+    it('ADMIN should be able to access ADMIN AUTH route after logging in', async () => {
       await testAuthEndpoint(true, 'admin');
     });
   });
   describe('CREATE USER', () => {
-    ///
+    const { valid, invalid } = createUserByAdminObj;
+    it('ADMIN should NOT be able to create a user with invalid body', async () => {
+      await testPOSTRequest(
+        '/admin/users',
+        invalid.schema.body,
+        invalid.schema.response,
+      );
+    });
+    it('ADMIN should be able to create a user', async () => {
+      await testPOSTRequest('/admin/users', valid.body, valid.response);
+    });
   });
   describe('BLOCK USER', () => {
     const { valid, invalid } = blockUserObj;

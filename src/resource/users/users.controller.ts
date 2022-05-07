@@ -22,7 +22,6 @@ import {
   loginSchema,
 } from '../../validation/schemas/user.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
-import { omit } from '../../utils/objects';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { SuccessResponse } from '../../utils/responses';
 import { RequireUser } from '../../guards/requireUser';
@@ -38,12 +37,8 @@ export class UsersController {
   @Post()
   @UsePipes(ApplyValidation(createUserSchema))
   async createHandler(@Body() body: CreateUserDto) {
-    await this.authService.checkEmailAvailability(body.email);
-    const user = await this.usersService.create(
-      omit(body, 'passwordRepetition'),
-    );
-
-    return this.usersService.formattedUser(user);
+    const result = await this.usersService.createUserHandler(body);
+    return result;
   }
 
   @Post('login')
@@ -51,6 +46,7 @@ export class UsersController {
   async loginHandler(@Body() { email, password }: LoginUserDto) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
+
     await this.authService.verifyPassword(password, user.password);
 
     return { token: this.authService.createAuthToken(user.id) };

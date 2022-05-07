@@ -26,8 +26,8 @@ export class AdminController {
   @Post('users')
   @UsePipes(ApplyValidation(createUserByAdminSchema))
   async createUser(@Body() body: CreateUserDto) {
-    console.log(body);
-    //
+    const result = await this.usersService.createUserHandler(body);
+    return result;
   }
 
   @Patch('blockUser/:id')

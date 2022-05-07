@@ -10,7 +10,7 @@ import {
   TokenResponse,
 } from '../helpers/responses';
 
-export const createUserData = {
+export const createUserBody = {
   name: 'Elon',
   surname: 'Musk',
   email: 'ElonMusk@spacex.com',
@@ -19,9 +19,9 @@ export const createUserData = {
 };
 export const userResponse = {
   data: {
-    ...omit(createUserData, ['password', 'passwordRepetition']),
+    ...omit(createUserBody, ['password', 'passwordRepetition']),
     //emailToLowerCase middleware
-    email: createUserData.email.toLowerCase(),
+    email: createUserBody.email.toLowerCase(),
     //default properties
     role: 'default',
     blocked: false,
@@ -30,11 +30,11 @@ export const userResponse = {
   omit: 'id',
 };
 
-export const invalidCreateUserBody = addToObject(createUserData, '!');
+export const invalidCreateUserBody = addToObject(createUserBody, '!');
 
 export const createUserObj = {
   valid: {
-    body: createUserData,
+    body: createUserBody,
     response: userResponse,
   },
   invalid: {
@@ -46,7 +46,7 @@ export const createUserObj = {
     },
     emailAlreadyExists: {
       // triggered after successful request(creating an account)
-      body: createUserData,
+      body: createUserBody,
       response: ConflictExceptionError,
     },
   },
@@ -54,13 +54,13 @@ export const createUserObj = {
 
 export const loginUserObj = {
   valid: {
-    body: pick(createUserData, ['email', 'password']),
+    body: pick(createUserBody, ['email', 'password']),
     response: TokenResponse,
   },
   invalid: {
     credentials: {
       body: {
-        ...pick(createUserData, ['email']),
+        ...pick(createUserBody, ['email']),
         password: 'Password1!',
       },
       response: InvalidCredentialsError,

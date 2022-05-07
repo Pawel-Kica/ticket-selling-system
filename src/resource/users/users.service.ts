@@ -1,5 +1,9 @@
 // Nest
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 // Prisma
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
@@ -11,8 +15,19 @@ import { omit } from '../../utils/objects';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
-  formattedUser(user: User) {
+
+  formatUser(user: User) {
     return omit(user, 'password');
+  }
+  async checkEmailAvailability(email: string): Promise<User | void> {
+    const user = await this.findUnique({ email });
+    if (user) throw new ConflictException();
+    return user;
+  }
+  async createUserHandler(body: CreateUserDto) {
+    await this.checkEmailAvailability(body.email);
+    const user = await this.create(omit(body, 'passwordRepetition'));
+    return this.formatUser(user);
   }
 
   async create(data: CreateUserDto) {
