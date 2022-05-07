@@ -1,11 +1,11 @@
 import { NotFoundError, SuccessTestResponse } from '../helpers/responses';
 
 export const adminId = '1';
-export const blockedUserId = '2';
+export const testUserId = '2';
 
 export const blockUserObj = {
   valid: {
-    param: blockedUserId,
+    param: testUserId,
     response: SuccessTestResponse,
   },
   invalid: {

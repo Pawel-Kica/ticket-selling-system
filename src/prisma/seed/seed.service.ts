@@ -6,32 +6,32 @@ import { PrismaService } from 'nestjs-prisma';
 export class SeedService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private readonly models = Reflect.ownKeys(this.prisma).filter(
-    (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
-  );
   private readonly dataToSeed = {
     user: usersSeedData,
   };
+  private readonly models = Reflect.ownKeys(this.prisma).filter(
+    (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
+  );
+  private async removeSpecificTable(modelName: string) {
+    if (!this.models.includes(modelName)) return;
+    await this.prisma[modelName].deleteMany();
+  }
 
-  async seedModel(modelName: string) {
+  async seedModel(modelName: string, dataset = []) {
+    await this.removeSpecificTable(modelName);
+    if (dataset.length < 1) dataset = this.dataToSeed[modelName];
     if (!this.models.includes(modelName)) return;
     return Promise.all(
-      this.dataToSeed[modelName].map((record: any) =>
-        this.prisma[modelName].create({ data: record }),
-      ),
+      dataset.map((data: any) => this.prisma[modelName].create({ data })),
     );
   }
-  async removeTables() {
+  async removeAllTables() {
     return Promise.all(
       this.models.map((modelKey) => this.prisma[modelKey].deleteMany()),
     );
   }
-  async removeSpecificTable(modelName: string) {
-    if (!this.models.includes(modelName)) return;
-    await this.prisma[modelName].deleteMany();
-  }
+
   async main() {
-    await this.removeTables();
     await this.seedModel('user');
   }
 }

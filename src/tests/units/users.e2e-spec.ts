@@ -1,18 +1,12 @@
 import startTestServer from '../startTestServer';
-import { SeedService } from '../../prisma/seed/seed.service';
-import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
 import { createUserObj } from '../data/users.test.data';
 import { loginUserObj } from '../data/users.test.data';
 import { removeTestToken } from '../helpers/setGlobals';
+import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
 
 describe('USERS CRUD', () => {
-  let seedService: SeedService;
   beforeAll(async () => {
-    const app = await startTestServer();
-    seedService = app.get(SeedService);
-  });
-  afterAll(async () => {
-    await seedService.removeSpecificTable('user');
+    await startTestServer();
   });
   describe('CREATE AN ACCOUNT', () => {
     const { valid, invalid } = createUserObj;

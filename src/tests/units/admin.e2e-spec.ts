@@ -3,7 +3,6 @@ import { TokenResponse } from '../helpers/responses';
 import { generateTestToken, generateAdminToken } from '../helpers/setGlobals';
 import { BlockedResourceError } from '../helpers/responses';
 import { SeedService } from '../../prisma/seed/seed.service';
-import { adminLoginData } from '../../prisma/seed/data/users.seed.data';
 import {
   testAuthEndpoint,
   testDELETERequest,
@@ -16,6 +15,9 @@ import {
   unblockUserObj,
   updateRolesObj,
 } from '../data/admin.test.data';
+import usersSeedData, {
+  adminLoginData,
+} from '../../prisma/seed/data/users.seed.data';
 
 describe('USERS CRUD', () => {
   let seedService: SeedService;
@@ -23,11 +25,9 @@ describe('USERS CRUD', () => {
   beforeAll(async () => {
     const app = await startTestServer();
     seedService = app.get(SeedService);
-    await seedService.main();
+    await seedService.seedModel('user', usersSeedData);
   });
-  afterAll(async () => {
-    await seedService.removeSpecificTable('user');
-  });
+
   describe('AUTHORIZATION', () => {
     it('anonymous should not be able to access admin auth route', async () => {
       await testAuthEndpoint(false, 'admin');
@@ -38,6 +38,9 @@ describe('USERS CRUD', () => {
     it('ADMIN should be able to access ADMIN AUTH route', async () => {
       await testAuthEndpoint(true, 'admin');
     });
+  });
+  describe('CREATE USER', () => {
+    ///
   });
   describe('BLOCK USER', () => {
     const { valid, invalid } = blockUserObj;
