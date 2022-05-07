@@ -1,5 +1,7 @@
 import * as Joi from 'joi';
 import { regexEnglishAlphabet, regexPassword } from '../helpers/regexes';
+import { Role } from '@prisma/client';
+import { joiValidateEnums } from '../helpers/customValidators';
 
 const joiEmail = {
   email: Joi.string().email(),
@@ -19,7 +21,7 @@ const joiGeneralInfo = {
   surname: Joi.string().pattern(regexEnglishAlphabet),
 };
 
-export const createUserSchema = Joi.object({
+const joiCreateUser = {
   ...joiGeneralInfo,
   ...joiEmail,
   ...joiPassword,
@@ -30,4 +32,12 @@ export const createUserSchema = Joi.object({
     .messages({
       'any.only': 'Passwords must match',
     }),
+};
+export const createUserSchema = Joi.object(joiCreateUser).options({
+  presence: 'required',
+});
+
+export const createUserByAdminSchema = Joi.object({
+  ...joiCreateUser,
+  role: Joi.string().custom(joiValidateEnums(Object.keys(Role))),
 }).options({ presence: 'required' });

@@ -42,6 +42,7 @@ export class UsersController {
     const user = await this.usersService.create(
       omit(body, 'passwordRepetition'),
     );
+
     return this.usersService.formattedUser(user);
   }
 
@@ -53,23 +54,6 @@ export class UsersController {
     await this.authService.verifyPassword(password, user.password);
 
     return { token: this.authService.createAuthToken(user.id) };
-  }
-
-  @Get()
-  findAllHandler() {
-    return this.usersService.findMany();
-  }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    // return this.usersService.findOne();
-  }
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    // return this.usersService.update(+id, updateUserDto);
-  }
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    //
   }
 
   @Post('auth')

@@ -1,22 +1,34 @@
-import { ApiBearerAuth } from '@nestjs/swagger';
 import {
+  Body,
   Controller,
   Delete,
   Param,
   Patch,
   Post,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { SuccessResponse } from '../../utils/responses';
 import { RequireAdmin } from '../../guards/roles.';
 import { Role } from '@prisma/client';
+import { CreateUserDto } from '../../@types/models/users.types';
+import { ApplyValidation } from '../../validation/validationPipe';
+import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @UseGuards(RequireAdmin)
 @Controller('admin')
 export class AdminController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post('users')
+  @UsePipes(ApplyValidation(createUserByAdminSchema))
+  async createUser(@Body() body: CreateUserDto) {
+    console.log(body);
+    //
+  }
 
   @Patch('blockUser/:id')
   async blockUser(@Param('id') id: string) {
