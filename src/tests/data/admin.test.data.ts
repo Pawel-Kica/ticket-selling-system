@@ -10,14 +10,9 @@ export const blockUserObj = {
   },
   invalid: {
     notFound: {
-      id: 'notFound',
+      param: '123123',
     },
     response: NotFoundError,
   },
 };
-export const unblockUserObj = {
-  valid: {
-    param: blockedUserId,
-    response: SuccessTestResponse,
-  },
-};
+export const unblockUserObj = blockUserObj;

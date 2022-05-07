@@ -6,6 +6,7 @@ import { SeedService } from '../../prisma/seed/seed.service';
 import { adminLoginData } from '../../prisma/seed/data/users.seed.data';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
 import { adminId, blockUserObj, unblockUserObj } from '../data/admin.test.data';
+import { invalid } from 'joi';
 
 describe('USERS CRUD', () => {
   let seedService: SeedService;
@@ -30,7 +31,15 @@ describe('USERS CRUD', () => {
     });
   });
   describe('BLOCK USER', () => {
-    const { valid } = blockUserObj;
+    const { valid, invalid } = blockUserObj;
+
+    it('ADMIN should be NOT be able to block not existing user', async () => {
+      await testPOSTRequest(
+        `/admin/blockUser/${invalid.notFound.param}`,
+        {},
+        invalid.response,
+      );
+    });
     it('ADMIN should be able to block user', async () => {
       await testPOSTRequest(
         `/admin/blockUser/${valid.param}`,
@@ -44,9 +53,16 @@ describe('USERS CRUD', () => {
     });
   });
   describe('UNBLOCK USER', () => {
-    const { valid } = unblockUserObj;
-    it('ADMIN should be able to unblock user', async () => {
+    const { valid, invalid } = unblockUserObj;
+    it('ADMIN should be NOT be able to unblock not existing user', async () => {
       generateTestToken(adminId);
+      await testPOSTRequest(
+        `/admin/unblockUser/${invalid.notFound.param}`,
+        {},
+        invalid.response,
+      );
+    });
+    it('ADMIN should be able to unblock user', async () => {
       await testPOSTRequest(
         `/admin/unblockUser/${valid.param}`,
         {},
