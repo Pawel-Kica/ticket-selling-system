@@ -17,15 +17,20 @@ import {
   unblockUserObj,
   updateRolesObj,
 } from '../data/admin.test.data';
+import { TestingModule } from '@nestjs/testing';
 
 describe('USERS CRUD', () => {
   let seedService: SeedService;
+  let app: TestingModule;
 
   beforeAll(async () => {
-    const app = await startTestServer();
+    app = await startTestServer();
     seedService = app.get(SeedService);
 
     await seedService.main();
+  });
+  afterAll(async () => {
+    app.close();
   });
 
   describe('AUTHORIZATION', () => {

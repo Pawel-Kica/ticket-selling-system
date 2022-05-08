@@ -16,6 +16,8 @@ import { AppController } from './app.controller';
 import { PostInterceptor } from './interceptors/postMethod';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { StationsModule } from './resource/stations/stations.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { mainDir } from './config/files.config';
 
 // datasources: {
 
@@ -27,6 +29,9 @@ import { StationsModule } from './resource/stations/stations.module';
       prismaServiceOptions: {
         middlewares: [prismaHashPasswordMiddleware()],
       },
+    }),
+    MulterModule.register({
+      dest: `./${mainDir}`,
     }),
     JwtModule,
     UsersModule,

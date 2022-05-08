@@ -3,11 +3,17 @@ import { createUserObj } from '../data/users.test.data';
 import { loginUserObj } from '../data/users.test.data';
 import { removeTestToken } from '../helpers/setGlobals';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
+import { TestingModule } from '@nestjs/testing';
 
 describe('USERS CRUD', () => {
+  let app: TestingModule;
   beforeAll(async () => {
-    await startTestServer();
+    app = await startTestServer();
   });
+  afterAll(async () => {
+    app.close();
+  });
+
   describe('CREATE AN ACCOUNT', () => {
     const { valid, invalid } = createUserObj;
     it('USER should NOT be able to create a new account with INVALID body', async () => {
