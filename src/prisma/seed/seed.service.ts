@@ -1,10 +1,13 @@
+import { join } from 'path';
+import { copyFile } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { usersSeedData } from './data/users.seed.data';
 import { stationsSeedData } from './data/stations.seed.data';
 import { pricesSeedData } from './data/prices.seed.data';
 import { employeesSeedData } from './data/employees.seed.data';
-import { logInfo } from '../../utils/logger';
+import { imagesExtension, mainImagesPath } from './../../config/files.config';
+import { logInfo, logError } from '../../utils/logger';
 
 @Injectable()
 export class SeedService {
@@ -18,6 +21,7 @@ export class SeedService {
     price: pricesSeedData,
     employee: employeesSeedData,
   };
+
   private readonly models = Reflect.ownKeys(this.prisma).filter(
     (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
   );
@@ -35,9 +39,20 @@ export class SeedService {
       this.models.map((modelKey) => this.prisma[modelKey].deleteMany()),
     );
   }
+  private seedImagesPath = join(
+    process.cwd(),
+    'src',
+    'prisma',
+    'seed',
+    'data',
+    'images',
+  );
 
   private logSeedInfo = (mess: string) => {
     logInfo(mess, this.loggerContext);
+  };
+  private logErrorInfo = (mess: string) => {
+    logError(mess, this.loggerContext);
   };
 
   async seedModel(modelName: string, dataset = []) {
@@ -50,6 +65,18 @@ export class SeedService {
     Promise.all(
       dataset.map((data: any) => this.prisma[modelName].create({ data })),
     );
+    if (modelName === 'employee') {
+      dataset.map((data) => {
+        const name = `${data.photoPath}.${imagesExtension}`;
+        copyFile(
+          join(this.seedImagesPath, name),
+          join(mainImagesPath, name),
+          (err) => {
+            logError(err.message);
+          },
+        );
+      });
+    }
     this.logSeedInfo(`${dataset.length} records have been added`);
   }
 

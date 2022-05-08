@@ -1,4 +1,3 @@
-import * as dayjs from 'dayjs';
 import { ConsoleLogger } from '@nestjs/common';
 
 const singleton = (function () {
