@@ -3,6 +3,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { usersSeedData } from './data/users.seed.data';
 import { stationsSeedData } from './data/stations.seed.data';
 import { pricesSeedData } from './data/prices.seed.data';
+import { employeesSeedData } from './data/employees.seed.data';
 
 @Injectable()
 export class SeedService {
@@ -12,6 +13,7 @@ export class SeedService {
     user: usersSeedData,
     station: stationsSeedData,
     price: pricesSeedData,
+    employee: employeesSeedData,
   };
   private readonly models = Reflect.ownKeys(this.prisma).filter(
     (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
@@ -25,6 +27,12 @@ export class SeedService {
       Object.keys(this.dataToSeed).map(async (e) => await this.seedModel(e)),
     );
   }
+  private async removeAllTables() {
+    return Promise.all(
+      this.models.map((modelKey) => this.prisma[modelKey].deleteMany()),
+    );
+  }
+
   async seedModel(modelName: string, dataset = []) {
     await this.removeSpecificTable(modelName);
 
@@ -34,16 +42,12 @@ export class SeedService {
       dataset.map((data: any) => this.prisma[modelName].create({ data })),
     );
   }
-  // async removeAllTables() {
-  //   return Promise.all(
-  //     this.models.map((modelKey) => this.prisma[modelKey].deleteMany()),
-  //   );
-  // }
 
   async main() {
     // await this.seedAllData();
     await this.seedModel('user');
     await this.seedModel('station');
     await this.seedModel('price');
+    await this.seedModel('employee');
   }
 }
