@@ -1,24 +1,27 @@
 import { Request } from 'express';
 import { randomBytes } from 'crypto';
-import { imagesExtension, mainDir } from '../../config/files.config';
+import { imagesExtension, mainImagesPath } from '../../config/files.config';
+import { UnsupportedMediaTypeException } from '@nestjs/common';
 
-export class Helper {
+export class FileUploadHelper {
   static customFileName(
-    req: Request,
+    _req: Request,
     file: { mimetype: string | string[]; originalname: string },
-    cb: (arg0: any, arg1: string) => void,
+    cb: (arg0: any, arg1: any) => void,
   ) {
+    if (file.mimetype.indexOf(imagesExtension) != -1)
+      return cb(new UnsupportedMediaTypeException(), false);
+
     const uniqueSuffix = randomBytes(64).toString('hex');
     const fileExtension = imagesExtension;
 
-    const originalName = file.originalname.split('.')[0];
-    cb(null, originalName + '-' + uniqueSuffix + '.' + fileExtension);
+    cb(null, uniqueSuffix + '.' + fileExtension);
   }
   static destinationPath(
     _req: Request,
     _file: any,
     cb: (arg0: any, arg1: string) => void,
   ) {
-    cb(null, `./${mainDir}`);
+    cb(null, mainImagesPath);
   }
 }

@@ -5,17 +5,13 @@ import {
   Post,
   Res,
   UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
 import { join } from 'path';
 import { Response } from 'express';
-import { diskStorage } from 'multer';
 import { User } from '@prisma/client';
-import { Helper } from './utils/files/Helper';
 import { UserObj } from './decorators/user.decorator';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { imagesExtension, mainPath } from './config/files.config';
+import { imagesExtension, mainImagesPath } from './config/files.config';
+import { ApiFile } from './decorators/apiFile.decorator';
 
 @Controller()
 export class AppController {
@@ -25,32 +21,13 @@ export class AppController {
     return { msg: 'Welcome' };
   }
   @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: Helper.destinationPath,
-        filename: Helper.customFileName,
-      }),
-    }),
-  )
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  @ApiFile()
   async uploadedFile(@UploadedFile() file: Express.Multer.File) {
-    return 'success';
+    return file.filename;
   }
 
   @Get('image/:name')
   findImageByName(@Param('name') name: string, @Res() res: Response) {
-    return res.sendFile(join(mainPath, `${name}.${imagesExtension}`));
+    return res.sendFile(join(mainImagesPath, `${name}.${imagesExtension}`));
   }
 }
