@@ -14,12 +14,42 @@ const stationsData = [
         id: `${stationPrefix}1`,
       },
     },
-    trainType: TrainType.highSpeed,
-    carriageType: CarriageType.suitcase,
-    value: 200,
+    trainType: '',
+    carriageType: '',
+    value: 100,
   },
 ];
 
-export const pricePrefix = 'price';
+const trainTypePrices: { [x: string]: number } = {};
+trainTypePrices[TrainType.regional] = 1;
+trainTypePrices[TrainType.passenger] = 1.5;
+trainTypePrices[TrainType.highSpeed] = 2;
 
-export const pricesSeedData = generateIdPrefixes(stationsData, pricePrefix);
+const carriagesTypePrices: { [x: string]: number } = {};
+carriagesTypePrices[CarriageType.backpack] = 1;
+carriagesTypePrices[CarriageType.suitcase] = 1.3;
+
+const formattedStations = [];
+
+stationsData.forEach((station) => {
+  for (const [trainTypeKey, trainTypeValue] of Object.entries(
+    trainTypePrices,
+  )) {
+    for (const [carriageTypeKey, carriageTypeValue] of Object.entries(
+      carriagesTypePrices,
+    )) {
+      formattedStations.push({
+        ...station,
+        value: station.value * trainTypeValue * carriageTypeValue,
+        trainType: trainTypeKey,
+        carriageType: carriageTypeKey,
+      });
+    }
+  }
+});
+
+export const pricePrefix = 'price';
+export const pricesSeedData = generateIdPrefixes(
+  formattedStations,
+  pricePrefix,
+);

@@ -62,14 +62,14 @@ describe('USERS CRUD', () => {
 
     it('ADMIN should be NOT be able to block not existing users', async () => {
       await testPATCHRequest(
-        `/admin/blockUser/${invalid.notFound.param}`,
+        `/admin/users/block/${invalid.notFound.param}`,
         {},
         invalid.notFound.response,
       );
     });
     it('ADMIN should be able to block users', async () => {
       await testPATCHRequest(
-        `/admin/blockUser/${valid.param}`,
+        `/admin/users/block/${valid.param}`,
         {},
         valid.response,
       );
@@ -84,14 +84,14 @@ describe('USERS CRUD', () => {
     it('ADMIN should be NOT be able to unblock not existing users', async () => {
       generateAdminToken();
       await testPATCHRequest(
-        `/admin/unblockUser/${invalid.notFound.param}`,
+        `/admin/users/unblock/${invalid.notFound.param}`,
         {},
         invalid.notFound.response,
       );
     });
     it('ADMIN should be able to unblock users', async () => {
       await testPATCHRequest(
-        `/admin/unblockUser/${valid.param}`,
+        `/admin/users/unblock/${valid.param}`,
         {},
         valid.response,
       );
@@ -106,14 +106,14 @@ describe('USERS CRUD', () => {
     it('ADMIN should NOT be able to update non existings users roles', async () => {
       generateAdminToken();
       await testPATCHRequest(
-        `/admin/userRole/${invalid.notFound.param}/inv`,
+        `/admin/users/role/${invalid.notFound.param}/inv`,
         {},
         invalid.notFound.response,
       );
     });
     it('ADMIN should be able to update users roles', async () => {
       await testPATCHRequest(
-        `/admin/userRole/${valid.param}/${valid.role}`,
+        `/admin/users/role/${valid.param}/${valid.role}`,
         {},
         valid.response,
       );
