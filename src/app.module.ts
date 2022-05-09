@@ -1,25 +1,25 @@
 // Nest
-import { PrismaModule } from 'nestjs-prisma';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 // Middlewares
 import { Trimmer } from './middleware/trimmer';
 import { Deserialize } from './middleware/deserialize';
 import { EmailToLowerCase } from './middleware/emailToLowerCase';
 import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassoword';
 // Modules
+import { PrismaModule } from 'nestjs-prisma';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from './utils/jwt/jwt.module';
 import { UsersModule } from './resource/users/users.module';
 import { AdminModule } from './resource/admin/admin.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { StationsModule } from './resource/stations/stations.module';
+import { EmployeesModule } from './resource/employees/employees.module';
 // Controllers
 import { AppController } from './app.controller';
-import { PostInterceptor } from './interceptors/postMethod';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { StationsModule } from './resource/stations/stations.module';
-import { MulterModule } from '@nestjs/platform-express';
+// Others
 import { mainDir } from './config/files.config';
-
-// datasources: {
+import { PostInterceptor } from './interceptors/postMethod';
 
 @Module({
   imports: [
@@ -37,6 +37,7 @@ import { mainDir } from './config/files.config';
     UsersModule,
     AdminModule,
     StationsModule,
+    EmployeesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -14,8 +14,6 @@ const stationsData = [
         id: `${stationPrefix}1`,
       },
     },
-    trainType: '',
-    carriageType: '',
     value: 100,
   },
 ];

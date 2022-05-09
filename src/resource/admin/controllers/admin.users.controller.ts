@@ -25,7 +25,7 @@ export class AdminUsersController {
 
   @Post()
   @UsePipes(ApplyValidation(createUserByAdminSchema))
-  async createUser(@Body() body: CreateUserDto) {
+  async create(@Body() body: CreateUserDto) {
     const result = await this.usersService.createUserHandler(body);
     return result;
   }
@@ -44,14 +44,14 @@ export class AdminUsersController {
   }
 
   @Patch('role/:id/:role')
-  async updateUserRole(@Param('id') id: string, @Param('role') role: Role) {
+  async updateRole(@Param('id') id: string, @Param('role') role: Role) {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { role });
     return SuccessResponse;
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.remove({ id });
     return SuccessResponse;
