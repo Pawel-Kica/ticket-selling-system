@@ -8,7 +8,7 @@ import {
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 // Dto
-import { CreateUserDto } from '../../@types/models/users.types';
+import { CreateUserDto } from '../../@types/models/users.types.dto';
 // Tools
 import { omit } from '../../utils/objects';
 

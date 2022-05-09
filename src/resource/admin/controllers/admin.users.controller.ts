@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from '../../../@types/models/users.types';
+import { CreateUserDto } from '../../../@types/models/users.types.dto';
 import { RequireAdmin } from '../../../guards/roles.';
 import { SuccessResponse } from '../../../utils/responses';
 import { createUserByAdminSchema } from '../../../validation/schemas/user.schema';

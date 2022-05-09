@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UsePipes,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { InvalidCredentials } from '../../utils/responses/errors';
@@ -16,7 +6,7 @@ import {
   CreateUserDto,
   LoginUserDto,
   UpdateUserDto,
-} from '../../@types/models/users.types';
+} from '../../@types/models/users.types.dto';
 import {
   createUserSchema,
   loginSchema,

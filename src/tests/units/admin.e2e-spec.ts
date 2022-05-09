@@ -155,7 +155,6 @@ describe('EMPLOYEES', () => {
         '/admin/employees',
         { name: '12' },
         { data: {}, status: 200, omit: [] },
-        'src.jpg',
       );
     });
     //

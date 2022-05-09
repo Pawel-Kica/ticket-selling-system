@@ -24,12 +24,7 @@ export async function testPOSTRequest(
   endpoint: string,
   data: any,
   equalTo: equalToType,
-  fileName = '',
 ) {
-  let buffer: any = '';
-  if (fileName)
-    buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
-
   const res = await global.request
     .post(`${endpoint}`)
     .set('Authorization', getTestToken())
@@ -43,18 +38,11 @@ export async function testPATCHRequest(
   endpoint: string,
   data: any,
   equalTo: equalToType,
-  fileName = '',
 ) {
-  let buffer: any = '';
-  if (fileName)
-    buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
-
   const res = await global.request
     .patch(`${endpoint}`)
     .set('Authorization', getTestToken())
     .send(data);
-  // .field(data)
-  // .attach('file', buffer, 'attachment');
 
   afterTest(res, equalTo);
   return res;
