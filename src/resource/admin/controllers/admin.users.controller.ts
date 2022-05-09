@@ -9,7 +9,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../../../@types/models/users.types';
 import { RequireAdmin } from '../../../guards/roles.';
 import { SuccessResponse } from '../../../utils/responses';
@@ -17,6 +17,7 @@ import { createUserByAdminSchema } from '../../../validation/schemas/user.schema
 import { ApplyValidation } from '../../../validation/validationPipe';
 import { UsersService } from '../../users/users.service';
 
+@ApiTags('Admin - users')
 @ApiBearerAuth()
 @UseGuards(RequireAdmin)
 @Controller('admin/users')

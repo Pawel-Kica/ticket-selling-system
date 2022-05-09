@@ -7,12 +7,13 @@ import { CreateEmployeeDto, EmployeeWhereUniqueInput } from './employees.types';
 export class EmployeesService {
   constructor(private readonly prisma: PrismaService) {}
   async create(data: CreateEmployeeDto) {
-    return this.prisma.employee.create({ data });
+    const employee = await this.prisma.employee.create({ data });
+    return employee;
   }
-  async findAll() {
-    return `This action returns all employees`;
+  async findMany() {
+    const employees = await this.prisma.employee.findMany();
+    return employees;
   }
-
   async findUnique(where: EmployeeWhereUniqueInput) {
     return this.prisma.employee.findUnique({ where });
   }

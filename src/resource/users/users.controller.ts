@@ -22,11 +22,12 @@ import {
   loginSchema,
 } from '../../validation/schemas/user.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessResponse } from '../../utils/responses';
 import { RequireUser } from '../../guards/requireUser';
 
 @ApiBearerAuth()
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -37,7 +38,7 @@ export class UsersController {
   @Post()
   @UsePipes(ApplyValidation(createUserSchema))
   async createHandler(@Body() body: CreateUserDto) {
-    const result = await this.usersService.createUserHandler(body);
+    const result = await this.usersService.createUserHandler(body as any);
     return result;
   }
 

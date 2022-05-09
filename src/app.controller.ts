@@ -10,8 +10,8 @@ import { join } from 'path';
 import { Response } from 'express';
 import { User } from '@prisma/client';
 import { UserObj } from './decorators/user.decorator';
-import { imagesExtension, mainImagesPath } from './config/files.config';
 import { ApiFile } from './decorators/apiFile.decorator';
+import { imagesExtension, mainImagesPath } from './config/files.config';
 
 @Controller()
 export class AppController {

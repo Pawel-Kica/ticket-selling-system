@@ -1,8 +1,8 @@
-import { applyDecorators, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import { ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileUploadHelper } from '../utils/files/Helper';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { applyDecorators, UseInterceptors } from '@nestjs/common';
 
 export function ApiFile() {
   return applyDecorators(
@@ -22,6 +22,9 @@ export function ApiFile() {
           file: {
             type: 'string',
             format: 'binary',
+          },
+          data: {
+            type: 'object',
           },
         },
       },

@@ -7,7 +7,7 @@ export class InvalidCredentials extends HttpException {
   }
 }
 export class InvalidRequestedBody extends HttpException {
-  constructor(message: BetterJoiError[]) {
+  constructor(message: BetterJoiError[] | string) {
     super(message, 400);
   }
 }
