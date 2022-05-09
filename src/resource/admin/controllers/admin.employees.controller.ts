@@ -3,9 +3,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiFile } from '../../../decorators/apiFile.decorator';
 import { defaultEmployeePhotoPath } from '../../../prisma/seed/data/employees.seed.data';
 import { InvalidRequestedBody } from '../../../utils/responses/errors';
-import { createUserSchema } from '../../../validation/schemas/user.schema';
 import { ApplyValidation } from '../../../validation/validationPipe';
 import { EmployeesService } from '../../employees/employees.service';
+import { createEmployeeSchema } from './../../../validation/schemas/employee.schema';
 
 @ApiTags('Admin - employees')
 @ApiBearerAuth()
@@ -16,7 +16,7 @@ export class AdminEmployeesController {
 
   @Post()
   @ApiFile()
-  @UsePipes(ApplyValidation(createUserSchema))
+  @UsePipes(ApplyValidation(createEmployeeSchema))
   create(@UploadedFile() file, @Body() body: any) {
     try {
       const dto = JSON.parse(body.data as string);

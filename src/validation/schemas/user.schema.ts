@@ -16,13 +16,13 @@ export const loginSchema = Joi.object({
   ...joiPassword,
 }).options({ presence: 'required' });
 
-const joiGeneralInfo = {
+export const joiNameSurname = {
   name: Joi.string().pattern(regexEnglishAlphabet),
   surname: Joi.string().pattern(regexEnglishAlphabet),
 };
 
 const joiCreateUser = {
-  ...joiGeneralInfo,
+  ...joiNameSurname,
   ...joiEmail,
   ...joiPassword,
   passwordRepetition: Joi.any()

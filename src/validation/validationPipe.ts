@@ -19,9 +19,14 @@ export const ApplyValidation = (schema: ObjectSchema) =>
 export class JoiValidationPipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
   transform(value: any) {
-    const data = value && JSON.parse(value.data);
-    const result = validateSchema(this.schema, data);
-    if (result !== true) throw new InvalidRequestedBody(result);
-    return value;
+    let result: any = 'Invalid data format';
+    try {
+      const data = value && JSON.parse(value.data);
+      result = validateSchema(this.schema, data);
+      if (result !== true) throw new Error();
+      return value;
+    } catch (_e) {
+      throw new InvalidRequestedBody(result);
+    }
   }
 }
