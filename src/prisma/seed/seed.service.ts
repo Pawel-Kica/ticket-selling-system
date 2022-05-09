@@ -1,13 +1,17 @@
 import { join } from 'path';
-import { copyFile } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { usersSeedData } from './data/users.seed.data';
 import { stationsSeedData } from './data/stations.seed.data';
 import { pricesSeedData } from './data/prices.seed.data';
 import { employeesSeedData } from './data/employees.seed.data';
-import { imagesExtension, mainImagesPath } from './../../config/files.config';
+import {
+  imagesExtension,
+  imagesFolderName,
+  mainImagesPath,
+} from './../../config/files.config';
 import { logInfo, logError } from '../../utils/logger';
+import { existsSync, remove, mkdir, copyFileSync } from 'fs-extra';
 
 @Injectable()
 export class SeedService {
@@ -51,9 +55,20 @@ export class SeedService {
   private logSeedInfo = (mess: string) => {
     logInfo(mess, this.loggerContext);
   };
-  private logErrorInfo = (mess: string) => {
+  private logSeedError = (mess: string) => {
     logError(mess, this.loggerContext);
   };
+  private async removeStoredImages() {
+    this.logSeedInfo('Remove currently stored images');
+    await remove(mainImagesPath);
+    await mkdir(mainImagesPath);
+    this.logSeedInfo(
+      `${
+        imagesFolderName.charAt(0).toLocaleUpperCase() +
+        imagesFolderName.slice(1)
+      } - folder has been revamped`,
+    );
+  }
 
   async seedModel(modelName: string, dataset = []) {
     await this.removeSpecificTable(modelName);
@@ -68,19 +83,19 @@ export class SeedService {
     if (modelName === 'employee') {
       dataset.map((data) => {
         const name = `${data.photoPath}.${imagesExtension}`;
-        copyFile(
-          join(this.seedImagesPath, name),
-          join(mainImagesPath, name),
-          (err) => {
-            logError(err.message);
-          },
-        );
+        const savePath = join(mainImagesPath, name);
+        const srcPath = join(this.seedImagesPath, name);
+
+        if (!existsSync(savePath)) {
+          copyFileSync(srcPath, savePath);
+        }
       });
     }
     this.logSeedInfo(`${dataset.length} records have been added`);
   }
 
   async main() {
+    await this.removeStoredImages();
     await this.seedModel('user');
     await this.seedModel('station');
     await this.seedModel('price');

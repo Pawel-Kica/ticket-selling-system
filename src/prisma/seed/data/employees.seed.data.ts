@@ -23,14 +23,16 @@ function generateEmployees(n: number) {
 
 const numberOfEmployees = 10;
 
+export const numberOfConductors = numberOfEmployees / 2;
+export const numberOfDrivers = numberOfEmployees - numberOfConductors;
+
 const employeesData = generateEmployees(numberOfEmployees);
 
 employeesData.forEach((employee, idx) => {
   employeesData[idx] = {
     ...employee,
-    position:
-      idx >= numberOfEmployees / 2 ? Position.conductor : Position.driver,
-    photoPath: `${employeePrefix}${idx}`,
+    position: idx < numberOfConductors ? Position.conductor : Position.driver,
+    photoPath: `${employeePrefix}${0}`,
   };
 });
 
