@@ -3,7 +3,6 @@ import { InvalidRequestedBody } from '../utils/responses/errors';
 import { PipeTransform, Injectable } from '@nestjs/common';
 import createBetterJoiErrors from './helpers/betterJoiError';
 
-// could be BetterJoiError[] | boolean
 export const validateSchema = (
   schema: ObjectSchema,
   dataToValidate: any,
@@ -19,14 +18,14 @@ export const ApplyValidation = (schema: ObjectSchema) =>
 export class JoiValidationPipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
   transform(value: any) {
-    let result: any = 'Invalid data format';
+    let dto = { ...value };
     try {
-      const data = value && JSON.parse(value.data);
-      result = validateSchema(this.schema, data);
-      if (result !== true) throw new Error();
-      return value;
-    } catch (_e) {
-      throw new InvalidRequestedBody(result);
-    }
+      if (value.data) {
+        dto = JSON.parse(value.data);
+      }
+    } catch (_e) {}
+    const result = validateSchema(this.schema, dto);
+    if (result !== true) throw new InvalidRequestedBody(result);
+    return dto;
   }
 }

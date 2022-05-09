@@ -1,4 +1,6 @@
+import { join } from 'path';
 import { Response } from 'supertest';
+import { readFileSync } from 'fs-extra';
 import { ForbiddenError, SuccessTestResponse } from './responses';
 import { getTestToken, setTestTokenRes } from './setGlobals';
 import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
@@ -24,9 +26,9 @@ export async function testPOSTRequest(
   equalTo: equalToType,
   fileName = '',
 ) {
-  // let buffer: any = '';
-  // if (fileName)
-  //   buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
+  let buffer: any = '';
+  if (fileName)
+    buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
 
   const res = await global.request
     .post(`${endpoint}`)
@@ -41,11 +43,18 @@ export async function testPATCHRequest(
   endpoint: string,
   data: any,
   equalTo: equalToType,
+  fileName = '',
 ) {
+  let buffer: any = '';
+  if (fileName)
+    buffer = readFileSync(join(__dirname, '..', 'data', 'files', fileName));
+
   const res = await global.request
     .patch(`${endpoint}`)
     .set('Authorization', getTestToken())
     .send(data);
+  // .field(data)
+  // .attach('file', buffer, 'attachment');
 
   afterTest(res, equalTo);
   return res;
