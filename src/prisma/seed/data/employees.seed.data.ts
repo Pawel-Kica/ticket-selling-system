@@ -1,8 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Position } from '@prisma/client';
 import generateIdPrefixes from './generateData';
-
-export const employeePrefix = 'employee';
+import { employeePrefix } from './prefixes';
 
 function generateEmployees(n: number) {
   const result = [];
@@ -16,27 +15,20 @@ function generateEmployees(n: number) {
         '1980-01-01T00:00:00.000Z',
         '2000-01-01T00:00:00.000Z',
       )[0],
+      position: i < numberOfConductors ? Position.conductor : Position.driver,
+      photoPath: defaultEmployeePhotoPath,
     });
   }
   return result;
 }
 
-const numberOfEmployees = 10;
-
-export const numberOfConductors = numberOfEmployees / 2;
-export const numberOfDrivers = numberOfEmployees - numberOfConductors;
 export const defaultEmployeePhotoPath = `${employeePrefix}0`;
 
+export const numberOfEmployees = 20;
+export const numberOfConductors = numberOfEmployees / 2;
+export const numberOfDrivers = numberOfEmployees - numberOfConductors;
+
 const employeesData = generateEmployees(numberOfEmployees);
-
-employeesData.forEach((employee, idx) => {
-  employeesData[idx] = {
-    ...employee,
-    position: idx < numberOfConductors ? Position.conductor : Position.driver,
-    photoPath: defaultEmployeePhotoPath,
-  };
-});
-
 export const employeesSeedData = generateIdPrefixes(
   employeesData,
   employeePrefix,

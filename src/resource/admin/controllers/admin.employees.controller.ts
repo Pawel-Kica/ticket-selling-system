@@ -27,7 +27,7 @@ export class AdminEmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
-  @ApiFile()
+  // @ApiFile()
   @UsePipes(ApplyValidation(createEmployeeSchema))
   create(@UploadedFile() file, @Body() body: CreateEmployeeDto) {
     if (!file) body.photoPath = defaultEmployeePhotoPath;

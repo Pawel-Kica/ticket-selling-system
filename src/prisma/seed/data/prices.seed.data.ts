@@ -1,6 +1,6 @@
 import generateIdPrefixes from './generateData';
 import { TrainType, CarriageType } from '@prisma/client';
-import { stationPrefix } from './stations.seed.data';
+import { stationPrefix } from './prefixes';
 
 const stationsData = [
   {

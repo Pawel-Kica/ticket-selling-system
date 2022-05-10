@@ -1,4 +1,5 @@
 import generateIdPrefixes from './generateData';
+import { stationPrefix } from './prefixes';
 
 const stationsNames = [
   'New York Penn Station',
@@ -13,7 +14,5 @@ const stationsData = stationsNames.map((e) => {
 });
 
 export const stationsNumber = stationsNames.length;
-
-export const stationPrefix = 'station';
 
 export const stationsSeedData = generateIdPrefixes(stationsData, stationPrefix);
