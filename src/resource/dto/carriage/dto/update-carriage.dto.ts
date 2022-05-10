@@ -6,6 +6,7 @@ import {ApiProperty} from '@nestjs/swagger'
 
 
 export class UpdateCarriageDto {
-  @ApiProperty({ enum: CarriageType})
+  numberOfSeats?: number;
+@ApiProperty({ enum: CarriageType})
 type?: CarriageType;
 }

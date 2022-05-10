@@ -24,30 +24,29 @@ trainTypePrices[TrainType.passenger] = 1.5;
 trainTypePrices[TrainType.highSpeed] = 2;
 
 const carriagesTypePrices: { [x: string]: number } = {};
-carriagesTypePrices[CarriageType.backpack] = 1;
-carriagesTypePrices[CarriageType.suitcase] = 1.3;
+carriagesTypePrices[CarriageType.regular] = 1;
+carriagesTypePrices[CarriageType.comfort] = 1.3;
 
 const formattedStations = [];
 
 stationsData.forEach((station) => {
-  for (const [trainTypeKey, trainTypeValue] of Object.entries(
+  for (const [_trainTypeKey, trainTypeValue] of Object.entries(
     trainTypePrices,
   )) {
-    for (const [carriageTypeKey, carriageTypeValue] of Object.entries(
+    for (const [_carriageTypeKey, carriageTypeValue] of Object.entries(
       carriagesTypePrices,
     )) {
       formattedStations.push({
         ...station,
         value: station.value * trainTypeValue * carriageTypeValue,
-        trainType: trainTypeKey,
-        carriageType: carriageTypeKey,
       });
     }
   }
 });
 
 export const pricePrefix = 'price';
-export const pricesSeedData = generateIdPrefixes(
+export const pricesSeedData1 = generateIdPrefixes(
   formattedStations,
   pricePrefix,
 );
+export const pricesSeedData = [];

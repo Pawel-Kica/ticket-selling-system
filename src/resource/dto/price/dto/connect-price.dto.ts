@@ -1,5 +1,3 @@
-
-  export class ConnectPriceDto {
-    id: string;
-  }
-  
+export class ConnectPriceDto {
+  id: string;
+}

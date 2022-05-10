@@ -8,21 +8,22 @@ datasource db {
 }
 
 generator nestjsDto {
-  provider = "prisma-generator-nestjs-dto"
-  output = "../../src/resource/dto"
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../../src/resource/dto"
   outputToNestJsResourceStructure = "true"
 }
 
 model User {
-  id       String  @id @default(cuid())
+  id       String   @id @default(cuid())
   name     String
   surname  String
-  email    String  @unique
+  email    String   @unique
   password String
-  role     Role    @default(default)
-  blocked  Boolean @default(false)
+  role     Role     @default(default)
+  blocked  Boolean  @default(false)
   //relations
   Train    Train[]
+  Ticket   Ticket[]
 }
 
 enum Role {
@@ -59,7 +60,7 @@ model Train {
   bossId         String
   driverId       String
   driverHelperId String
-  numberOfSeats  Int
+  type           TrainType
   //relations
   route          Route      @relation(fields: [routeId], references: [id])
   boss           User       @relation(fields: [bossId], references: [id])
@@ -69,45 +70,59 @@ model Train {
   ticket         Ticket[]
 }
 
+enum TrainType {
+  highSpeed
+  passenger
+  regional
+}
+
 model Route {
-  id            String   @id @default(cuid())
-  arrivalTime   DateTime
-  departureTime DateTime
-  train         Train[]
+  id             String   @id @default(cuid())
+  arrivalTime    DateTime
+  departureTime  DateTime
+  startStationId String
+  endStationId   String
+  //relations
+  startStation   Station  @relation("routeStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation     Station  @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  train          Train[]
 }
 
 model Carriage {
-  id           String       @id @default(cuid())
-  trainId      String
-  conductor1Id String
-  conductor2Id String
-  type         CarriageType
+  id            String       @id @default(cuid())
+  numberOfSeats Int
+  type          CarriageType
+  trainId       String
+  conductor1Id  String
+  conductor2Id  String
   //relations
-  train        Train        @relation(fields: [trainId], references: [id])
-  conductor1   Employee     @relation("conductor1", fields: [conductor1Id], references: [id])
-  conductor2   Employee     @relation("conductor2", fields: [conductor2Id], references: [id])
-  ticket       Ticket[]
+  train         Train        @relation(fields: [trainId], references: [id])
+  conductor1    Employee     @relation("conductor1", fields: [conductor1Id], references: [id])
+  conductor2    Employee     @relation("conductor2", fields: [conductor2Id], references: [id])
+  ticket        Ticket[]
 }
 
 enum CarriageType {
-  suitcase
-  backpack
+  regular
+  comfort
 }
 
 model Ticket {
-  id                  String   @id @default(cuid())
-  seat                Int      @unique @default(autoincrement())
-  carriageId          String
-  trainId             String
-  startStationId      String
-  endStationId        String
-  state               State
-  dateTimeOfOperation DateTime @updatedAt
+  id              String   @id @default(cuid())
+  seat            Int      @unique @default(autoincrement())
+  userId          String
+  trainId         String
+  carriageId      String
+  startStationId  String
+  endStationId    String
+  state           State
+  timeOfOperation DateTime @updatedAt
   //relations
-  carriage            Carriage @relation(fields: [carriageId], references: [id])
-  train               Train    @relation(fields: [trainId], references: [id])
-  startStation        Station  @relation("startStations", fields: [startStationId], references: [id], onDelete: Cascade)
-  endStation          Station  @relation("endStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id])
+  train           Train    @relation(fields: [trainId], references: [id])
+  carriage        Carriage @relation(fields: [carriageId], references: [id])
+  startStation    Station  @relation("startStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation      Station  @relation("endStations", fields: [endStationId], references: [id], onDelete: Cascade)
 }
 
 enum State {
@@ -116,30 +131,17 @@ enum State {
 }
 
 model Price {
-  id             String       @id @default(cuid())
+  id             String @id @default(cuid())
   startStationId String
   endStationId   String
-  value          Int
-  trainType      TrainType
-  carriageType   CarriageType
-  
-  //relations
-  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id],onDelete: Cascade)
-  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id],onDelete: Cascade)
-}
-
-enum TrainType {
-  highSpeed
-  passenger
-  regional
 }
 
 model Station {
   id                 String   @id @default(cuid())
   name               String
-  //relations
-  priceStartStations Price[]  @relation("priceStartStations")
-  priceEndStations   Price[]  @relation("priceEndStations")
+  //relations  
+  routeStartStations Route[]  @relation("routeStartStations")
+  routeEndStations   Route[]  @relation("routeEndStations")
   startStations      Ticket[] @relation("startStations")
   endStations        Ticket[] @relation("endStations")
 }

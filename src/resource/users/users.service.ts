@@ -25,10 +25,7 @@ export class UsersService {
   async findUnique(where: UserWhereUniqueDto) {
     return this.prisma.user.findUnique({ where });
   }
-  async update(
-    where: Prisma.UserWhereUniqueInput,
-    data: Prisma.UserUpdateInput,
-  ) {
+  async update(where: UserWhereUniqueDto, data: Prisma.UserUpdateInput) {
     return this.prisma.user.update({ where, data });
   }
   async remove(where: UserWhereUniqueDto) {

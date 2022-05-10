@@ -17,3 +17,9 @@ export class BlockedResourceException extends HttpException {
     super({ message: 'Account blocked' }, 400);
   }
 }
+
+export class InvalidQueryParameterException extends HttpException {
+  constructor() {
+    super({ message: 'Invalid query parameters' }, 400);
+  }
+}

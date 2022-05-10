@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateUserDtoAdmin } from '../../../@types/models/users.types.dto';
+import { CreateUserByAdminDto } from '../../../@types/models/users.types.dto';
 import { RequireAdmin } from '../../../guards/roles.';
 import { SuccessResponse } from '../../../utils/responses';
 import { createUserByAdminSchema } from '../../../validation/schemas/user.schema';
@@ -26,7 +26,7 @@ export class AdminUsersController {
 
   @Post()
   @UsePipes(ApplyValidation(createUserByAdminSchema))
-  async create(@Body() body: CreateUserDtoAdmin) {
+  async create(@Body() body: CreateUserByAdminDto) {
     const result = await this.usersService.createUserHandler(body);
     return result;
   }

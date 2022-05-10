@@ -20,6 +20,7 @@ import { AppController } from './app.controller';
 // Others
 import { mainDir } from './config/files.config';
 import { PostInterceptor } from './interceptors/postMethod';
+import { PricesModule } from './resource/prices/prices.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PostInterceptor } from './interceptors/postMethod';
     AdminModule,
     StationsModule,
     EmployeesModule,
+    PricesModule,
   ],
   controllers: [AppController],
   providers: [

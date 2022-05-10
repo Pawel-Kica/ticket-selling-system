@@ -7,10 +7,11 @@ import {Ticket} from '../../ticket/entities/ticket.entity'
 
 export class Carriage {
   id: string ;
+numberOfSeats: number ;
+type: CarriageType ;
 trainId: string ;
 conductor1Id: string ;
 conductor2Id: string ;
-type: CarriageType ;
 train?: Train ;
 conductor1?: Employee ;
 conductor2?: Employee ;

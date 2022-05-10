@@ -6,6 +6,7 @@ import {ApiProperty} from '@nestjs/swagger'
 
 
 export class CreateCarriageDto {
-  @ApiProperty({ enum: CarriageType})
+  numberOfSeats: number;
+@ApiProperty({ enum: CarriageType})
 type: CarriageType;
 }

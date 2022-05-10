@@ -1,4 +1,6 @@
-export class ConnectUserDto {
-  id?: string;
-  email?: string;
-}
+
+  export class ConnectUserDto {
+    id?: string;
+email?: string;
+  }
+  

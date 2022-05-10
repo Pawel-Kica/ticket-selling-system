@@ -8,7 +8,7 @@ export type UserWhereUniqueDto = Prisma.UserWhereUniqueInput;
 export class CreateUserDtoExtended extends CreateUserDto {
   passwordRepetition: string;
 }
-export class CreateUserDtoAdmin extends CreateUserDto {
+export class CreateUserByAdminDto extends CreateUserDtoExtended {
   @ApiProperty({ enum: Role })
   role: Role;
 }
