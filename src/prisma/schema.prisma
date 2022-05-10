@@ -62,10 +62,10 @@ model Train {
   driverHelperId String
   type           TrainType
   //relations
-  route          Route      @relation(fields: [routeId], references: [id])
-  boss           User       @relation(fields: [bossId], references: [id])
-  driver         Employee   @relation("driver", fields: [driverId], references: [id])
-  driverHelper   Employee   @relation("driverHelper", fields: [driverHelperId], references: [id])
+  route          Route      @relation(fields: [routeId], references: [id],onDelete:SetNull)
+  boss           User       @relation(fields: [bossId], references: [id],onDelete:SetNull)
+  driver         Employee   @relation("driver", fields: [driverId], references: [id],onDelete:SetNull)
+  driverHelper   Employee   @relation("driverHelper", fields: [driverHelperId], references: [id],onDelete:SetNull)
   carriage       Carriage[]
   ticket         Ticket[]
 }
@@ -97,8 +97,8 @@ model Carriage {
   conductor2Id  String
   //relations
   train         Train        @relation(fields: [trainId], references: [id])
-  conductor1    Employee     @relation("conductor1", fields: [conductor1Id], references: [id])
-  conductor2    Employee     @relation("conductor2", fields: [conductor2Id], references: [id])
+  conductor1    Employee     @relation("conductor1", fields: [conductor1Id], references: [id],onDelete:SetNull)
+  conductor2    Employee     @relation("conductor2", fields: [conductor2Id], references: [id],onDelete:SetNull)
   ticket        Ticket[]
 }
 
@@ -118,11 +118,11 @@ model Ticket {
   state           State
   timeOfOperation DateTime @updatedAt
   //relations
-  user            User     @relation(fields: [userId], references: [id])
-  train           Train    @relation(fields: [trainId], references: [id])
-  carriage        Carriage @relation(fields: [carriageId], references: [id])
-  startStation    Station  @relation("startStations", fields: [startStationId], references: [id], onDelete: Cascade)
-  endStation      Station  @relation("endStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id],onDelete:Cascade)
+  train           Train    @relation(fields: [trainId], references: [id],onDelete:Cascade)
+  carriage        Carriage @relation(fields: [carriageId], references: [id],onDelete:Cascade)
+  startStation    Station  @relation("startStations", fields: [startStationId], references: [id], onDelete: SetNull)
+  endStation      Station  @relation("endStations", fields: [endStationId], references: [id], onDelete: SetNull)
 }
 
 enum State {

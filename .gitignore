@@ -36,6 +36,6 @@ lerna-debug.log*
 
 # prisma
 /data
-/env
 
-public
+/public
+/playground.js

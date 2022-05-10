@@ -6,12 +6,12 @@ const stationsData = [
   {
     startStation: {
       connect: {
-        id: `${stationPrefix}0`,
+        id: `${stationPrefix}1`,
       },
     },
     endStation: {
       connect: {
-        id: `${stationPrefix}1`,
+        id: `${stationPrefix}2`,
       },
     },
     value: 100,
