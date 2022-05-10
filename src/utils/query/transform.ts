@@ -1,3 +1,5 @@
 export function toNumber(value: string): number | undefined {
-  return 0;
+  const newValue = Number(value);
+  if (isNaN(newValue)) return undefined;
+  return newValue;
 }

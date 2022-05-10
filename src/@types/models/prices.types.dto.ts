@@ -1,19 +1,12 @@
+import { Prisma } from '@prisma/client';
+import { Transform } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { CarriageType, Prisma, TrainType } from '@prisma/client';
+import { toNumber } from './../../utils/query/transform';
 
 export type PricesWhereDto = Prisma.PriceWhereInput;
 
 export class PricesLookupQuery {
+  @Transform(({ value }) => toNumber(value))
   @ApiPropertyOptional()
-  startStationId: string;
-  @ApiPropertyOptional()
-  endStationId: string;
-  @ApiPropertyOptional({ enum: TrainType })
-  trainType: TrainType;
-  @ApiPropertyOptional({ enum: CarriageType })
-  carriageType: CarriageType;
-  @ApiPropertyOptional()
-  priceLowerRange: number;
-  @ApiPropertyOptional()
-  priceUpperRange: number;
+  startStationId: number;
 }
