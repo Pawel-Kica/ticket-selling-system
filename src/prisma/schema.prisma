@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator nestjsDto {
+  provider = "prisma-generator-nestjs-dto"
+  output = "../../src/resource/dto"
+  outputToNestJsResourceStructure = "true"
+}
+
 model User {
   id       String  @id @default(cuid())
   name     String

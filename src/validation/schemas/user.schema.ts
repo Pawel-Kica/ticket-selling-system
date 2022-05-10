@@ -11,7 +11,7 @@ const joiPassword = {
   password: Joi.string().pattern(regexPassword),
 };
 
-export const loginSchema = Joi.object({
+export const loginUserSchema = Joi.object({
   ...joiEmail,
   ...joiPassword,
 }).options({ presence: 'required' });

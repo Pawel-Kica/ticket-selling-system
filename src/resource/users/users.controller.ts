@@ -3,13 +3,12 @@ import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { InvalidCredentials } from '../../utils/responses/errors';
 import {
-  CreateUserDto,
   LoginUserDto,
-  UpdateUserDto,
+  CreateUserDtoExtended,
 } from '../../@types/models/users.types.dto';
 import {
+  loginUserSchema,
   createUserSchema,
-  loginSchema,
 } from '../../validation/schemas/user.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -27,13 +26,13 @@ export class UsersController {
 
   @Post()
   @UsePipes(ApplyValidation(createUserSchema))
-  async createHandler(@Body() body: CreateUserDto) {
-    const result = await this.usersService.createUserHandler(body as any);
+  async createHandler(@Body() body: CreateUserDtoExtended) {
+    const result = await this.usersService.createUserHandler(body);
     return result;
   }
 
   @Post('login')
-  @UsePipes(ApplyValidation(loginSchema))
+  @UsePipes(ApplyValidation(loginUserSchema))
   async loginHandler(@Body() { email, password }: LoginUserDto) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();

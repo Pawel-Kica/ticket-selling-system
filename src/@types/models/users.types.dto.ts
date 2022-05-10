@@ -1,8 +1,15 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
+import { CreateUserDto } from '../../resource/dto/user/dto/create-user.dto';
 
-export type CreateUserDto = Prisma.UserCreateInput;
+export type CreateUserDtoPrisma = Prisma.UserCreateInput;
 export type UpdateUserDto = Prisma.UserUpdateInput;
-export type WhereUniqueUserDto = Prisma.UserWhereUniqueInput;
+export type UserWhereUniqueDto = Prisma.UserWhereUniqueInput;
+export class CreateUserDtoExtended extends CreateUserDto {
+  passwordRepetition: string;
+}
+export class CreateUserDtoAdmin extends CreateUserDto {
+  role: Role;
+}
 
 export class LoginUserDto {
   email: string;

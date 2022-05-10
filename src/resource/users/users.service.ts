@@ -8,7 +8,8 @@ import {
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 // Dto
-import { CreateUserDto } from '../../@types/models/users.types.dto';
+import { CreateUserDto } from '../dto/user/dto/create-user.dto';
+import { UserWhereUniqueDto } from '../../@types/models/users.types.dto';
 // Tools
 import { omit } from '../../utils/objects';
 
@@ -18,10 +19,10 @@ export class UsersService {
   async create(data: CreateUserDto) {
     return this.prisma.user.create({ data });
   }
-  async findMany(): Promise<User[]> {
+  async findMany() {
     return this.prisma.user.findMany();
   }
-  async findUnique(where: Prisma.UserWhereUniqueInput) {
+  async findUnique(where: UserWhereUniqueDto) {
     return this.prisma.user.findUnique({ where });
   }
   async update(
@@ -30,18 +31,20 @@ export class UsersService {
   ) {
     return this.prisma.user.update({ where, data });
   }
-  async remove(where: Prisma.UserWhereUniqueInput) {
+  async remove(where: UserWhereUniqueDto) {
     return this.prisma.user.delete({ where });
   }
 
-  async checkIfUserExists(where: Prisma.UserWhereUniqueInput) {
+  async checkIfUserExists(where: UserWhereUniqueDto) {
     if (!(await this.findUnique(where))) throw new NotFoundException();
   }
-  async checkEmailAvailability(email: string): Promise<User | void> {
+
+  async checkEmailAvailability(email: string) {
     const user = await this.findUnique({ email });
     if (user) throw new ConflictException();
     return user;
   }
+
   async createUserHandler(body: CreateUserDto) {
     await this.checkEmailAvailability(body.email);
     const user = await this.create(omit(body, 'passwordRepetition'));
