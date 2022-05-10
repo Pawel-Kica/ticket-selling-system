@@ -1,7 +1,7 @@
 import { ObjectSchema } from 'joi';
-import { InvalidRequestedBody } from '../utils/responses/errors';
 import { PipeTransform, Injectable } from '@nestjs/common';
 import createBetterJoiErrors from './helpers/betterJoiError';
+import { InvalidRequestedBody } from '../utils/responses/errors';
 
 export const validateSchema = (
   schema: ObjectSchema,
@@ -18,12 +18,16 @@ export const ApplyValidation = (schema: ObjectSchema) =>
 export class JoiValidationPipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
   transform(value: any) {
-    let dto = { ...value };
-    try {
-      if (value.data) {
-        dto = JSON.parse(value.data);
-      }
-    } catch (_e) {}
+    const dto = { ...value };
+
+    // IGNORE -->>>>>>>>>>>>>>>>
+    // let dto = { ...value };
+    // try {
+    //   if (dto.data) {
+    //     dto = JSON.parse(dto.data);
+    //   }
+    // } catch (_e) {}
+
     const result = validateSchema(this.schema, dto);
     if (result !== true) throw new InvalidRequestedBody(result);
     return dto;

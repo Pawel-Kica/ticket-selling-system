@@ -5,7 +5,7 @@ import { joiValidateEnums } from '../helpers/customValidators';
 
 export const createEmployeeSchema = Joi.object({
   ...joiNameSurname,
-  dateOfBirth: Joi.date(),
+  dateOfBirth: Joi.date().less(Date.now()),
   address: Joi.string(),
   telephoneNumber: Joi.string(),
   position: Joi.string().custom(joiValidateEnums(Object.keys(Position))),

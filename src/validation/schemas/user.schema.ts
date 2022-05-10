@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
-import { regexEnglishAlphabet, regexPassword } from '../helpers/regexes';
 import { Role } from '@prisma/client';
 import { joiValidateEnums } from '../helpers/customValidators';
+import { regexEnglishAlphabet, regexPassword } from '../helpers/regexes';
 
 const joiEmail = {
   email: Joi.string().email(),
@@ -23,8 +23,8 @@ export const joiNameSurname = {
 
 const joiCreateUser = {
   ...joiNameSurname,
-  ...joiEmail,
   ...joiPassword,
+  ...joiEmail,
   passwordRepetition: Joi.any()
     .valid(Joi.ref('password'))
     .required()

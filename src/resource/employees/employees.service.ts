@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import { CreateEmployeeDto, EmployeeWhereUniqueInput } from './employees.types';
+import { EmployeeWhereUnique } from './employees.types';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateEmployeeDto } from '../dto/employee/dto/create-employee.dto';
 
 @Injectable()
 export class EmployeesService {
@@ -14,11 +14,11 @@ export class EmployeesService {
     const employees = await this.prisma.employee.findMany();
     return employees;
   }
-  async findUnique(where: EmployeeWhereUniqueInput) {
+  async findUnique(where: EmployeeWhereUnique) {
     return this.prisma.employee.findUnique({ where });
   }
 
-  async safeFindUnique(where: Prisma.UserWhereUniqueInput) {
+  async safeFindUnique(where: EmployeeWhereUnique) {
     const employee = await this.findUnique(where);
     if (!employee) throw new NotFoundException();
     return employee;

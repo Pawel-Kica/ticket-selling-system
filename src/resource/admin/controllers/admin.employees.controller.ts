@@ -1,6 +1,13 @@
 // Nest
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Controller, Post, Body, UploadedFile, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UploadedFile,
+  UsePipes,
+  UseGuards,
+} from '@nestjs/common';
 // Decorators
 import { ApiFile } from '../../../decorators/apiFile.decorator';
 // Services
@@ -9,10 +16,12 @@ import { EmployeesService } from '../../employees/employees.service';
 import { ApplyValidation } from '../../../validation/validationPipe';
 import { createEmployeeSchema } from './../../../validation/schemas/employee.schema';
 import { defaultEmployeePhotoPath } from '../../../prisma/seed/data/employees.seed.data';
+import { CreateEmployeeDto } from '../../dto/employee/dto/create-employee.dto';
+import { RequireAdmin } from '../../../guards/roles.';
 
-@ApiTags('Admin - employees')
 @ApiBearerAuth()
-// @UseGuards(RequireAdmin)
+@UseGuards(RequireAdmin)
+@ApiTags('Admin - employees')
 @Controller('admin/employees')
 export class AdminEmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
@@ -20,7 +29,7 @@ export class AdminEmployeesController {
   @Post()
   @ApiFile()
   @UsePipes(ApplyValidation(createEmployeeSchema))
-  create(@UploadedFile() file, @Body() body: any) {
+  create(@UploadedFile() file, @Body() body: CreateEmployeeDto) {
     if (!file) body.photoPath = defaultEmployeePhotoPath;
     return this.employeesService.create(body);
   }

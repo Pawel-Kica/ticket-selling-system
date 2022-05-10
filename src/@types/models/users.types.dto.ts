@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Prisma, Role } from '@prisma/client';
 import { CreateUserDto } from '../../resource/dto/user/dto/create-user.dto';
 
@@ -8,6 +9,7 @@ export class CreateUserDtoExtended extends CreateUserDto {
   passwordRepetition: string;
 }
 export class CreateUserDtoAdmin extends CreateUserDto {
+  @ApiProperty({ enum: Role })
   role: Role;
 }
 

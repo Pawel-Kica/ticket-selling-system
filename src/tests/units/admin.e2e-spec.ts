@@ -12,6 +12,7 @@ import {
 import {
   adminLoginBody,
   blockUserObj,
+  createEmployeeObj,
   createUserByAdminObj,
   removeUserObj,
   unblockUserObj,
@@ -149,14 +150,19 @@ describe('USERS CRUD', () => {
   });
 });
 describe('EMPLOYEES', () => {
-  describe('CREATE EMPLOYEE', () => {
-    it('should be passed', async () => {
+  describe('CREATE', () => {
+    const { valid, invalid } = createEmployeeObj;
+    it('ADMIN should NOT be able to create employee with invalid body', async () => {
+      generateAdminToken();
       await testPOSTRequest(
         '/admin/employees',
-        { name: '12' },
-        { data: {}, status: 200, omit: [] },
+        invalid.schema.body,
+        invalid.schema.response,
       );
     });
-    //
+    it('ADMIN should be able to create employee', async () => {
+      generateAdminToken();
+      await testPOSTRequest('/admin/employees', valid.body, valid.response);
+    });
   });
 });
