@@ -6,6 +6,7 @@ import {Ticket} from '../../ticket/entities/ticket.entity'
 export class Station {
   id: string ;
 name: string ;
+routeStationsBetween?: Route[] ;
 routeStartStations?: Route[] ;
 routeEndStations?: Route[] ;
 startStations?: Ticket[] ;

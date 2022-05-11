@@ -11,9 +11,12 @@ const routes = [
         id: `${stationPrefix}1`,
       },
     },
+    stationsBetween: {
+      connect: [{ id: `${stationPrefix}2` }, { id: `${stationPrefix}3` }],
+    },
     endStation: {
       connect: {
-        id: `${stationPrefix}2`,
+        id: `${stationPrefix}4`,
       },
     },
   },

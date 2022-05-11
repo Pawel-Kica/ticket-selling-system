@@ -9,6 +9,7 @@ arrivalTime: Date ;
 departureTime: Date ;
 startStationId: string ;
 endStationId: string ;
+stationsBetween?: Station[] ;
 startStation?: Station ;
 endStation?: Station ;
 train?: Train[] ;
