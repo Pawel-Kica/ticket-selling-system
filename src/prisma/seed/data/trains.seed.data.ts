@@ -12,12 +12,14 @@ function generateParams(
   driverHelperId: string,
   bossId: string,
   routeId: string,
+  type: TrainType,
 ) {
   return {
     driverId,
     driverHelperId,
     bossId,
     routeId,
+    type,
   };
 }
 
@@ -27,11 +29,13 @@ function generateTrains(
     driverHelperId: string;
     bossId: string;
     routeId: string;
+    type: TrainType;
   }[],
 ) {
   const result = [];
   data.forEach((e) => {
     result.push({
+      type: e.type,
       driver: {
         connect: { id: `${employeePrefix}${e.driverId}` },
       },
@@ -50,19 +54,9 @@ function generateTrains(
 }
 
 const trains = generateTrains([
-  generateParams('16', '17', '11', '1'),
-  generateParams('18', '19', '12', '2'),
+  generateParams('16', '17', '11', '1', TrainType.highSpeed),
+  generateParams('18', '19', '12', '2', TrainType.passenger),
+  generateParams('20', '21', '13', '3', TrainType.regional),
 ]);
 
-const trainsData = [];
-
-trains.forEach((train) => {
-  Object.values(TrainType).forEach((e) => {
-    trainsData.push({
-      ...train,
-      type: e,
-    });
-  });
-});
-
-export const trainsSeedData = generateIdPrefixes(trainsData, trainPrefix);
+export const trainsSeedData = generateIdPrefixes(trains, trainPrefix);

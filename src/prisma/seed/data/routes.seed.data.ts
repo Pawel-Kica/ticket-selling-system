@@ -41,6 +41,27 @@ const routes = [
       },
     },
   },
+  {
+    arrivalTime: moment().add(2, 'd').toISOString(),
+    departureTime: moment().add(3, 'd').toISOString(),
+    startStation: {
+      connect: {
+        id: `${stationPrefix}10`,
+      },
+    },
+    stationsBetween: {
+      connect: [
+        { id: `${stationPrefix}11` },
+        { id: `${stationPrefix}12` },
+        { id: `${stationPrefix}13` },
+      ],
+    },
+    endStation: {
+      connect: {
+        id: `${stationPrefix}14`,
+      },
+    },
+  },
 ];
 
 export const routesSeedData = generateIdPrefixes(routes, routePrefix);

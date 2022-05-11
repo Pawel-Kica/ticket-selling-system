@@ -21,6 +21,7 @@ import { AppController } from './app.controller';
 import { mainDir } from './config/files.config';
 import { PostInterceptor } from './interceptors/postMethod';
 import { PricesModule } from './resource/prices/prices.module';
+import { RoutesModule } from './resource/routes/routes.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { PricesModule } from './resource/prices/prices.module';
     StationsModule,
     EmployeesModule,
     PricesModule,
+    RoutesModule,
   ],
   controllers: [AppController],
   providers: [
