@@ -8,6 +8,14 @@ const stationsNames = [
   'Jamaica Station',
   'Chicago Union Station',
   'Ogilvie Transporation Center',
+  'South Station',
+  'Newark Penn Station',
+  'Hoboken Terminal',
+  'Washington Union Station',
+  '30th Street Station',
+  'Los Angeles Union Station',
+  'Millennium Station',
+  'Montreal Central Station',
 ];
 const stationsData = stationsNames.map((e) => {
   return { name: e };

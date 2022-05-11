@@ -14,6 +14,7 @@ import { logInfo, logError } from '../../utils/logger';
 import { existsSync, remove, mkdir, copyFileSync } from 'fs-extra';
 import { trainsSeedData } from './data/trains.seed.data';
 import { routesSeedData } from './data/routes.seed.data';
+import { carriagesSeedData } from './data/carriages.seed.data';
 
 @Injectable()
 export class SeedService {
@@ -28,6 +29,7 @@ export class SeedService {
     employee: employeesSeedData,
     route: routesSeedData,
     train: trainsSeedData,
+    carriage: carriagesSeedData,
   };
 
   private readonly models = Reflect.ownKeys(this.prisma).filter(
@@ -105,5 +107,6 @@ export class SeedService {
     await this.seedModel('employee');
     await this.seedModel('route');
     await this.seedModel('train');
+    await this.seedModel('carriage');
   }
 }

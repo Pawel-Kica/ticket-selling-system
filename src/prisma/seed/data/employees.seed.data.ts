@@ -24,7 +24,7 @@ function generateEmployees(n: number) {
 
 export const defaultEmployeePhotoPath = `${employeePrefix}0`;
 
-export const numberOfEmployees = 20;
+export const numberOfEmployees = 30;
 export const numberOfConductors = numberOfEmployees / 2;
 export const numberOfDrivers = numberOfEmployees - numberOfConductors;
 

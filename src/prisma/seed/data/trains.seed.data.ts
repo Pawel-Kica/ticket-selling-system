@@ -7,22 +7,62 @@ import {
 import { TrainType } from '@prisma/client';
 import generateIdPrefixes from './generateData';
 
-const trains = [
-  {
-    type: TrainType.highSpeed,
-    driver: {
-      connect: { id: `${employeePrefix}11` },
-    },
-    driverHelper: {
-      connect: { id: `${employeePrefix}12` },
-    },
-    boss: {
-      connect: { id: `${userPrefix}11` },
-    },
-    route: {
-      connect: { id: `${routePrefix}1` },
-    },
-  },
-];
+function generateParams(
+  driverId: string,
+  driverHelperId: string,
+  bossId: string,
+  routeId: string,
+) {
+  return {
+    driverId,
+    driverHelperId,
+    bossId,
+    routeId,
+  };
+}
 
-export const trainsSeedData = generateIdPrefixes(trains, trainPrefix);
+function generateTrains(
+  data: {
+    driverId: string;
+    driverHelperId: string;
+    bossId: string;
+    routeId: string;
+  }[],
+) {
+  const result = [];
+  data.forEach((e) => {
+    result.push({
+      driver: {
+        connect: { id: `${employeePrefix}${e.driverId}` },
+      },
+      driverHelper: {
+        connect: { id: `${employeePrefix}${e.driverHelperId}` },
+      },
+      boss: {
+        connect: { id: `${userPrefix}${e.bossId}` },
+      },
+      route: {
+        connect: { id: `${routePrefix}${e.routeId}` },
+      },
+    });
+  });
+  return result;
+}
+
+const trains = generateTrains([
+  generateParams('16', '17', '11', '1'),
+  generateParams('18', '19', '12', '2'),
+]);
+
+const trainsData = [];
+
+trains.forEach((train) => {
+  Object.values(TrainType).forEach((e) => {
+    trainsData.push({
+      ...train,
+      type: e,
+    });
+  });
+});
+
+export const trainsSeedData = generateIdPrefixes(trainsData, trainPrefix);

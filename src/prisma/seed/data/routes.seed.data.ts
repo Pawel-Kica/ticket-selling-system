@@ -4,8 +4,8 @@ import { routePrefix, stationPrefix } from './prefixes';
 
 const routes = [
   {
-    arrivalTime: moment().toISOString(),
-    departureTime: moment().toISOString(),
+    arrivalTime: moment().add(4, 'd').toISOString(),
+    departureTime: moment().add(4, 'd').add(6, 'h').toISOString(),
     startStation: {
       connect: {
         id: `${stationPrefix}1`,
@@ -17,6 +17,27 @@ const routes = [
     endStation: {
       connect: {
         id: `${stationPrefix}4`,
+      },
+    },
+  },
+  {
+    arrivalTime: moment().add(3, 'd').add(3, 'h').toISOString(),
+    departureTime: moment().add(4, 'd').toISOString(),
+    startStation: {
+      connect: {
+        id: `${stationPrefix}5`,
+      },
+    },
+    stationsBetween: {
+      connect: [
+        { id: `${stationPrefix}6` },
+        { id: `${stationPrefix}7` },
+        { id: `${stationPrefix}8` },
+      ],
+    },
+    endStation: {
+      connect: {
+        id: `${stationPrefix}9`,
       },
     },
   },
