@@ -1,19 +1,13 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
   Query,
   NotFoundException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import * as moment from 'moment';
 import { RoutesLookupQuery } from '../../@types/models/routes.types.dto';
-import { CreateRouteDto } from '../dto/route/dto/create-route.dto';
-import { UpdateRouteDto } from '../dto/route/dto/update-route.dto';
 import { RoutesService } from './routes.service';
 
 @ApiTags('Routes')

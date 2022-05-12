@@ -2,7 +2,10 @@ import { join } from 'path';
 
 export const mainDir = join('public');
 
-export const mainPath = join(process.cwd(), `${mainDir}`);
+export const mainPath =
+  process.env.NODE_ENV === 'test'
+    ? join(process.cwd(), `${mainDir}`, 'test')
+    : join(process.cwd(), `${mainDir}`);
 
 export const imagesFolderName = 'images';
 

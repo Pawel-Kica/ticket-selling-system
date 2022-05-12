@@ -7,6 +7,8 @@ import {
   UploadedFile,
   UsePipes,
   UseGuards,
+  Get,
+  Param,
 } from '@nestjs/common';
 // Decorators
 import { ApiFile } from '../../../decorators/apiFile.decorator';
@@ -20,17 +22,25 @@ import { CreateEmployeeDto } from '../../dto/employee/dto/create-employee.dto';
 import { RequireAdmin } from '../../../guards/roles.';
 
 @ApiBearerAuth()
-@UseGuards(RequireAdmin)
 @ApiTags('Admin - employees')
 @Controller('admin/employees')
+@UseGuards(RequireAdmin)
 export class AdminEmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
-  // @ApiFile()
+  @ApiFile()
   @UsePipes(ApplyValidation(createEmployeeSchema))
   create(@UploadedFile() file, @Body() body: CreateEmployeeDto) {
     if (!file) body.photoPath = defaultEmployeePhotoPath;
     return this.employeesService.create(body);
+  }
+  @Get()
+  findMany() {
+    return this.employeesService.findMany();
+  }
+  @Get(':id')
+  findUnique(@Param('id') id: string) {
+    return this.employeesService.safeFindUnique({ id });
   }
 }

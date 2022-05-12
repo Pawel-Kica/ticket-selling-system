@@ -4,13 +4,17 @@ import { loginUserObj } from '../data/users.test.data';
 import { removeTestToken } from '../helpers/setGlobals';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
 import { TestingModule } from '@nestjs/testing';
+import { SeedService } from '../../prisma/seed/seed.service';
 
 describe('USERS CRUD', () => {
   let app: TestingModule;
+  let seedService: SeedService;
   beforeAll(async () => {
     app = await startTestServer();
   });
   afterAll(async () => {
+    seedService = app.get(SeedService);
+    seedService.removeSpecificTable('user');
     app.close();
   });
 

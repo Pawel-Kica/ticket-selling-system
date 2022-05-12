@@ -27,10 +27,11 @@ describe('USERS CRUD', () => {
   beforeAll(async () => {
     app = await startTestServer();
     seedService = app.get(SeedService);
-
-    await seedService.main();
+    await seedService.seedModel('user');
   });
   afterAll(async () => {
+    seedService.removeSpecificTable('user');
+    seedService.removeSpecificTable('employee');
     app.close();
   });
 
@@ -148,21 +149,21 @@ describe('USERS CRUD', () => {
       });
     });
   });
-});
-describe('EMPLOYEES', () => {
-  describe('CREATE', () => {
-    const { valid, invalid } = createEmployeeObj;
-    it('ADMIN should NOT be able to create employee with invalid body', async () => {
-      generateAdminToken();
-      await testPOSTRequest(
-        '/admin/employees',
-        invalid.schema.body,
-        invalid.schema.response,
-      );
-    });
-    it('ADMIN should be able to create employee', async () => {
-      generateAdminToken();
-      await testPOSTRequest('/admin/employees', valid.body, valid.response);
+  describe('EMPLOYEES', () => {
+    describe('CREATE', () => {
+      const { valid, invalid } = createEmployeeObj;
+      it('ADMIN should NOT be able to create employee with invalid body', async () => {
+        generateAdminToken();
+        await testPOSTRequest(
+          '/admin/employees',
+          invalid.schema.body,
+          invalid.schema.response,
+        );
+      });
+      it('ADMIN should be able to create employee', async () => {
+        generateAdminToken();
+        await testPOSTRequest('/admin/employees', valid.body, valid.response);
+      });
     });
   });
 });

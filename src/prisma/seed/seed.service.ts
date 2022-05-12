@@ -35,7 +35,7 @@ export class SeedService {
   private readonly models = Reflect.ownKeys(this.prisma).filter(
     (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
   );
-  private async removeSpecificTable(modelName: string) {
+  async removeSpecificTable(modelName: string) {
     if (!this.models.includes(modelName)) return;
     await this.prisma[modelName].deleteMany();
   }

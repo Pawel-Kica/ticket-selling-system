@@ -17,7 +17,7 @@ export class RoutesService {
     return 'This action adds a new route';
   }
 
-  findAll(where?: RouteWhereDto, select: RouteSelectDto = RouteBasicSelect) {
+  findAll(where?: RouteWhereDto, select = RouteBasicSelect) {
     return this.prisma.route.findMany({
       where,
       select,
