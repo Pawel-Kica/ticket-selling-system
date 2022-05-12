@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { RouteWhereDto } from '../../@types/models/routes.types.dto';
+import {
+  RouteBasicSelect,
+  RouteSelectDto,
+  RouteWhereDto,
+  RouteWhereUniqueInput,
+} from '../../@types/models/routes.types.dto';
 import { CreateRouteDto } from '../dto/route/dto/create-route.dto';
 import { UpdateRouteDto } from '../dto/route/dto/update-route.dto';
 
@@ -12,19 +17,18 @@ export class RoutesService {
     return 'This action adds a new route';
   }
 
-  findAll(where: RouteWhereDto = {}) {
+  findAll(where?: RouteWhereDto, select: RouteSelectDto = RouteBasicSelect) {
     return this.prisma.route.findMany({
       where,
-      include: {
-        startStation: true,
-        stationsBetween: true,
-        endStation: true,
-      },
+      select,
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} route`;
+  findOne(
+    where: RouteWhereUniqueInput,
+    select: RouteSelectDto = RouteBasicSelect,
+  ) {
+    return this.prisma.route.findUnique({ where, select });
   }
 
   update(id: number, updateRouteDto: UpdateRouteDto) {
