@@ -1,16 +1,9 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  ConflictException,
-} from '@nestjs/common';
+import * as moment from 'moment';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CarriageType } from '@prisma/client';
 import { CreateTicketExtendedDto } from '../../@types/models/tickets.types.dto';
 import { UserId } from '../../decorators/user.decorator';
 import { RequireUser } from '../../guards/requireUser';
-import { threeDaysAhead } from '../../prisma/seed/data/routes.seed.data';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { CarriagesService } from '../carriage/carriage.service';
 import { RoutesService } from '../routes/routes.service';
@@ -43,26 +36,26 @@ export class TicketsController {
     }: CreateTicketExtendedDto,
     @UserId() id: string,
   ) {
-    if (seat > 20) {
-      const carriage = await this.carriagesService.findUnique({
-        id: carriageId,
-      });
-      if (carriage.type === CarriageType.comfort)
-        throw new InvalidRequestedBody('Invalid seat number');
-    }
+    // if (seat > 20) {
+    //   const carriage = await this.carriagesService.findUnique({
+    //     id: carriageId,
+    //   });
+    //   if (carriage.type === CarriageType.comfort)
+    //     throw new InvalidRequestedBody('Invalid seat number');
+    // }
 
-    const alreadyTaken = await this.ticketsService.findFirst({
-      carriageId: carriageId,
-      seat: seat,
-    });
+    // const alreadyTaken = await this.ticketsService.findFirst({
+    //   carriageId: carriageId,
+    //   seat: seat,
+    // });
 
-    if (alreadyTaken) throw new ConflictException();
+    // if (alreadyTaken) throw new ConflictException();
 
     const departureTime = {
-      gt: threeDaysAhead.toISOString(),
+      gt: moment().add(3, 'd').toISOString(),
     };
 
-    const route = this.routesService.findAll({
+    const routes = await this.routesService.findAll({
       OR: [
         {
           startStationId,
@@ -79,9 +72,28 @@ export class TicketsController {
           },
         },
         {
+          AND: [
+            {
+              stationsBetween: {
+                some: {
+                  stationId: startStationId,
+                  departureTime,
+                },
+              },
+            },
+            {
+              stationsBetween: {
+                some: {
+                  stationId: endStationId,
+                },
+              },
+            },
+          ],
+        },
+        {
           stationsBetween: {
             some: {
-              id: startStationId,
+              stationId: startStationId,
               departureTime,
             },
           },
@@ -90,9 +102,11 @@ export class TicketsController {
       ],
     });
 
-    console.log(route);
+    console.log(routes);
 
-    if (!route) throw new InvalidRequestedBody('Invalid stations');
+    if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
+
+    return 'wtf route isniteje';
 
     const ticket = await this.ticketsService.create({
       seat,

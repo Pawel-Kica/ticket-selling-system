@@ -2,7 +2,8 @@ import * as moment from 'moment';
 import generateIdPrefixes from './generateData';
 import { routePrefix, stationPrefix } from './prefixes';
 
-export const threeDaysAhead = moment().add(3, 'd');
+const threeDaysAhead = moment().add(3, 'd');
+const twoDaysAhead = moment().add(2, 'd');
 
 const generateStation = (
   order: number,
@@ -22,8 +23,8 @@ const generateStation = (
 
 const routes = [
   {
-    departureTime: threeDaysAhead.add(2, 'd').toISOString(),
-    arrivalTime: threeDaysAhead.add(3, 'd').toISOString(),
+    departureTime: threeDaysAhead.clone().add(1, 'h').toISOString(),
+    arrivalTime: threeDaysAhead.clone().add(1, 'd').toISOString(),
     startStation: {
       connect: {
         id: `${stationPrefix}1`,
@@ -32,8 +33,8 @@ const routes = [
     stationsBetween: {
       createMany: {
         data: [
-          generateStation(1, 2, threeDaysAhead.add(2, 'd').add(4, 'h')),
-          generateStation(2, 3, threeDaysAhead.add(2, 'd').add(8, 'h')),
+          generateStation(1, 2, threeDaysAhead.clone().add(4, 'h')),
+          generateStation(2, 3, threeDaysAhead.clone().add(8, 'h')),
         ],
       },
     },
@@ -44,8 +45,8 @@ const routes = [
     },
   },
   {
-    departureTime: threeDaysAhead.add(1, 'h').toISOString(),
-    arrivalTime: threeDaysAhead.add(10, 'h').toISOString(),
+    departureTime: threeDaysAhead.clone().add(1, 'h').toISOString(),
+    arrivalTime: threeDaysAhead.clone().add(10, 'h').toISOString(),
     startStation: {
       connect: {
         id: `${stationPrefix}5`,
@@ -54,9 +55,9 @@ const routes = [
     stationsBetween: {
       createMany: {
         data: [
-          generateStation(3, 6, threeDaysAhead.add(1, 'h')),
-          generateStation(2, 7, threeDaysAhead.add(2, 'h')),
-          generateStation(1, 8, threeDaysAhead.add(3, 'h')),
+          generateStation(3, 6, threeDaysAhead.clone().add(1, 'h')),
+          generateStation(2, 7, threeDaysAhead.clone().add(2, 'h')),
+          generateStation(1, 8, threeDaysAhead.clone().add(3, 'h')),
         ],
       },
     },
@@ -67,8 +68,8 @@ const routes = [
     },
   },
   {
-    departureTime: moment().add(2, 'd').toISOString(),
-    arrivalTime: threeDaysAhead.add(4, 'h').toISOString(),
+    departureTime: twoDaysAhead.clone().toISOString(),
+    arrivalTime: threeDaysAhead.clone().add(1, 'd').toISOString(),
     startStation: {
       connect: {
         id: `${stationPrefix}10`,
@@ -77,10 +78,10 @@ const routes = [
     stationsBetween: {
       createMany: {
         data: [
-          generateStation(1, 11, moment().add('2', 'd').add(12, 'h')),
-          generateStation(3, 12, threeDaysAhead.add(1, 'h')),
-          generateStation(2, 13, threeDaysAhead.add(3, 'h')),
-          generateStation(4, 14, threeDaysAhead.add(6, 'h')),
+          generateStation(1, 11, twoDaysAhead.clone().add(12, 'h')),
+          generateStation(3, 12, threeDaysAhead.clone().add(1, 'h')),
+          generateStation(2, 13, threeDaysAhead.clone().add(3, 'h')),
+          generateStation(4, 14, threeDaysAhead.clone().add(6, 'h')),
         ],
       },
     },
