@@ -54,6 +54,7 @@ const routes = [
         { id: `${stationPrefix}11` },
         { id: `${stationPrefix}12` },
         { id: `${stationPrefix}13` },
+        { id: `${stationPrefix}1` },
       ],
     },
     endStation: {

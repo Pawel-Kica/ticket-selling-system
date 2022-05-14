@@ -15,15 +15,13 @@ export class EmployeesService {
     return employees;
   }
   async findUnique(where: EmployeeWhereUniqueDto) {
-    return this.prisma.employee.findUnique({ where });
+    const employee = await this.prisma.employee.findUnique({ where });
+    return employee;
   }
 
   async safeFindUnique(where: EmployeeWhereUniqueDto) {
     const employee = await this.findUnique(where);
     if (!employee) throw new NotFoundException();
     return employee;
-  }
-  async remove(id: number) {
-    return `This action removes a #${id} employee`;
   }
 }

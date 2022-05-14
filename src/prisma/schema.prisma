@@ -77,16 +77,16 @@ enum TrainType {
 }
 
 model Route {
-  id              String    @id @default(cuid())
-  arrivalTime     DateTime
-  departureTime   DateTime
-  startStationId  String
-  endStationId    String
+  id             String       @id @default(cuid())
+  arrivalTime    DateTime
+  departureTime  DateTime
+  startStationId String
+  endStationId   String
   //relations
-  stationsBetween Station[]
-  startStation    Station   @relation("routeStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
-  endStation      Station   @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
-  train           Train[]
+  startStation   Station      @relation("routeStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation     Station      @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  train          Train[]
+  RoutePoint     RoutePoint[]
 }
 
 model Carriage {
@@ -122,8 +122,8 @@ model Ticket {
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   train           Train    @relation(fields: [trainId], references: [id], onDelete: SetNull)
   carriage        Carriage @relation(fields: [carriageId], references: [id], onDelete: SetNull)
-  startStation    Station  @relation("startStations", fields: [startStationId], references: [id], onDelete: SetNull)
-  endStation      Station  @relation("endStations", fields: [endStationId], references: [id], onDelete: SetNull)
+  startStation    Station  @relation("ticketStartStations", fields: [startStationId], references: [id], onDelete: SetNull)
+  endStation      Station  @relation("ticketEndStations", fields: [endStationId], references: [id], onDelete: SetNull)
 }
 
 enum State {
@@ -132,18 +132,40 @@ enum State {
 }
 
 model Price {
-  id             String @id @default(cuid())
+  id             String       @id @default(cuid())
   startStationId String
   endStationId   String
+  trainType      TrainType
+  carriageType   CarriageType
+  value          Int
+  //relations
+  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id], onDelete: SetNull)
+  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id], onDelete: SetNull)
 }
 
 model Station {
-  id                   String   @id @default(cuid())
+  id                   String       @id @default(cuid())
   name                 String
   //relations
-  routeStationsBetween Route[]
-  routeStartStations   Route[]  @relation("routeStartStations")
-  routeEndStations     Route[]  @relation("routeEndStations")
-  startStations        Ticket[] @relation("startStations")
-  endStations          Ticket[] @relation("endStations")
+  //route
+  routeStationsBetween RoutePoint[]
+  routeStartStations   Route[]      @relation("routeStartStations")
+  routeEndStations     Route[]      @relation("routeEndStations")
+  //price
+  priceStartStations   Price[]      @relation("priceStartStations")
+  priceEndStations     Price[]      @relation("priceEndStations")
+  //ticket
+  startStations        Ticket[]     @relation("ticketStartStations")
+  endStations          Ticket[]     @relation("ticketEndStations")
+  //route point
+}
+
+model RoutePoint {
+  id        String  @id @default(cuid())
+  routeId   String
+  stationId String
+  order     Int
+  //relations
+  station   Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  route     Route   @relation(fields: [routeId], references: [id], onDelete: Cascade)
 }

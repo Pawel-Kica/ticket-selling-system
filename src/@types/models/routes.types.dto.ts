@@ -9,7 +9,9 @@ export const RouteBasicSelect = {
   departureTime: true,
   arrivalTime: true,
   startStation: true,
-  stationsBetween: true,
+  stationsBetween: {
+    orderBy: {},
+  },
   endStation: true,
 };
 

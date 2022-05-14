@@ -13,11 +13,7 @@ export class StationsController {
   async findMany(@Query() { stationId }: StationsLookupQuery) {
     return this.stationsService.findMany(
       {
-        OR: [
-          {
-            id: stationId,
-          },
-        ],
+        id: stationId,
       },
       {
         id: true,
