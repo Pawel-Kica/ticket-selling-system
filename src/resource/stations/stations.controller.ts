@@ -21,9 +21,6 @@ export class StationsController {
         routeStartStations: {
           select: RouteBasicSelect,
         },
-        routeStationsBetween: {
-          select: RouteBasicSelect,
-        },
       },
     );
   }

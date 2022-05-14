@@ -13,6 +13,6 @@ routeStartStations?: Route[] ;
 routeEndStations?: Route[] ;
 priceStartStations?: Price[] ;
 priceEndStations?: Price[] ;
-startStations?: Ticket[] ;
-endStations?: Ticket[] ;
+ticketStartStations?: Ticket[] ;
+ticketEndStations?: Ticket[] ;
 }

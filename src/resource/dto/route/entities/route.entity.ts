@@ -1,7 +1,7 @@
 
 import {Station} from '../../station/entities/station.entity'
-import {Train} from '../../train/entities/train.entity'
 import {RoutePoint} from '../../routePoint/entities/routePoint.entity'
+import {Train} from '../../train/entities/train.entity'
 
 
 export class Route {
@@ -12,6 +12,6 @@ startStationId: string ;
 endStationId: string ;
 startStation?: Station ;
 endStation?: Station ;
+stationsBetween?: RoutePoint[] ;
 train?: Train[] ;
-RoutePoint?: RoutePoint[] ;
 }

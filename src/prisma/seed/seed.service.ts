@@ -80,10 +80,12 @@ export class SeedService {
     await this.removeSpecificTable(modelName);
 
     if (dataset.length < 1) dataset = this.dataToSeed[modelName];
-    if (!this.models.includes(modelName)) return;
+    if (!this.models.includes(modelName))
+      this.logSeedInfo(`Unknown model name ${modelName}`);
 
     this.logSeedInfo(`Store ${modelName.toUpperCase()} data`);
-    Promise.all(
+
+    await Promise.all(
       dataset.map((data: any) => this.prisma[modelName].create({ data })),
     );
     if (modelName === 'employee') {
@@ -92,21 +94,24 @@ export class SeedService {
         const savePath = join(mainImagesPath, name);
         const srcPath = join(this.seedImagesPath, name);
 
-        if (!existsSync(savePath)) {
-          copyFileSync(srcPath, savePath);
-        }
+        if (!existsSync(savePath)) copyFileSync(srcPath, savePath);
       });
     }
     this.logSeedInfo(`${dataset.length} records have been added`);
   }
 
-  async main() {
-    await this.removeStoredImages();
-    await this.seedModel('user');
-    await this.seedModel('station');
-    await this.seedModel('employee');
-    await this.seedModel('route');
-    await this.seedModel('train');
-    await this.seedModel('carriage');
+  main() {
+    Promise.all([
+      this.removeStoredImages(),
+      this.seedModel('user'),
+      this.seedModel('station'),
+    ]).then(() => {
+      Promise.all([this.seedModel('route'), this.seedModel('employee')]).then(
+        async () => {
+          await this.seedModel('train');
+          await this.seedModel('carriage');
+        },
+      );
+    });
   }
 }

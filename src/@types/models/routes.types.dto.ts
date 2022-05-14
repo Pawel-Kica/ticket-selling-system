@@ -5,12 +5,22 @@ export type RouteWhereDto = Prisma.RouteWhereInput;
 export type RouteWhereUniqueInput = Prisma.RouteWhereUniqueInput;
 export type RouteSelectDto = Prisma.RouteSelect;
 
-export const RouteBasicSelect = {
+export const RouteBasicSelect: RouteSelectDto = {
   departureTime: true,
   arrivalTime: true,
   startStation: true,
   stationsBetween: {
-    orderBy: {},
+    select: {
+      order: true,
+      station: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      order: 'asc',
+    },
   },
   endStation: true,
 };

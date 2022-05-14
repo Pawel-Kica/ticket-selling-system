@@ -63,9 +63,9 @@ model Train {
   type           TrainType
   //relations
   boss           User       @relation(fields: [bossId], references: [id], onDelete: Cascade)
-  route          Route      @relation(fields: [routeId], references: [id], onDelete: SetNull)
-  driver         Employee   @relation("driver", fields: [driverId], references: [id], onDelete: SetNull)
-  driverHelper   Employee   @relation("driverHelper", fields: [driverHelperId], references: [id], onDelete: SetNull)
+  route          Route      @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  driver         Employee   @relation("driver", fields: [driverId], references: [id], onDelete: Cascade)
+  driverHelper   Employee   @relation("driverHelper", fields: [driverHelperId], references: [id], onDelete: Cascade)
   carriage       Carriage[]
   ticket         Ticket[]
 }
@@ -77,16 +77,16 @@ enum TrainType {
 }
 
 model Route {
-  id             String       @id @default(cuid())
-  arrivalTime    DateTime
-  departureTime  DateTime
-  startStationId String
-  endStationId   String
+  id              String       @id @default(cuid())
+  arrivalTime     DateTime
+  departureTime   DateTime
+  startStationId  String
+  endStationId    String
   //relations
-  startStation   Station      @relation("routeStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
-  endStation     Station      @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
-  train          Train[]
-  RoutePoint     RoutePoint[]
+  startStation    Station      @relation("routeStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation      Station      @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  stationsBetween RoutePoint[]
+  train           Train[]
 }
 
 model Carriage {
@@ -98,8 +98,8 @@ model Carriage {
   conductor2Id  String
   //relations
   train         Train        @relation(fields: [trainId], references: [id], onDelete: Cascade)
-  conductor1    Employee     @relation("conductor1", fields: [conductor1Id], references: [id], onDelete: SetNull)
-  conductor2    Employee     @relation("conductor2", fields: [conductor2Id], references: [id], onDelete: SetNull)
+  conductor1    Employee     @relation("conductor1", fields: [conductor1Id], references: [id], onDelete: Cascade)
+  conductor2    Employee     @relation("conductor2", fields: [conductor2Id], references: [id], onDelete: Cascade)
   ticket        Ticket[]
 }
 
@@ -120,10 +120,10 @@ model Ticket {
   timeOfOperation DateTime @updatedAt
   //relations
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  train           Train    @relation(fields: [trainId], references: [id], onDelete: SetNull)
-  carriage        Carriage @relation(fields: [carriageId], references: [id], onDelete: SetNull)
-  startStation    Station  @relation("ticketStartStations", fields: [startStationId], references: [id], onDelete: SetNull)
-  endStation      Station  @relation("ticketEndStations", fields: [endStationId], references: [id], onDelete: SetNull)
+  train           Train    @relation(fields: [trainId], references: [id], onDelete: Cascade)
+  carriage        Carriage @relation(fields: [carriageId], references: [id], onDelete: Cascade)
+  startStation    Station  @relation("ticketStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation      Station  @relation("ticketEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
 }
 
 enum State {
@@ -139,8 +139,8 @@ model Price {
   carriageType   CarriageType
   value          Int
   //relations
-  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id], onDelete: SetNull)
-  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id], onDelete: SetNull)
+  startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
+  endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
 }
 
 model Station {
@@ -155,8 +155,8 @@ model Station {
   priceStartStations   Price[]      @relation("priceStartStations")
   priceEndStations     Price[]      @relation("priceEndStations")
   //ticket
-  startStations        Ticket[]     @relation("ticketStartStations")
-  endStations          Ticket[]     @relation("ticketEndStations")
+  ticketStartStations  Ticket[]     @relation("ticketStartStations")
+  ticketEndStations    Ticket[]     @relation("ticketEndStations")
   //route point
 }
 

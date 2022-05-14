@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import generateIdPrefixes from './generateData';
-import { routePrefix, stationPrefix } from './prefixes';
+import { routePointPrefix, routePrefix, stationPrefix } from './prefixes';
 
 const routes = [
   {
@@ -12,7 +12,18 @@ const routes = [
       },
     },
     stationsBetween: {
-      connect: [{ id: `${stationPrefix}2` }, { id: `${stationPrefix}3` }],
+      createMany: {
+        data: [
+          {
+            order: 1,
+            stationId: `${stationPrefix}1`,
+          },
+          {
+            order: 2,
+            stationId: `${stationPrefix}2`,
+          },
+        ],
+      },
     },
     endStation: {
       connect: {
@@ -29,11 +40,22 @@ const routes = [
       },
     },
     stationsBetween: {
-      connect: [
-        { id: `${stationPrefix}6` },
-        { id: `${stationPrefix}7` },
-        { id: `${stationPrefix}8` },
-      ],
+      createMany: {
+        data: [
+          {
+            order: 3,
+            stationId: `${stationPrefix}3`,
+          },
+          {
+            order: 2,
+            stationId: `${stationPrefix}4`,
+          },
+          {
+            order: 1,
+            stationId: `${stationPrefix}5`,
+          },
+        ],
+      },
     },
     endStation: {
       connect: {
@@ -50,12 +72,26 @@ const routes = [
       },
     },
     stationsBetween: {
-      connect: [
-        { id: `${stationPrefix}11` },
-        { id: `${stationPrefix}12` },
-        { id: `${stationPrefix}13` },
-        { id: `${stationPrefix}1` },
-      ],
+      createMany: {
+        data: [
+          {
+            order: 1,
+            stationId: `${stationPrefix}6`,
+          },
+          {
+            order: 3,
+            stationId: `${stationPrefix}7`,
+          },
+          {
+            order: 2,
+            stationId: `${stationPrefix}8`,
+          },
+          {
+            order: 4,
+            stationId: `${stationPrefix}9`,
+          },
+        ],
+      },
     },
     endStation: {
       connect: {

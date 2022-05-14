@@ -33,7 +33,7 @@ export class RoutesController {
           startStationId,
           stationsBetween: {
             some: {
-              id: endStationId,
+              stationId: endStationId,
             },
           },
           departureTime,

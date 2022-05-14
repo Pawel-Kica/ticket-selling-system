@@ -2,7 +2,7 @@ import generateIdPrefixes from './generateData';
 import { TrainType, CarriageType } from '@prisma/client';
 import { stationPrefix } from './prefixes';
 
-const stationsData = [
+const pricesData = [
   {
     startStation: {
       connect: {
@@ -27,17 +27,19 @@ const carriagesTypePrices: { [x: string]: number } = {};
 carriagesTypePrices[CarriageType.regular] = 1;
 carriagesTypePrices[CarriageType.comfort] = 1.3;
 
-const formattedStations = [];
+const formattedPrices = [];
 
-stationsData.forEach((station) => {
-  for (const [_trainTypeKey, trainTypeValue] of Object.entries(
+pricesData.forEach((station) => {
+  for (const [trainTypeKey, trainTypeValue] of Object.entries(
     trainTypePrices,
   )) {
-    for (const [_carriageTypeKey, carriageTypeValue] of Object.entries(
+    for (const [carriageTypeKey, carriageTypeValue] of Object.entries(
       carriagesTypePrices,
     )) {
-      formattedStations.push({
+      formattedPrices.push({
         ...station,
+        trainType: trainTypeKey,
+        carriageType: carriageTypeKey,
         value: station.value * trainTypeValue * carriageTypeValue,
       });
     }
@@ -45,8 +47,4 @@ stationsData.forEach((station) => {
 });
 
 export const pricePrefix = 'price';
-export const pricesSeedData1 = generateIdPrefixes(
-  formattedStations,
-  pricePrefix,
-);
-export const pricesSeedData = [];
+export const pricesSeedData = generateIdPrefixes(formattedPrices, pricePrefix);
