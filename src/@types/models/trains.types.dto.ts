@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { RouteBasicSelect } from './routes.types.dto';
 
@@ -22,5 +23,6 @@ export const TrainBasicSelect = {
 };
 
 export class TrainsLookupQuery {
+  @ApiPropertyOptional()
   routeId: string;
 }

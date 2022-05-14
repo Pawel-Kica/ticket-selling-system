@@ -5,5 +5,7 @@
 
 
 export class CreateRoutePointDto {
-  order: number;
+  departureTime: Date;
+arrivalTime: Date;
+order: number;
 }

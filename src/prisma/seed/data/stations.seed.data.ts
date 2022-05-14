@@ -16,6 +16,7 @@ const stationsNames = [
   'Los Angeles Union Station',
   'Millennium Station',
   'Montreal Central Station',
+  'Poznan Glowny',
 ];
 const stationsData = stationsNames.map((e) => {
   return { name: e };

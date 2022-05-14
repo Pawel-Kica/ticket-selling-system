@@ -5,5 +5,7 @@
 
 
 export class UpdateRoutePointDto {
-  order?: number;
+  departureTime?: Date;
+arrivalTime?: Date;
+order?: number;
 }

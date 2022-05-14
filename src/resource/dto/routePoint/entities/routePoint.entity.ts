@@ -7,6 +7,8 @@ export class RoutePoint {
   id: string ;
 routeId: string ;
 stationId: string ;
+departureTime: Date ;
+arrivalTime: Date ;
 order: number ;
 station?: Station ;
 route?: Route ;

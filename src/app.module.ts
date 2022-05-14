@@ -24,6 +24,7 @@ import { AppController } from './app.controller';
 import { mainDir } from './config/files.config';
 import { PostInterceptor } from './interceptors/postMethod';
 import { TrainsModule } from './resource/trains/trains.module';
+import { CarriageModule } from './resource/carriage/carriage.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { TrainsModule } from './resource/trains/trains.module';
     RoutesModule,
     TicketsModule,
     TrainsModule,
+    CarriageModule,
   ],
   controllers: [AppController],
   providers: [
