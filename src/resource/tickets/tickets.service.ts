@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { RouteBasicSelect } from '../../@types/models/routes.types.dto';
 import {
   CreateTicketPrismaDto,
   TickerWhereDto,
 } from '../../@types/models/tickets.types.dto';
-import { UpdateTicketDto } from '../dto/ticket/dto/update-ticket.dto';
 
 @Injectable()
 export class TicketsService {
@@ -15,23 +15,44 @@ export class TicketsService {
     return ticket;
   }
 
-  findMany() {
-    return `This action returns all tickets`;
+  async findMany(where: TickerWhereDto) {
+    const tickets = await this.prisma.ticket.findMany({
+      where,
+      select: {
+        seat: true,
+        train: {
+          select: {
+            route: {
+              select: RouteBasicSelect,
+            },
+          },
+        },
+        startStation: {
+          select: {
+            name: true,
+          },
+        },
+        endStation: {
+          select: {
+            name: true,
+          },
+        },
+        carriage: {
+          select: {
+            id: true,
+            type: true,
+            numberOfSeats: true,
+          },
+        },
+        state: true,
+        timeOfOperation: true,
+      },
+    });
+    return tickets;
   }
+
   async findFirst(where: TickerWhereDto) {
     const ticket = await this.prisma.ticket.findFirst({ where });
     return ticket;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
-  }
-
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
   }
 }
