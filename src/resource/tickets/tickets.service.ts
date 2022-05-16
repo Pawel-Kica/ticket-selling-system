@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { RouteBasicSelect } from '../../@types/models/routes.types.dto';
+import { RouteMainSelect } from '../../@types/models/routes.types.dto';
 import {
+  TicketMainSelect,
   CreateTicketPrismaDto,
   TickerWhereDto,
 } from '../../@types/models/tickets.types.dto';
@@ -15,38 +16,10 @@ export class TicketsService {
     return ticket;
   }
 
-  async findMany(where: TickerWhereDto) {
+  async findMany(where: TickerWhereDto, select = TicketMainSelect) {
     const tickets = await this.prisma.ticket.findMany({
       where,
-      select: {
-        seat: true,
-        train: {
-          select: {
-            route: {
-              select: RouteBasicSelect,
-            },
-          },
-        },
-        startStation: {
-          select: {
-            name: true,
-          },
-        },
-        endStation: {
-          select: {
-            name: true,
-          },
-        },
-        carriage: {
-          select: {
-            id: true,
-            type: true,
-            numberOfSeats: true,
-          },
-        },
-        state: true,
-        timeOfOperation: true,
-      },
+      select,
     });
     return tickets;
   }

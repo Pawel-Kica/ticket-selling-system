@@ -5,7 +5,7 @@ export type RouteWhereDto = Prisma.RouteWhereInput;
 export type RouteWhereUniqueInput = Prisma.RouteWhereUniqueInput;
 export type RouteSelectDto = Prisma.RouteSelect;
 
-export const RouteBasicSelect: RouteSelectDto = {
+export const RouteMainSelect: RouteSelectDto = {
   startStation: {
     select: {
       name: true,

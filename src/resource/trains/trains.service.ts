@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import {
-  TrainBasicSelect,
+  TrainMainSelect,
   TrainWhereDto,
   TrainWhereUniqueDto,
 } from '../../@types/models/trains.types.dto';
@@ -10,11 +10,11 @@ import {
 export class TrainsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findMany(where: TrainWhereDto, select = TrainBasicSelect) {
+  findMany(where: TrainWhereDto, select = TrainMainSelect) {
     return this.prisma.train.findMany({ where, select });
   }
 
-  findUnique(where: TrainWhereUniqueDto, select = TrainBasicSelect) {
+  findUnique(where: TrainWhereUniqueDto, select = TrainMainSelect) {
     return this.prisma.train.findUnique({ where, select });
   }
 }

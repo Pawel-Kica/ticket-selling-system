@@ -22,3 +22,34 @@ export class RequireAdmin implements CanActivate {
     }
   }
 }
+
+@Injectable()
+export class RequireManager implements CanActivate {
+  constructor(private readonly usersService: UsersService) {}
+  async canActivate(context: ExecutionContext) {
+    try {
+      const { id } = context.switchToHttp().getResponse().locals.user;
+      const { role } = await this.usersService.findUnique({ id });
+
+      if (role !== Role.manager) throw new Error();
+      return true;
+    } catch (_e) {
+      throw new ForbiddenException();
+    }
+  }
+}
+@Injectable()
+export class RequireBoss implements CanActivate {
+  constructor(private readonly usersService: UsersService) {}
+  async canActivate(context: ExecutionContext) {
+    try {
+      const { id } = context.switchToHttp().getResponse().locals.user;
+      const { role } = await this.usersService.findUnique({ id });
+
+      if (role !== Role.boss) throw new Error();
+      return true;
+    } catch (_e) {
+      throw new ForbiddenException();
+    }
+  }
+}

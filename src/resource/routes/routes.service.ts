@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import {
-  RouteBasicSelect,
+  RouteMainSelect,
   RouteSelectDto,
   RouteWhereDto,
   RouteWhereUniqueInput,
@@ -11,14 +11,14 @@ import {
 export class RoutesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findMany(where?: RouteWhereDto, select = RouteBasicSelect) {
+  findMany(where?: RouteWhereDto, select = RouteMainSelect) {
     return this.prisma.route.findMany({
       where,
       select,
     });
   }
 
-  findFirst(where?: RouteWhereDto, select = RouteBasicSelect) {
+  findFirst(where?: RouteWhereDto, select = RouteMainSelect) {
     return this.prisma.route.findFirst({
       where,
       select,
@@ -27,7 +27,7 @@ export class RoutesService {
 
   findOne(
     where: RouteWhereUniqueInput,
-    select: RouteSelectDto = RouteBasicSelect,
+    select: RouteSelectDto = RouteMainSelect,
   ) {
     return this.prisma.route.findUnique({ where, select });
   }

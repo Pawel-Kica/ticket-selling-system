@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { UsersService } from '../resource/users/users.service';
 import { BlockedResourceException } from '../utils/responses/errors';
 
@@ -13,9 +14,9 @@ export class RequireUser implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const { id } = context.switchToHttp().getResponse().locals.user;
-      const { blocked } = await this.usersService.findUnique({ id });
+      const { blocked, role } = await this.usersService.findUnique({ id });
 
-      if (blocked) throw new BlockedResourceException();
+      if (blocked || role === Role.admin) throw new BlockedResourceException();
       return true;
     } catch (e) {
       if (e instanceof BlockedResourceException) throw e;

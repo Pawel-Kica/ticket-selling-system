@@ -1,12 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { RouteBasicSelect } from './routes.types.dto';
+import { RouteMainSelect } from './routes.types.dto';
 
 export type TrainWhereDto = Prisma.TrainWhereInput;
 export type TrainWhereUniqueDto = Prisma.TrainWhereUniqueInput;
 export type TrainSelectDto = Prisma.TrainSelect;
 
-export const TrainBasicSelect = {
+export const TrainMainSelect = {
   id: true,
   type: true,
   routeId: true,
@@ -18,7 +18,7 @@ export const TrainBasicSelect = {
     },
   },
   route: {
-    select: RouteBasicSelect,
+    select: RouteMainSelect,
   },
 };
 

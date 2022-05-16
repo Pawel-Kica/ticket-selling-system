@@ -2,7 +2,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Query } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { StationsLookupQuery } from '../../@types/models/stations.types.dto';
-import { RouteBasicSelect } from '../../@types/models/routes.types.dto';
+import { RouteMainSelect } from '../../@types/models/routes.types.dto';
 
 @ApiTags('Stations')
 @Controller('stations')
@@ -19,7 +19,7 @@ export class StationsController {
         id: true,
         name: true,
         routeStartStations: {
-          select: RouteBasicSelect,
+          select: RouteMainSelect,
         },
       },
     );
