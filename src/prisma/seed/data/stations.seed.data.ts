@@ -22,6 +22,4 @@ const stationsData = stationsNames.map((e) => {
   return { name: e };
 });
 
-export const stationsNumber = stationsNames.length;
-
 export const stationsSeedData = generateIdPrefixes(stationsData, stationPrefix);

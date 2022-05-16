@@ -9,7 +9,7 @@ export class TrainsController {
   constructor(private readonly trainsService: TrainsService) {}
 
   @Get()
-  findAll(@Query() { routeId }: TrainsLookupQuery) {
-    return this.trainsService.findAll({ routeId });
+  findMany(@Query() { routeId }: TrainsLookupQuery) {
+    return this.trainsService.findMany({ routeId });
   }
 }

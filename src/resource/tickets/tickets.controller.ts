@@ -1,5 +1,11 @@
 import * as moment from 'moment';
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  ConflictException,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateTicketExtendedDto } from '../../@types/models/tickets.types.dto';
 import { UserId } from '../../decorators/user.decorator';
@@ -8,8 +14,9 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { CarriagesService } from '../carriage/carriage.service';
 import { RoutesService } from '../routes/routes.service';
 import { TrainsService } from '../trains/trains.service';
-import { UsersService } from '../users/users.service';
 import { TicketsService } from './tickets.service';
+import { PricesService } from '../prices/prices.service';
+import { CarriageType } from '@prisma/client';
 
 @ApiBearerAuth()
 @ApiTags('Tickets')
@@ -17,10 +24,10 @@ import { TicketsService } from './tickets.service';
 export class TicketsController {
   constructor(
     private readonly ticketsService: TicketsService,
-    private readonly usersService: UsersService,
     private readonly carriagesService: CarriagesService,
     private readonly trainsService: TrainsService,
     private readonly routesService: RoutesService,
+    private readonly pricesService: PricesService,
   ) {}
 
   @Post()
@@ -36,26 +43,29 @@ export class TicketsController {
     }: CreateTicketExtendedDto,
     @UserId() id: string,
   ) {
-    // if (seat > 20) {
-    //   const carriage = await this.carriagesService.findUnique({
-    //     id: carriageId,
-    //   });
-    //   if (carriage.type === CarriageType.comfort)
-    //     throw new InvalidRequestedBody('Invalid seat number');
-    // }
+    const { trainId: carriageTrainId, type: carriageType } =
+      await this.carriagesService.findUnique({
+        id: carriageId,
+      });
 
-    // const alreadyTaken = await this.ticketsService.findFirst({
-    //   carriageId: carriageId,
-    //   seat: seat,
-    // });
+    if (carriageTrainId !== trainId)
+      throw new InvalidRequestedBody('Invalid train number');
 
-    // if (alreadyTaken) throw new ConflictException();
+    if (seat > 20 && carriageType === CarriageType.comfort)
+      throw new InvalidRequestedBody('Invalid seat number');
+
+    const ticketAlreadyBought = await this.ticketsService.findFirst({
+      carriageId,
+      seat,
+    });
+
+    if (ticketAlreadyBought) throw new ConflictException();
 
     const departureTime = {
       gt: moment().add(3, 'd').toISOString(),
     };
 
-    const routes = await this.routesService.findAll({
+    const route = await this.routesService.findFirst({
       OR: [
         {
           startStationId,
@@ -102,11 +112,21 @@ export class TicketsController {
       ],
     });
 
-    console.log(routes);
+    if (!route) throw new InvalidRequestedBody('Invalid stations');
 
-    if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
+    const { type: trainType } = await this.trainsService.findUnique({
+      id: trainId,
+    });
 
-    return 'wtf route isniteje';
+    const price = await this.pricesService.firdFirst({
+      carriageType,
+      trainType,
+      startStationId,
+      endStationId,
+    });
+
+    if (!price)
+      throw new InvalidRequestedBody('Something went wrong, try again later');
 
     const ticket = await this.ticketsService.create({
       seat,
@@ -136,6 +156,7 @@ export class TicketsController {
         },
       },
     });
+    console.log(ticket);
 
     return ticket;
   }

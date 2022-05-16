@@ -4,3 +4,4 @@ export const stationPrefix = 'station';
 export const routePrefix = 'route';
 export const trainPrefix = 'train';
 export const carriagePrefix = 'carriage';
+export const pricePrefix = 'price';

@@ -16,13 +16,13 @@ export class RoutesController {
   constructor(private readonly routesService: RoutesService) {}
 
   @Get()
-  findAll(@Query() { startStationId, endStationId, date }: RoutesLookupQuery) {
+  findMany(@Query() { startStationId, endStationId, date }: RoutesLookupQuery) {
     const fDate = moment(date, 'DD-MM-YYYY');
     const gt = fDate.startOf('day').toISOString() ?? undefined;
     const lt = fDate.endOf('day').toISOString() ?? undefined;
     const departureTime = { gt, lt };
 
-    return this.routesService.findAll({
+    return this.routesService.findMany({
       OR: [
         {
           startStationId,

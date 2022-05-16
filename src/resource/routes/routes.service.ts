@@ -11,8 +11,15 @@ import {
 export class RoutesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll(where?: RouteWhereDto, select = RouteBasicSelect) {
+  findMany(where?: RouteWhereDto, select = RouteBasicSelect) {
     return this.prisma.route.findMany({
+      where,
+      select,
+    });
+  }
+
+  findFirst(where?: RouteWhereDto, select = RouteBasicSelect) {
+    return this.prisma.route.findFirst({
       where,
       select,
     });

@@ -100,18 +100,28 @@ export class SeedService {
     this.logSeedInfo(`${dataset.length} records have been added`);
   }
 
-  main() {
-    Promise.all([
-      this.removeStoredImages(),
-      this.seedModel('user'),
-      this.seedModel('station'),
-    ]).then(() => {
-      Promise.all([this.seedModel('route'), this.seedModel('employee')]).then(
-        async () => {
-          await this.seedModel('train');
-          await this.seedModel('carriage');
-        },
-      );
-    });
+  async main() {
+    await this.removeStoredImages();
+    await this.seedModel('user');
+    await this.seedModel('station');
+    await this.seedModel('route');
+    await this.seedModel('employee');
+    await this.seedModel('train');
+    await this.seedModel('carriage');
+    await this.seedModel('price');
+
+    // Promise.all([
+    //   await this.removeStoredImages(),
+    //   await this.seedModel('user'),
+    //   await this.seedModel('station'),
+    // ]).then(() => {
+    //   Promise.all([this.seedModel('route'), this.seedModel('employee')]).then(
+    //     async () => {
+    //       await this.seedModel('train');
+    //       await this.seedModel('carriage');
+    //       await this.seedModel('price');
+    //     },
+    //   );
+    // });
   }
 }

@@ -10,6 +10,6 @@ if (require.main === module) {
     }).compile();
 
     const seedService = moduleFixture.get(SeedService);
-    seedService.main();
+    await seedService.main();
   })();
 }

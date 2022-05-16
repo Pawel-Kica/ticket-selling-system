@@ -137,7 +137,7 @@ model Price {
   endStationId   String
   trainType      TrainType
   carriageType   CarriageType
-  value          Int
+  value          Float
   //relations
   startStation   Station      @relation("priceStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
   endStation     Station      @relation("priceEndStations", fields: [endStationId], references: [id], onDelete: Cascade)

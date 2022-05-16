@@ -12,9 +12,10 @@ export class TicketsService {
 
   async create(data: CreateTicketPrismaDto) {
     const ticket = await this.prisma.ticket.create({ data });
+    return ticket;
   }
 
-  findAll() {
+  findMany() {
     return `This action returns all tickets`;
   }
   async findFirst(where: TickerWhereDto) {
