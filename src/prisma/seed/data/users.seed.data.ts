@@ -8,6 +8,9 @@ import {
 import generateIdPrefixes from './generateData';
 import { userPrefix } from './prefixes';
 
+export const managerUserId = 'manager1';
+export const bossUserId = 'boss1';
+
 function generateUsers(n: number) {
   const result = [];
   for (let i = 0; i < n; i++) {
@@ -43,9 +46,27 @@ export const testUser = {
   password: 'Password1!',
   role: Role.default,
 };
+export const managerUser = {
+  id: managerUserId,
+  name: 'August',
+  surname: 'Comte',
+  email: 'august@example.com',
+  password: 'Password1!',
+  role: Role.manager,
+};
+export const bossUser = {
+  id: bossUserId,
+  name: 'Satoshi',
+  surname: 'Nakomoto',
+  email: 'satoshi@example.com',
+  password: 'Password1!',
+  role: Role.boss,
+};
 
 export const usersSeedData = [
   adminUser,
   testUser,
+  managerUser,
+  bossUser,
   ...generateIdPrefixes(users, userPrefix),
 ];
