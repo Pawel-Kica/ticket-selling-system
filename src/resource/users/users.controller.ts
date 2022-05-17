@@ -15,8 +15,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessResponse } from '../../utils/responses';
 import { RequireUser } from '../../guards/requireUser';
 
-@ApiBearerAuth()
-@ApiTags('Users')
+@ApiTags('Users - Main')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -42,6 +41,7 @@ export class UsersController {
     return { token: this.authService.createAuthToken(user.id) };
   }
 
+  @ApiBearerAuth()
   @Post('auth')
   @UseGuards(RequireUser)
   auth() {

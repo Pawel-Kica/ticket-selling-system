@@ -4,7 +4,7 @@ import { StationsService } from './stations.service';
 import { StationsLookupQuery } from '../../@types/models/stations.types.dto';
 import { RouteMainSelect } from '../../@types/models/routes.types.dto';
 
-@ApiTags('Stations')
+@ApiTags('Public - Stations')
 @Controller('stations')
 export class StationsController {
   constructor(private readonly stationsService: StationsService) {}

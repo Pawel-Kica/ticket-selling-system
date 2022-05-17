@@ -35,12 +35,4 @@ export class AdminEmployeesController {
     if (!file) body.photoPath = defaultEmployeePhotoPath;
     return this.employeesService.create(body);
   }
-  @Get()
-  findMany() {
-    return this.employeesService.findMany();
-  }
-  @Get(':id')
-  findUnique(@Param('id') id: string) {
-    return this.employeesService.safeFindUnique({ id });
-  }
 }

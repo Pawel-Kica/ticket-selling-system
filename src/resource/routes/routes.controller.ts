@@ -10,7 +10,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { RoutesLookupQuery } from '../../@types/models/routes.types.dto';
 import { RoutesService } from './routes.service';
 
-@ApiTags('Routes')
+@ApiTags('Public - Routes')
 @Controller('routes')
 export class RoutesController {
   constructor(private readonly routesService: RoutesService) {}

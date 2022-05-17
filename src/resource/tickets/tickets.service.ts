@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { RouteMainSelect } from '../../@types/models/routes.types.dto';
 import {
   TicketMainSelect,
   CreateTicketPrismaDto,

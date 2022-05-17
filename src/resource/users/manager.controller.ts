@@ -4,10 +4,10 @@ import { RequireManager } from '../../guards/roles.';
 import { SuccessResponse } from '../../utils/responses';
 
 @ApiBearerAuth()
+@ApiTags('Manager - main')
+@Controller('manager')
 @UseGuards(RequireManager)
-@ApiTags('Manager')
-@Controller('users/manager')
-export class UsersController {
+export class ManagerController {
   @Post('auth')
   auth() {
     return SuccessResponse;

@@ -5,13 +5,9 @@ import {
   UseGuards,
   ConflictException,
   Get,
-  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import {
-  CreateTicketExtendedDto,
-  TicketsLookupQuery,
-} from '../../@types/models/tickets.types.dto';
+import { CreateTicketExtendedDto } from '../../@types/models/tickets.types.dto';
 import { RequireUser } from '../../guards/requireUser';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { CarriagesService } from '../carriage/carriage.service';
@@ -23,10 +19,9 @@ import { CarriageType } from '@prisma/client';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { UserId } from '../../decorators/user.decorator';
-import { RequireManager } from '../../guards/roles.';
 
 @ApiBearerAuth()
-@ApiTags('Tickets')
+@ApiTags('User - Tickets')
 @Controller('tickets')
 export class TicketsController {
   constructor(
@@ -42,23 +37,6 @@ export class TicketsController {
   async getUserTickets(@UserId() id: string) {
     const tickets = await this.ticketsService.findMany({
       userId: id,
-    });
-
-    return tickets;
-  }
-
-  @Get()
-  @UseGuards(RequireManager)
-  async findMany(
-    @Query() { trainId, carriageId, state, routeId }: TicketsLookupQuery,
-  ) {
-    const tickets = await this.ticketsService.findMany({
-      trainId,
-      carriageId,
-      state,
-      train: {
-        routeId,
-      },
     });
 
     return tickets;

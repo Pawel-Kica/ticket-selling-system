@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { TrainsLookupQuery } from '../../@types/models/trains.types.dto';
 import { TrainsService } from './trains.service';
 
-@ApiTags('Trains')
+@ApiTags('Public - Trains')
 @Controller('trains')
 export class TrainsController {
   constructor(private readonly trainsService: TrainsService) {}

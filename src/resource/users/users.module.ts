@@ -3,10 +3,11 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { JwtModule } from '../../utils/jwt/jwt.module';
 import { AuthService } from './auth.service';
+import { ManagerController } from './manager.controller';
 
 @Module({
   imports: [JwtModule],
-  controllers: [UsersController],
+  controllers: [UsersController, ManagerController],
   providers: [AuthService, UsersService],
   exports: [AuthService, UsersService],
 })
