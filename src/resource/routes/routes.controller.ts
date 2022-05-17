@@ -5,8 +5,8 @@ import {
   Query,
   NotFoundException,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
 import * as moment from 'moment';
+import { ApiTags } from '@nestjs/swagger';
 import { RoutesLookupQuery } from '../../@types/models/routes.types.dto';
 import { RoutesService } from './routes.service';
 
@@ -22,38 +22,16 @@ export class RoutesController {
     const lt = fDate.endOf('day').toISOString() ?? undefined;
     const departureTime = { gt, lt };
 
-    return this.routesService.findMany({
-      OR: [
-        {
-          startStationId,
-          endStationId,
-          departureTime,
-        },
-        {
-          startStationId,
-          stationsBetween: {
-            some: {
-              stationId: endStationId,
-            },
-          },
-          departureTime,
-        },
-        {
-          stationsBetween: {
-            some: {
-              stationId: startStationId,
-              departureTime,
-            },
-          },
-          endStationId,
-        },
-      ],
+    return this.routesService.findManyWithStations({
+      startStationId,
+      endStationId,
+      departureTime,
     });
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const result = await this.routesService.findOne({ id });
+    const result = await this.routesService.findUnique({ id });
     if (!result) throw new NotFoundException();
     return result;
   }

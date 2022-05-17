@@ -29,7 +29,6 @@ export class JoiValidationPipe implements PipeTransform {
 
     const result = validateSchema(this.schema, value);
     if (result !== true) throw new InvalidRequestedBody(result);
-    console.log(value);
     return value;
   }
 }

@@ -15,7 +15,6 @@ export class TicketsService {
     const ticket = await this.prisma.ticket.create({ data });
     return ticket;
   }
-
   async findMany(where: TickerWhereDto, select = TicketMainSelect) {
     const tickets = await this.prisma.ticket.findMany({
       where,
@@ -23,9 +22,54 @@ export class TicketsService {
     });
     return tickets;
   }
-
   async findFirst(where: TickerWhereDto) {
     const ticket = await this.prisma.ticket.findFirst({ where });
+    return ticket;
+  }
+
+  async createWithParams({
+    id,
+    trainId,
+    carriageId,
+    startStationId,
+    endStationId,
+    seat,
+  }: {
+    id: string;
+    trainId: string;
+    carriageId: string;
+    startStationId: string;
+    endStationId: string;
+    seat: number;
+  }) {
+    const ticket = await this.create({
+      seat,
+      user: {
+        connect: {
+          id,
+        },
+      },
+      train: {
+        connect: {
+          id: trainId,
+        },
+      },
+      carriage: {
+        connect: {
+          id: carriageId,
+        },
+      },
+      startStation: {
+        connect: {
+          id: startStationId,
+        },
+      },
+      endStation: {
+        connect: {
+          id: endStationId,
+        },
+      },
+    });
     return ticket;
   }
 }

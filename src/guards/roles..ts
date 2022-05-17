@@ -38,6 +38,7 @@ export class RequireManager implements CanActivate {
     }
   }
 }
+
 @Injectable()
 export class RequireBoss implements CanActivate {
   constructor(private readonly usersService: UsersService) {}

@@ -1,4 +1,5 @@
-import { Prisma } from '@prisma/client';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Prisma, State } from '@prisma/client';
 import { CreateTicketDto } from '../../resource/dto/ticket/dto/create-ticket.dto';
 import { RouteMainSelect } from './routes.types.dto';
 
@@ -10,6 +11,17 @@ export class CreateTicketExtendedDto extends CreateTicketDto {
   carriageId: string;
   startStationId: string;
   endStationId: string;
+}
+
+export class TicketsLookupQuery {
+  @ApiPropertyOptional()
+  trainId: string;
+  @ApiPropertyOptional()
+  carriageId: string;
+  @ApiPropertyOptional({ enum: State })
+  state: State;
+  @ApiPropertyOptional()
+  routeId: string;
 }
 
 export const TicketMainSelect = {

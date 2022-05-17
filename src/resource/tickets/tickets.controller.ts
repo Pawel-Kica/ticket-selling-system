@@ -1,4 +1,3 @@
-import * as moment from 'moment';
 import {
   Controller,
   Post,
@@ -6,9 +5,13 @@ import {
   UseGuards,
   ConflictException,
   Get,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateTicketExtendedDto } from '../../@types/models/tickets.types.dto';
+import {
+  CreateTicketExtendedDto,
+  TicketsLookupQuery,
+} from '../../@types/models/tickets.types.dto';
 import { RequireUser } from '../../guards/requireUser';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { CarriagesService } from '../carriage/carriage.service';
@@ -20,11 +23,11 @@ import { CarriageType } from '@prisma/client';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { UserId } from '../../decorators/user.decorator';
+import { RequireManager } from '../../guards/roles.';
 
 @ApiBearerAuth()
 @ApiTags('Tickets')
 @Controller('tickets')
-@UseGuards(RequireUser)
 export class TicketsController {
   constructor(
     private readonly ticketsService: TicketsService,
@@ -35,6 +38,7 @@ export class TicketsController {
   ) {}
 
   @Get()
+  @UseGuards(RequireUser)
   async getUserTickets(@UserId() id: string) {
     const tickets = await this.ticketsService.findMany({
       userId: id,
@@ -42,7 +46,26 @@ export class TicketsController {
 
     return tickets;
   }
+
+  @Get()
+  @UseGuards(RequireManager)
+  async findMany(
+    @Query() { trainId, carriageId, state, routeId }: TicketsLookupQuery,
+  ) {
+    const tickets = await this.ticketsService.findMany({
+      trainId,
+      carriageId,
+      state,
+      train: {
+        routeId,
+      },
+    });
+
+    return tickets;
+  }
+
   @Post()
+  @UseGuards(RequireUser)
   async create(
     @UserId() id: string,
     @Body(ApplyValidation(createTicketSchema))
@@ -70,61 +93,13 @@ export class TicketsController {
       carriageId,
       seat,
     });
-
     if (ticketAlreadyBought) throw new ConflictException();
 
-    const departureTime = {
-      gt: moment().add(3, 'd').toISOString(),
-    };
-
-    const route = await this.routesService.findFirst({
-      OR: [
-        {
-          startStationId,
-          endStationId,
-          departureTime,
-        },
-        {
-          startStationId,
-          stationsBetween: {
-            some: {
-              stationId: endStationId,
-              departureTime,
-            },
-          },
-        },
-        {
-          AND: [
-            {
-              stationsBetween: {
-                some: {
-                  stationId: startStationId,
-                  departureTime,
-                },
-              },
-            },
-            {
-              stationsBetween: {
-                some: {
-                  stationId: endStationId,
-                },
-              },
-            },
-          ],
-        },
-        {
-          stationsBetween: {
-            some: {
-              stationId: startStationId,
-              departureTime,
-            },
-          },
-          endStationId,
-        },
-      ],
+    const routes = await this.routesService.findManyWithStations({
+      startStationId,
+      endStationId,
     });
-
-    if (!route) throw new InvalidRequestedBody('Invalid stations');
+    if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
 
     const { type: trainType } = await this.trainsService.findUnique({
       id: trainId,
@@ -136,38 +111,18 @@ export class TicketsController {
       startStationId,
       endStationId,
     });
-
     if (!price)
       throw new InvalidRequestedBody('Something went wrong, try again later');
 
-    const ticket = await this.ticketsService.create({
+    const ticket = await this.ticketsService.createWithParams({
+      id,
+      trainId,
+      carriageId,
+      startStationId,
+      endStationId,
       seat,
-      user: {
-        connect: {
-          id,
-        },
-      },
-      train: {
-        connect: {
-          id: trainId,
-        },
-      },
-      carriage: {
-        connect: {
-          id: carriageId,
-        },
-      },
-      startStation: {
-        connect: {
-          id: startStationId,
-        },
-      },
-      endStation: {
-        connect: {
-          id: endStationId,
-        },
-      },
     });
+
     return ticket;
   }
 }
