@@ -11,7 +11,7 @@ import { TicketsService } from './tickets.service';
 
 @ApiBearerAuth()
 @ApiTags('Manager - Tickets')
-@Controller('manager/tickets')
+@Controller('managers/tickets')
 @UseGuards(RequireManager)
 export class TicketsManagerController {
   constructor(private readonly ticketsService: TicketsService) {}

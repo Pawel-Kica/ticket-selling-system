@@ -10,11 +10,11 @@ import {
 export class TrainsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findMany(where: TrainWhereDto, select = TrainMainSelect) {
+  async findMany(where: TrainWhereDto, select = TrainMainSelect) {
     return this.prisma.train.findMany({ where, select });
   }
 
-  findUnique(where: TrainWhereUniqueDto, select = TrainMainSelect) {
+  async findUnique(where: TrainWhereUniqueDto, select = TrainMainSelect) {
     return this.prisma.train.findUnique({ where, select });
   }
 }

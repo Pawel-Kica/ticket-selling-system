@@ -11,19 +11,16 @@ export class TicketsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateTicketPrismaDto) {
-    const ticket = await this.prisma.ticket.create({ data });
-    return ticket;
+    return this.prisma.ticket.create({ data });
   }
   async findMany(where: TickerWhereDto, select = TicketMainSelect) {
-    const tickets = await this.prisma.ticket.findMany({
+    return this.prisma.ticket.findMany({
       where,
       select,
     });
-    return tickets;
   }
   async findFirst(where: TickerWhereDto) {
-    const ticket = await this.prisma.ticket.findFirst({ where });
-    return ticket;
+    return this.prisma.ticket.findFirst({ where });
   }
 
   async checkTicketAvailability({
@@ -55,7 +52,7 @@ export class TicketsService {
     endStationId: string;
     seat: number;
   }) {
-    const ticket = await this.create({
+    return this.create({
       seat,
       user: {
         connect: {
@@ -83,6 +80,5 @@ export class TicketsService {
         },
       },
     });
-    return ticket;
   }
 }

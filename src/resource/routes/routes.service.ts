@@ -13,21 +13,24 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 export class RoutesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findMany(where?: RouteWhereDto, select: RouteSelectDto = RouteMainSelect) {
+  async findMany(
+    where?: RouteWhereDto,
+    select: RouteSelectDto = RouteMainSelect,
+  ) {
     return this.prisma.route.findMany({
       where,
       select,
     });
   }
 
-  findUnique(
+  async findUnique(
     where: RouteWhereUniqueInput,
     select: RouteSelectDto = RouteMainSelect,
   ) {
     return this.prisma.route.findUnique({ where, select });
   }
 
-  findManyParamStations({
+  async findManyParamStations({
     startStationId,
     endStationId,
     departureTime = {

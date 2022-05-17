@@ -5,7 +5,7 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 
 @ApiBearerAuth()
 @ApiTags('Manager - employees')
-@Controller('manager/employees')
+@Controller('managers/employees')
 @UseGuards(RequireManager)
 export class EmployeesManagerController {
   constructor(private readonly employeesService: EmployeesService) {}

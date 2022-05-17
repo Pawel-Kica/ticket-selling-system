@@ -8,10 +8,9 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 export class CarriagesService {
   constructor(private readonly prisma: PrismaService) {}
   async findUnique(where: CarriageWhereUniqueDto) {
-    const carriage = await this.prisma.carriage.findUnique({
+    return this.prisma.carriage.findUnique({
       where,
     });
-    return carriage;
   }
 
   async validateCarriage({

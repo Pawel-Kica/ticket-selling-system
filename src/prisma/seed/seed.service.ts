@@ -21,7 +21,14 @@ export class SeedService {
   constructor(private readonly prisma: PrismaService) {}
 
   private loggerContext = 'Seed';
-
+  private seedImagesPath = join(
+    process.cwd(),
+    'src',
+    'prisma',
+    'seed',
+    'data',
+    'images',
+  );
   private readonly dataToSeed = {
     user: usersSeedData,
     station: stationsSeedData,
@@ -31,14 +38,17 @@ export class SeedService {
     train: trainsSeedData,
     carriage: carriagesSeedData,
   };
-
   private readonly models = Reflect.ownKeys(this.prisma).filter(
     (key) => key[0] !== '_' && key !== 'prismaServiceOptions',
   );
-  async removeSpecificTable(modelName: string) {
-    if (!this.models.includes(modelName)) return;
-    await this.prisma[modelName].deleteMany();
-  }
+
+  private logSeedInfo = (mess: string) => {
+    logInfo(mess, this.loggerContext);
+  };
+  private logSeedError = (mess: string) => {
+    logError(mess, this.loggerContext);
+  };
+
   private async seedAllData() {
     return Promise.all(
       Object.keys(this.dataToSeed).map(async (e) => await this.seedModel(e)),
@@ -49,21 +59,6 @@ export class SeedService {
       this.models.map((modelKey) => this.prisma[modelKey].deleteMany()),
     );
   }
-  private seedImagesPath = join(
-    process.cwd(),
-    'src',
-    'prisma',
-    'seed',
-    'data',
-    'images',
-  );
-
-  private logSeedInfo = (mess: string) => {
-    logInfo(mess, this.loggerContext);
-  };
-  private logSeedError = (mess: string) => {
-    logError(mess, this.loggerContext);
-  };
   private async removeStoredImages() {
     this.logSeedInfo('Remove currently stored images');
     await remove(mainImagesPath);
@@ -76,6 +71,10 @@ export class SeedService {
     );
   }
 
+  async removeSpecificTable(modelName: string) {
+    if (!this.models.includes(modelName)) return;
+    await this.prisma[modelName].deleteMany();
+  }
   async seedModel(modelName: string, dataset = []) {
     await this.removeSpecificTable(modelName);
 
@@ -109,19 +108,5 @@ export class SeedService {
     await this.seedModel('train');
     await this.seedModel('carriage');
     await this.seedModel('price');
-
-    // Promise.all([
-    //   await this.removeStoredImages(),
-    //   await this.seedModel('user'),
-    //   await this.seedModel('station'),
-    // ]).then(() => {
-    //   Promise.all([this.seedModel('route'), this.seedModel('employee')]).then(
-    //     async () => {
-    //       await this.seedModel('train');
-    //       await this.seedModel('carriage');
-    //       await this.seedModel('price');
-    //     },
-    //   );
-    // });
   }
 }

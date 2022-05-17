@@ -6,8 +6,7 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 export class PricesService {
   constructor(private readonly prisma: PrismaService) {}
   async findFirst(where: PriceWhereDto) {
-    const price = await this.prisma.price.findFirst({ where });
-    return price;
+    return this.prisma.price.findFirst({ where });
   }
 
   async checkPriceAvailability({
