@@ -1,21 +1,12 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  ConflictException,
-  Get,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateTicketExtendedDto } from '../../@types/models/tickets.types.dto';
 import { RequireUser } from '../../guards/requireUser';
-import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { CarriagesService } from '../carriage/carriage.service';
 import { RoutesService } from '../routes/routes.service';
 import { TrainsService } from '../trains/trains.service';
 import { TicketsService } from './tickets.service';
 import { PricesService } from '../prices/prices.service';
-import { CarriageType } from '@prisma/client';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { UserId } from '../../decorators/user.decorator';
@@ -34,12 +25,10 @@ export class TicketsController {
 
   @Get()
   @UseGuards(RequireUser)
-  async getUserTickets(@UserId() id: string) {
-    const tickets = await this.ticketsService.findMany({
+  getUserTickets(@UserId() id: string) {
+    return this.ticketsService.findMany({
       userId: id,
     });
-
-    return tickets;
   }
 
   @Post()
@@ -55,44 +44,33 @@ export class TicketsController {
       carriageId,
     }: CreateTicketExtendedDto,
   ) {
-    const carriage = await this.carriagesService.findUnique({
-      id: carriageId,
-    });
+    const { type: carriageType } = await this.carriagesService.validateCarriage(
+      {
+        carriageId,
+        trainId,
+        seat,
+      },
+    );
 
-    if (!carriage) throw new InvalidRequestedBody('Invalid carriage id');
+    await this.ticketsService.checkTicketAvailability({ carriageId, seat });
 
-    if (carriage.trainId !== trainId)
-      throw new InvalidRequestedBody('Invalid train id');
-
-    if (seat > 20 && carriage.type === CarriageType.comfort)
-      throw new InvalidRequestedBody('Invalid seat number');
-
-    const ticketAlreadyBought = await this.ticketsService.findFirst({
-      carriageId,
-      seat,
-    });
-    if (ticketAlreadyBought) throw new ConflictException();
-
-    const routes = await this.routesService.findManyWithStations({
+    await this.routesService.validateRoute({
       startStationId,
       endStationId,
     });
-    if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
 
     const { type: trainType } = await this.trainsService.findUnique({
       id: trainId,
     });
 
-    const price = await this.pricesService.firdFirst({
-      carriageType: carriage.type,
+    await this.pricesService.checkPriceAvailability({
+      carriageType,
       trainType,
       startStationId,
       endStationId,
     });
-    if (!price)
-      throw new InvalidRequestedBody('Something went wrong, try again later');
 
-    const ticket = await this.ticketsService.createWithParams({
+    return this.ticketsService.createWithParams({
       id,
       trainId,
       carriageId,
@@ -100,7 +78,5 @@ export class TicketsController {
       endStationId,
       seat,
     });
-
-    return ticket;
   }
 }

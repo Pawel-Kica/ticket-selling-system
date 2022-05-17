@@ -12,6 +12,9 @@ export class CreateTicketExtendedDto extends CreateTicketDto {
   startStationId: string;
   endStationId: string;
 }
+export class CreateTicketbyManagerDto extends CreateTicketExtendedDto {
+  userId: string;
+}
 
 export class TicketsLookupQuery {
   @ApiPropertyOptional()

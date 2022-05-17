@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import {
   TicketMainSelect,
@@ -24,6 +24,20 @@ export class TicketsService {
   async findFirst(where: TickerWhereDto) {
     const ticket = await this.prisma.ticket.findFirst({ where });
     return ticket;
+  }
+
+  async checkTicketAvailability({
+    carriageId,
+    seat,
+  }: {
+    carriageId: string;
+    seat: number;
+  }) {
+    const ticketAlreadyBought = await this.findFirst({
+      carriageId,
+      seat,
+    });
+    if (ticketAlreadyBought) throw new ConflictException();
   }
 
   async createWithParams({

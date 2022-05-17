@@ -7,6 +7,7 @@ import {
   RouteWhereUniqueInput,
 } from '../../@types/models/routes.types.dto';
 import * as moment from 'moment';
+import { InvalidRequestedBody } from '../../utils/responses/errors';
 
 @Injectable()
 export class RoutesService {
@@ -26,7 +27,7 @@ export class RoutesService {
     return this.prisma.route.findUnique({ where, select });
   }
 
-  findManyWithStations({
+  findManyParamStations({
     startStationId,
     endStationId,
     departureTime = {
@@ -86,5 +87,19 @@ export class RoutesService {
         },
       ],
     });
+  }
+
+  async validateRoute({
+    startStationId,
+    endStationId,
+  }: {
+    startStationId: string;
+    endStationId: string;
+  }) {
+    const routes = await this.findManyParamStations({
+      startStationId,
+      endStationId,
+    });
+    if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
   }
 }

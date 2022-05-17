@@ -22,7 +22,7 @@ export class RoutesController {
     const lt = fDate.endOf('day').toISOString() ?? undefined;
     const departureTime = { gt, lt };
 
-    return this.routesService.findManyWithStations({
+    return this.routesService.findManyParamStations({
       startStationId,
       endStationId,
       departureTime,

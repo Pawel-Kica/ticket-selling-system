@@ -18,8 +18,6 @@ import { EmployeesModule } from './resource/employees/employees.module';
 import { PricesModule } from './resource/prices/prices.module';
 import { RoutesModule } from './resource/routes/routes.module';
 import { TicketsModule } from './resource/tickets/tickets.module';
-// Controllers
-import { AppController } from './app.controller';
 // Others
 import { mainDir } from './config/files.config';
 import { PostInterceptor } from './interceptors/postMethod';
@@ -49,7 +47,6 @@ import { CarriageModule } from './resource/carriage/carriage.module';
     TrainsModule,
     CarriageModule,
   ],
-  controllers: [AppController],
   providers: [
     {
       provide: APP_INTERCEPTOR,

@@ -2,9 +2,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Query } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { StationsLookupQuery } from '../../@types/models/stations.types.dto';
-import { RouteMainSelect } from '../../@types/models/routes.types.dto';
 
-@ApiTags('Public - Stations')
+@ApiTags('Public - stations')
 @Controller('stations')
 export class StationsController {
   constructor(private readonly stationsService: StationsService) {}
@@ -18,9 +17,6 @@ export class StationsController {
       {
         id: true,
         name: true,
-        routeStartStations: {
-          select: RouteMainSelect,
-        },
       },
     );
   }

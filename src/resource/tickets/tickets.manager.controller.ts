@@ -1,7 +1,12 @@
-import { Controller, Get, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { TicketsLookupQuery } from '../../@types/models/tickets.types.dto';
+import {
+  CreateTicketbyManagerDto,
+  TicketsLookupQuery,
+} from '../../@types/models/tickets.types.dto';
 import { RequireManager } from '../../guards/roles.';
+import { createTicketSchema } from '../../validation/schemas/ticket.schema';
+import { ApplyValidation } from '../../validation/validationPipe';
 import { TicketsService } from './tickets.service';
 
 @ApiBearerAuth()
@@ -25,5 +30,20 @@ export class TicketsManagerController {
     });
 
     return tickets;
+  }
+
+  @Post()
+  async book(
+    @Body(ApplyValidation(createTicketSchema))
+    {
+      userId,
+      trainId,
+      seat,
+      startStationId,
+      endStationId,
+      carriageId,
+    }: CreateTicketbyManagerDto,
+  ) {
+    //
   }
 }
