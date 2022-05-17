@@ -1,9 +1,9 @@
+// Nest
 import { Module } from '@nestjs/common';
+// Services
 import { CarriagesService } from './carriage.service';
-import { CarriageController } from './carriage.controller';
 
 @Module({
-  controllers: [CarriageController],
   providers: [CarriagesService],
   exports: [CarriagesService],
 })

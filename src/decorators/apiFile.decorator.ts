@@ -1,8 +1,11 @@
-import { diskStorage } from 'multer';
-import { ApiConsumes, ApiBody } from '@nestjs/swagger';
-import { FileUploadHelper } from '../utils/files/Helper';
+// Nest
 import { FileInterceptor } from '@nestjs/platform-express';
 import { applyDecorators, UseInterceptors } from '@nestjs/common';
+// Swagger
+import { ApiConsumes, ApiBody } from '@nestjs/swagger';
+// Tools
+import { diskStorage } from 'multer';
+import { FileUploadHelper } from '../utils/files/Helper';
 
 export function ApiFile() {
   return applyDecorators(

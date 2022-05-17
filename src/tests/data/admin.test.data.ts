@@ -5,8 +5,8 @@ import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { validateSchema } from '../../validation/validationPipe';
 import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
-import { defaultEmployeePhotoPath } from '../../prisma/seed/data/employees.seed.data';
 import { testUserId } from './ids';
+import { defaultEmployeePhotoPath } from '../../config/files.config';
 
 export const adminLoginBody = {
   email: 'admin@example.com',

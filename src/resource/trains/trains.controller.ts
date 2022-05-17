@@ -1,12 +1,7 @@
-import {
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Query,
-} from '@nestjs/common';
+// Nest
 import { ApiTags } from '@nestjs/swagger';
-import { TrainsLookupQuery } from '../../@types/models/trains.types.dto';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+// Services
 import { TrainsService } from './trains.service';
 
 @ApiTags('Public - Trains')
@@ -15,8 +10,8 @@ export class TrainsController {
   constructor(private readonly trainsService: TrainsService) {}
 
   @Get()
-  findMany(@Query() { routeId }: TrainsLookupQuery) {
-    return this.trainsService.findMany({ routeId });
+  async findMany() {
+    return this.trainsService.findMany();
   }
 
   @Get(':id')

@@ -1,12 +1,15 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+// Nest
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { RequireManager } from '../../guards/roles.';
+import { Controller, Post, UseGuards } from '@nestjs/common';
+// Guards
+import { RequireManager } from '../../guards/requireRole.guard';
+// Responses
 import { SuccessResponse } from '../../utils/responses';
 
 @ApiBearerAuth()
+@UseGuards(RequireManager)
 @ApiTags('Manager - main')
 @Controller('manager')
-@UseGuards(RequireManager)
 export class ManagerController {
   @Post('auth')
   auth() {

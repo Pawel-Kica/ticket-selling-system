@@ -1,5 +1,7 @@
+// Nest
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+// Types
 import {
   StationsSelectDto,
   StationsWhereDto,
@@ -9,7 +11,7 @@ import {
 export class StationsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(where: StationsWhereDto, select?: StationsSelectDto) {
+  async findMany(where?: StationsWhereDto, select?: StationsSelectDto) {
     return this.prisma.station.findMany({ where, select });
   }
 }

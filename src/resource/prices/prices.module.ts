@@ -1,9 +1,9 @@
+// Nest
 import { Module } from '@nestjs/common';
+// Services
 import { PricesService } from './prices.service';
-import { PricesController } from './prices.controller';
 
 @Module({
-  controllers: [PricesController],
   providers: [PricesService],
   exports: [PricesService],
 })

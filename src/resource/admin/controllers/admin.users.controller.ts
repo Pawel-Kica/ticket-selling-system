@@ -1,3 +1,4 @@
+// Nest
 import {
   Body,
   Controller,
@@ -8,18 +9,23 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { Role } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+// Types
+import { Role } from '@prisma/client';
 import { CreateUserByAdminDto } from '../../../@types/models/users.types.dto';
-import { RequireAdmin } from '../../../guards/roles.';
-import { SuccessResponse } from '../../../utils/responses';
-import { createUserByAdminSchema } from '../../../validation/schemas/user.schema';
+// Guards
+import { RequireAdmin } from '../../../guards/requireRole.guard';
+// Validation
 import { ApplyValidation } from '../../../validation/validationPipe';
+import { createUserByAdminSchema } from '../../../validation/schemas/user.schema';
+// Services
 import { UsersService } from '../../users/users.service';
+// Responses
+import { SuccessResponse } from '../../../utils/responses';
 
-@ApiTags('Admin - users')
 @ApiBearerAuth()
 @UseGuards(RequireAdmin)
+@ApiTags('Admin - users')
 @Controller('admin/users')
 export class AdminUsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -27,8 +33,7 @@ export class AdminUsersController {
   @Post()
   @UsePipes(ApplyValidation(createUserByAdminSchema))
   async create(@Body() body: CreateUserByAdminDto) {
-    const result = await this.usersService.createUserHandler(body);
-    return result;
+    return this.usersService.createUserHandler(body);
   }
 
   @Patch('block/:id')

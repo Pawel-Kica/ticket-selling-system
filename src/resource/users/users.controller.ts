@@ -1,19 +1,25 @@
+// Nest
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Controller, Post, Body, UsePipes, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service';
+// Services
 import { AuthService } from './auth.service';
-import { InvalidCredentials } from '../../utils/responses/errors';
+import { UsersService } from './users.service';
+// Types
 import {
-  LoginUserDto,
   CreateUserDtoExtended,
+  LoginUserDto,
 } from '../../@types/models/users.types.dto';
+// Validation
 import {
   loginUserSchema,
   createUserSchema,
 } from '../../validation/schemas/user.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+// Guards
+import { RequireUser } from '../../guards/requireUser.guard';
+// Responses
 import { SuccessResponse } from '../../utils/responses';
-import { RequireUser } from '../../guards/requireUser';
+import { InvalidCredentials } from '../../utils/responses/errors';
 
 @ApiTags('Users - Main')
 @Controller('users')
@@ -25,14 +31,13 @@ export class UsersController {
 
   @Post()
   @UsePipes(ApplyValidation(createUserSchema))
-  async createHandler(@Body() body: CreateUserDtoExtended) {
-    const result = await this.usersService.createUserHandler(body);
-    return result;
+  async create(@Body() body: CreateUserDtoExtended) {
+    return this.usersService.createUserHandler(body);
   }
 
   @Post('login')
   @UsePipes(ApplyValidation(loginUserSchema))
-  async loginHandler(@Body() { email, password }: LoginUserDto) {
+  async login(@Body() { email, password }: LoginUserDto) {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
 

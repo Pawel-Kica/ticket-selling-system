@@ -1,9 +1,17 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export type RouteWhereDto = Prisma.RouteWhereInput;
 export type RouteWhereUniqueInput = Prisma.RouteWhereUniqueInput;
 export type RouteSelectDto = Prisma.RouteSelect;
+export class RoutesLookupQuery {
+  @ApiPropertyOptional()
+  startStationId: string;
+  @ApiPropertyOptional()
+  endStationId: string;
+  @ApiPropertyOptional()
+  date: string;
+}
 
 export const RouteMainSelect: RouteSelectDto = {
   startStation: {
@@ -33,12 +41,3 @@ export const RouteMainSelect: RouteSelectDto = {
   },
   arrivalTime: true,
 };
-
-export class RoutesLookupQuery {
-  @ApiPropertyOptional()
-  startStationId: string;
-  @ApiPropertyOptional()
-  endStationId: string;
-  @ApiPropertyOptional()
-  date: string;
-}

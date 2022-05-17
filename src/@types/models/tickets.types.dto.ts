@@ -1,7 +1,8 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma, State } from '@prisma/client';
-import { CreateTicketDto } from '../../resource/dto/ticket/dto/create-ticket.dto';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+// dto
 import { RouteMainSelect } from './routes.types.dto';
+import { CreateTicketDto } from '../../resource/dto/ticket/dto/create-ticket.dto';
 
 export type CreateTicketPrismaDto = Prisma.TicketCreateInput;
 export type TicketWhereDto = Prisma.TicketWhereInput;
@@ -59,5 +60,27 @@ export const TicketMainSelect = {
     },
   },
   state: true,
+  timeOfOperation: true,
+};
+
+export const TicketUserSelect = {
+  user: {
+    select: {
+      id: true,
+      name: true,
+      surname: true,
+    },
+  },
+  trainId: true,
+  carriage: {
+    select: {
+      id: true,
+      type: true,
+    },
+  },
+  state: true,
+  seat: true,
+  startStation: true,
+  endStation: true,
   timeOfOperation: true,
 };

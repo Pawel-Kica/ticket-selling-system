@@ -1,7 +1,10 @@
+// Types
 import { CarriageType } from '@prisma/client';
-import generateIdPrefixes from './generateData';
-import { carriagePrefix, employeePrefix } from './prefixes';
+// Tools
+import { generateIdPrefixes } from './helpers';
+// Data
 import { trainsSeedData } from './trains.seed.data';
+import { carriagePrefix, employeePrefix } from './prefixes';
 
 const carriages = [];
 

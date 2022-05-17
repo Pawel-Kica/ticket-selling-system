@@ -1,11 +1,15 @@
+// Nest
 import {
   Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
+// Types
 import { Role } from '@prisma/client';
+// Services
 import { UsersService } from '../resource/users/users.service';
+// Tools
 import { BlockedResourceException } from '../utils/responses/errors';
 
 @Injectable()

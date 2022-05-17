@@ -1,10 +1,8 @@
-import { join } from 'path';
 import { Response } from 'supertest';
-import { readFileSync } from 'fs-extra';
 import { ForbiddenError, SuccessTestResponse } from './responses';
 import { getTestToken, setTestTokenRes } from './setGlobals';
-import { equalToRes, equalToType } from '../../@types/tests/exceptions.types';
-import { expectToEqualRes, expectToEqualError } from './betterExceptions';
+import { equalToRes, equalToType } from '../../@types/tests/expectations.types';
+import { expectToEqualRes, expectToEqualError } from './betterExpectations';
 
 export const afterTest = (res: Response, equalTo: equalToType) => {
   setTestTokenRes(res);

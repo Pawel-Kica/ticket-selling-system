@@ -1,12 +1,16 @@
+// Nest
 import { Module } from '@nestjs/common';
-import { TicketsService } from './tickets.service';
-import { TicketsController } from './tickets.user.controller';
+// Modules
 import { UsersModule } from '../users/users.module';
-import { CarriageModule } from '../carriage/carriage.module';
 import { TrainsModule } from '../trains/trains.module';
 import { RoutesModule } from '../routes/routes.module';
 import { PricesModule } from '../prices/prices.module';
+import { CarriageModule } from '../carriage/carriage.module';
+// Controllers
+import { TicketsController } from './tickets.user.controller';
 import { TicketsManagerController } from './tickets.manager.controller';
+// Services
+import { TicketsService } from './tickets.service';
 
 @Module({
   imports: [

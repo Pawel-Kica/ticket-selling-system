@@ -1,5 +1,7 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+// Nest
 import { PrismaService } from 'nestjs-prisma';
+import { ConflictException, Injectable } from '@nestjs/common';
+// Types
 import {
   TicketMainSelect,
   CreateTicketPrismaDto,
@@ -7,28 +9,26 @@ import {
   ValidateAndCreateTicketDto,
   TicketSelectDto,
 } from '../../@types/models/tickets.types.dto';
-import { CarriagesService } from '../carriage/carriage.service';
+// Services
 import { PricesService } from '../prices/prices.service';
 import { RoutesService } from '../routes/routes.service';
 import { TrainsService } from '../trains/trains.service';
+import { CarriagesService } from '../carriage/carriage.service';
 
 @Injectable()
 export class TicketsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly carriagesService: CarriagesService,
     private readonly trainsService: TrainsService,
     private readonly routesService: RoutesService,
     private readonly pricesService: PricesService,
+    private readonly carriagesService: CarriagesService,
   ) {}
 
   async create(data: CreateTicketPrismaDto) {
     return this.prisma.ticket.create({ data });
   }
-  async findMany(
-    where: TicketWhereDto,
-    select: TicketSelectDto = TicketMainSelect,
-  ) {
+  async findMany(where?: TicketWhereDto, select?: TicketSelectDto) {
     return this.prisma.ticket.findMany({
       where,
       select,

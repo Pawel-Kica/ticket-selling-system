@@ -1,4 +1,6 @@
-import generateIdPrefixes from './generateData';
+// Tools
+import { generateIdPrefixes } from './helpers';
+// Data
 import { stationPrefix } from './prefixes';
 
 const stationsNames = [
@@ -18,6 +20,7 @@ const stationsNames = [
   'Montreal Central Station',
   'Poznan Glowny',
 ];
+
 const stationsData = stationsNames.map((e) => {
   return { name: e };
 });

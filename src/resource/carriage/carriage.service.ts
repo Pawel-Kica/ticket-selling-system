@@ -1,7 +1,11 @@
+// Nest
 import { Injectable } from '@nestjs/common';
-import { CarriageType } from '@prisma/client';
+// Prisma
 import { PrismaService } from 'nestjs-prisma';
+// Types
+import { CarriageType } from '@prisma/client';
 import { CarriageWhereUniqueDto } from '../../@types/models/carriage.types.dto';
+// Responses
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 
 @Injectable()

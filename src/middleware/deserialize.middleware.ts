@@ -1,17 +1,19 @@
+// Nest
 import { Injectable, NestMiddleware } from '@nestjs/common';
+// Types
 import { Request, Response, NextFunction } from 'express';
-import { getAuthToken } from '../tests/helpers/setGlobals';
+// Services
 import { JwtService } from '../utils/jwt/jwt.service';
+// Tools
+import { getAuthToken } from '../tests/helpers/setGlobals';
 
 @Injectable()
 export class Deserialize implements NestMiddleware {
   constructor(private readonly jwtService: JwtService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    try {
-      const token = getAuthToken(req);
-      res.locals.user = this.jwtService.verifyJWT(token);
-    } catch (_e) {}
+    const token = getAuthToken(req);
+    res.locals.user = this.jwtService.verifyJWT(token);
     next();
   }
 }

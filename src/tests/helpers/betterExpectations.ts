@@ -1,5 +1,8 @@
 import { omit } from '../../utils/objects';
-import { equalToError, equalToRes } from '../../@types/tests/exceptions.types';
+import {
+  equalToError,
+  equalToRes,
+} from '../../@types/tests/expectations.types';
 
 export function expectToEqualObject(
   data: any,

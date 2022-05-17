@@ -1,7 +1,8 @@
+// Nest
 import { ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+// Services
 import { StationsService } from './stations.service';
-import { StationsLookupQuery } from '../../@types/models/stations.types.dto';
 
 @ApiTags('Public - stations')
 @Controller('stations')
@@ -9,15 +10,7 @@ export class StationsController {
   constructor(private readonly stationsService: StationsService) {}
 
   @Get()
-  async findMany(@Query() { stationId }: StationsLookupQuery) {
-    return this.stationsService.findMany(
-      {
-        id: stationId,
-      },
-      {
-        id: true,
-        name: true,
-      },
-    );
+  async findMany() {
+    return this.stationsService.findMany();
   }
 }

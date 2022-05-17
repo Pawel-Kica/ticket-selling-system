@@ -1,22 +1,36 @@
+// Nest
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { RequireManager } from '../../guards/roles.';
+// Types
+import { FindManyEmployeesQuery } from '../../@types/models/employees.types.dto';
+// Guards
+import { RequireManager } from '../../guards/requireRole.guard';
+// Services
 import { EmployeesService } from './employees.service';
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { FindManyEmployeesQuery } from './employees.types';
 
 @ApiBearerAuth()
+@UseGuards(RequireManager)
 @ApiTags('Manager - employees')
 @Controller('manager/employees')
-@UseGuards(RequireManager)
 export class EmployeesManagerController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Get()
-  findMany(@Query() { take }: FindManyEmployeesQuery) {
+  async findMany(@Query() { take }: FindManyEmployeesQuery) {
     return this.employeesService.findMany({}, take);
   }
+
   @Get(':id')
-  findUnique(@Param('id') id: string) {
-    return this.employeesService.safeFindUnique({ id });
+  async findUnique(@Param('id') id: string) {
+    const employee = await this.employeesService.findUnique({ id });
+    if (!employee) throw new NotFoundException();
+    return employee;
   }
 }

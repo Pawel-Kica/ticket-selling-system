@@ -1,3 +1,4 @@
+// Nest
 import {
   Controller,
   Get,
@@ -5,9 +6,12 @@ import {
   Query,
   NotFoundException,
 } from '@nestjs/common';
-import * as moment from 'moment';
 import { ApiTags } from '@nestjs/swagger';
+// Types
 import { RoutesLookupQuery } from '../../@types/models/routes.types.dto';
+// Tools
+import * as moment from 'moment';
+// Services
 import { RoutesService } from './routes.service';
 
 @ApiTags('Public - Routes')
@@ -16,16 +20,17 @@ export class RoutesController {
   constructor(private readonly routesService: RoutesService) {}
 
   @Get()
-  findMany(@Query() { startStationId, endStationId, date }: RoutesLookupQuery) {
+  async findMany(
+    @Query() { startStationId, endStationId, date }: RoutesLookupQuery,
+  ) {
     const fDate = moment(date, 'DD-MM-YYYY');
     const gt = fDate.startOf('day').toISOString() ?? undefined;
     const lt = fDate.endOf('day').toISOString() ?? undefined;
-    const departureTime = { gt, lt };
 
     return this.routesService.findManyParamStations({
       startStationId,
       endStationId,
-      departureTime,
+      departureTime: { gt, lt },
     });
   }
 

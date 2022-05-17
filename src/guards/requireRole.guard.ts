@@ -1,10 +1,13 @@
-import { Role } from '@prisma/client';
+// Nest
 import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
+// Types
+import { Role } from '@prisma/client';
+// Services
 import { UsersService } from '../resource/users/users.service';
 
 @Injectable()

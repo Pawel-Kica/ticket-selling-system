@@ -35,13 +35,11 @@ export class UsersService {
   async checkIfUserExists(where: UserWhereUniqueDto) {
     if (!(await this.findUnique(where))) throw new NotFoundException();
   }
-
   async checkEmailAvailability(email: string) {
     const user = await this.findUnique({ email });
     if (user) throw new ConflictException();
     return user;
   }
-
   async createUserHandler(body: CreateUserDto) {
     await this.checkEmailAvailability(body.email);
     const user = await this.create(omit(body, 'passwordRepetition'));

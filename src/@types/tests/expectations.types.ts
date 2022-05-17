@@ -5,6 +5,7 @@ export type equalToRes = {
   status: number;
   omit: string[] | string;
 };
+
 export type equalToError = HttpException;
 
 export type equalToType = equalToRes | equalToError;

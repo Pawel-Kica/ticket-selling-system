@@ -1,11 +1,13 @@
+// Tools
 import * as moment from 'moment';
-import generateIdPrefixes from './generateData';
+import { generateIdPrefixes } from './helpers';
+// Data
 import { routePrefix, stationPrefix } from './prefixes';
 
 const threeDaysAhead = moment().add(3, 'd');
 const twoDaysAhead = moment().add(2, 'd');
 
-const generateStation = (
+const generateSingleStation = (
   order: number,
   stationId: number | string,
   arrivalTime: moment.Moment,
@@ -33,8 +35,8 @@ const routes = [
     stationsBetween: {
       createMany: {
         data: [
-          generateStation(1, 2, threeDaysAhead.clone().add(4, 'h')),
-          generateStation(2, 3, threeDaysAhead.clone().add(8, 'h')),
+          generateSingleStation(1, 2, threeDaysAhead.clone().add(4, 'h')),
+          generateSingleStation(2, 3, threeDaysAhead.clone().add(8, 'h')),
         ],
       },
     },
@@ -55,9 +57,9 @@ const routes = [
     stationsBetween: {
       createMany: {
         data: [
-          generateStation(3, 6, threeDaysAhead.clone().add(1, 'h')),
-          generateStation(2, 7, threeDaysAhead.clone().add(2, 'h')),
-          generateStation(1, 8, threeDaysAhead.clone().add(3, 'h')),
+          generateSingleStation(3, 6, threeDaysAhead.clone().add(1, 'h')),
+          generateSingleStation(2, 7, threeDaysAhead.clone().add(2, 'h')),
+          generateSingleStation(1, 8, threeDaysAhead.clone().add(3, 'h')),
         ],
       },
     },
@@ -78,10 +80,10 @@ const routes = [
     stationsBetween: {
       createMany: {
         data: [
-          generateStation(1, 11, twoDaysAhead.clone().add(12, 'h')),
-          generateStation(3, 12, threeDaysAhead.clone().add(1, 'h')),
-          generateStation(2, 13, threeDaysAhead.clone().add(3, 'h')),
-          generateStation(4, 14, threeDaysAhead.clone().add(6, 'h')),
+          generateSingleStation(1, 11, twoDaysAhead.clone().add(12, 'h')),
+          generateSingleStation(3, 12, threeDaysAhead.clone().add(1, 'h')),
+          generateSingleStation(2, 13, threeDaysAhead.clone().add(3, 'h')),
+          generateSingleStation(4, 14, threeDaysAhead.clone().add(6, 'h')),
         ],
       },
     },

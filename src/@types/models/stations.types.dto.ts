@@ -1,5 +1,5 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export type CreateStationDto = Prisma.StationCreateInput;
 export type StationsWhereDto = Prisma.StationWhereInput;

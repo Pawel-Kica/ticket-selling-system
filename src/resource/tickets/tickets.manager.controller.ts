@@ -1,14 +1,20 @@
-import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
+// Nest
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
+// Types
 import {
   ValidateAndCreateTicketDto,
   TicketsLookupQuery,
+  TicketUserSelect,
 } from '../../@types/models/tickets.types.dto';
-import { RequireManager } from '../../guards/roles.';
-import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
-import { ApplyValidation } from '../../validation/validationPipe';
+// Guards
+import { RequireManager } from '../../guards/requireRole.guard';
+// Services
 import { UsersService } from '../users/users.service';
 import { TicketsService } from './tickets.service';
+// Validation
+import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
+import { ApplyValidation } from '../../validation/validationPipe';
 
 @ApiBearerAuth()
 @ApiTags('Manager - Tickets')
@@ -25,7 +31,7 @@ export class TicketsManagerController {
     @Query()
     { trainId, carriageId, state, routeId, userId }: TicketsLookupQuery,
   ) {
-    const tickets = await this.ticketsService.findMany(
+    return this.ticketsService.findMany(
       {
         trainId,
         userId,
@@ -35,30 +41,8 @@ export class TicketsManagerController {
           routeId,
         },
       },
-      {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-          },
-        },
-        trainId: true,
-        carriage: {
-          select: {
-            id: true,
-            type: true,
-          },
-        },
-        state: true,
-        seat: true,
-        startStation: true,
-        endStation: true,
-        timeOfOperation: true,
-      },
+      TicketUserSelect,
     );
-
-    return tickets;
   }
 
   @Post()
@@ -67,8 +51,6 @@ export class TicketsManagerController {
     body: ValidateAndCreateTicketDto,
   ) {
     await this.usersService.checkIfUserExists({ id: body.userId });
-
-    const ticket = await this.ticketsService.validateAndCreate(body);
-    return ticket;
+    return this.ticketsService.validateAndCreate(body);
   }
 }

@@ -1,11 +1,14 @@
+// Types
+import { TrainType } from '@prisma/client';
+// Tools
+import { generateIdPrefixes } from './helpers';
+// Data
 import {
   employeePrefix,
   routePrefix,
   trainPrefix,
   userPrefix,
 } from './prefixes';
-import { TrainType } from '@prisma/client';
-import generateIdPrefixes from './generateData';
 
 function generateParams(
   driverId: string,
@@ -32,9 +35,8 @@ function generateTrains(
     type: TrainType;
   }[],
 ) {
-  const result = [];
-  data.forEach((e) => {
-    result.push({
+  const result = data.map((e) => {
+    return {
       type: e.type,
       driver: {
         connect: { id: `${employeePrefix}${e.driverId}` },
@@ -48,15 +50,15 @@ function generateTrains(
       route: {
         connect: { id: `${routePrefix}${e.routeId}` },
       },
-    });
+    };
   });
   return result;
 }
 
 const trains = generateTrains([
   generateParams('16', '17', '11', '1', TrainType.highSpeed),
-  // generateParams('18', '19', '12', '2', TrainType.passenger),
-  // generateParams('20', '21', '13', '3', TrainType.regional),
+  generateParams('18', '19', '12', '2', TrainType.passenger),
+  generateParams('20', '21', '13', '3', TrainType.regional),
 ]);
 
 export const trainsSeedData = generateIdPrefixes(trains, trainPrefix);

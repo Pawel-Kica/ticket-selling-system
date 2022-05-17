@@ -2,10 +2,10 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 // Middlewares
-import { Trimmer } from './middleware/trimmer';
-import { Deserialize } from './middleware/deserialize';
-import { EmailToLowerCase } from './middleware/emailToLowerCase';
-import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassoword';
+import { Trimmer } from './middleware/trimmer.middleware';
+import { Deserialize } from './middleware/deserialize.middleware';
+import { EmailToLowerCase } from './middleware/emailLowerCase.middleware';
+import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassword.middleware';
 // Modules
 import { PrismaModule } from 'nestjs-prisma';
 import { ConfigModule } from '@nestjs/config';
@@ -20,7 +20,7 @@ import { RoutesModule } from './resource/routes/routes.module';
 import { TicketsModule } from './resource/tickets/tickets.module';
 // Others
 import { publicPath } from './config/files.config';
-import { PostInterceptor } from './interceptors/postMethod';
+import { PostInterceptor } from './interceptors/postStatusCode.interceptor';
 import { TrainsModule } from './resource/trains/trains.module';
 import { CarriageModule } from './resource/carriage/carriage.module';
 

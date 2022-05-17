@@ -1,20 +1,24 @@
-import { join } from 'path';
+// Nest
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { usersSeedData } from './data/users.seed.data';
-import { stationsSeedData } from './data/stations.seed.data';
-import { pricesSeedData } from './data/prices.seed.data';
-import { employeesSeedData } from './data/employees.seed.data';
+// Tools
+import { join } from 'path';
+import { logInfo, logError } from '../../utils/logger';
+import { existsSync, remove, copyFileSync, ensureDir } from 'fs-extra';
+// Config
 import {
   imagesExtension,
   imagesFolderName,
-  mainImagesPath,
+  imagesPath,
   srcPath,
 } from './../../config/files.config';
-import { logInfo, logError } from '../../utils/logger';
-import { existsSync, remove, mkdir, copyFileSync, ensureDir } from 'fs-extra';
+// Data
+import { usersSeedData } from './data/users.seed.data';
 import { trainsSeedData } from './data/trains.seed.data';
 import { routesSeedData } from './data/routes.seed.data';
+import { pricesSeedData } from './data/prices.seed.data';
+import { stationsSeedData } from './data/stations.seed.data';
+import { employeesSeedData } from './data/employees.seed.data';
 import { carriagesSeedData } from './data/carriages.seed.data';
 
 @Injectable()
@@ -56,8 +60,8 @@ export class SeedService {
   private async removeStoredImages() {
     this.logSeedInfo('Remove currently stored images');
 
-    if (existsSync(mainImagesPath)) await remove(mainImagesPath);
-    await ensureDir(mainImagesPath);
+    if (existsSync(imagesPath)) await remove(imagesPath);
+    await ensureDir(imagesPath);
 
     this.logSeedInfo(
       `${
@@ -87,7 +91,7 @@ export class SeedService {
       await this.removeStoredImages();
       dataset.map((data) => {
         const name = `${data.photoPath}.${imagesExtension}`;
-        const savePath = join(mainImagesPath, name);
+        const savePath = join(imagesPath, name);
         const srcPath = join(this.seedImagesPath, name);
 
         if (!existsSync(savePath)) copyFileSync(srcPath, savePath);

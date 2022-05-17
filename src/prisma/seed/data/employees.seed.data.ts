@@ -1,11 +1,15 @@
-import { faker } from '@faker-js/faker';
+// Types
 import { Position } from '@prisma/client';
-import generateIdPrefixes from './generateData';
+// Tools
+import { faker } from '@faker-js/faker';
+import { generateIdPrefixes } from './helpers';
+// Data
 import { employeePrefix } from './prefixes';
+import { defaultEmployeePhotoPath } from '../../../config/files.config';
 
-function generateEmployees(n: number) {
+function generateEmployees(numberOfEmployees: number) {
   const result = [];
-  for (let i = 0; i < n; i++) {
+  for (let idx = 0; idx < numberOfEmployees; idx++) {
     result.push({
       name: faker.name.firstName(),
       surname: faker.name.lastName(),
@@ -15,14 +19,13 @@ function generateEmployees(n: number) {
         '1980-01-01T00:00:00.000Z',
         '2000-01-01T00:00:00.000Z',
       )[0],
-      position: i < numberOfConductors ? Position.conductor : Position.driver,
+      position: idx < numberOfConductors ? Position.conductor : Position.driver,
       photoPath: defaultEmployeePhotoPath,
     });
   }
   return result;
 }
 
-export const defaultEmployeePhotoPath = `${employeePrefix}0`;
 export const numberOfEmployees = 30;
 export const numberOfConductors = numberOfEmployees / 2;
 export const numberOfDrivers = numberOfEmployees - numberOfConductors;

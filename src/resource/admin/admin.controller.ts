@@ -1,7 +1,10 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
-import { SuccessResponse } from '../../utils/responses';
-import { RequireAdmin } from '../../guards/roles.';
+// Nest
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller, Post, UseGuards } from '@nestjs/common';
+// Guards
+import { RequireAdmin } from '../../guards/requireRole.guard';
+// Responses
+import { SuccessResponse } from '../../utils/responses';
 
 @ApiBearerAuth()
 @UseGuards(RequireAdmin)

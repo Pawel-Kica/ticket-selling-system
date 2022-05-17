@@ -1,6 +1,9 @@
-import { SeedService } from './seed.service';
+// Nest
 import { TestingModule, Test } from '@nestjs/testing';
+// Modules
 import { AppModule } from '../../app.module';
+// Services
+import { SeedService } from './seed.service';
 
 if (require.main === module) {
   (async () => {

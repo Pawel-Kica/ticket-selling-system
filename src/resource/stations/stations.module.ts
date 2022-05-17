@@ -1,6 +1,9 @@
+// Nest
 import { Module } from '@nestjs/common';
-import { StationsService } from './stations.service';
+// Controllers
 import { StationsController } from './stations.controller';
+// Services
+import { StationsService } from './stations.service';
 
 @Module({
   controllers: [StationsController],

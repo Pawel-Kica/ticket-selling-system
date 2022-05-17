@@ -1,7 +1,10 @@
+// Nest
 import { ApiPropertyOptional } from '@nestjs/swagger';
+// Prisma
 import { Prisma } from '@prisma/client';
+// Tools
 import { Transform } from 'class-transformer';
-import { toNumber } from './../../utils/query/transform';
+import { ToNumber } from '../../utils/query/transform';
 
 export type CreateEmployeeDtoPrisma = Prisma.EmployeeCreateInput;
 export type EmployeeWhereUniqueDto = Prisma.EmployeeWhereUniqueInput;
@@ -10,7 +13,7 @@ export type EmployeeSelectDto = Prisma.EmployeeSelect;
 
 export class FindManyEmployeesQuery {
   @ApiPropertyOptional()
-  @Transform(({ value }) => toNumber(value))
+  @Transform(({ value }) => ToNumber(value))
   take: number;
 }
 

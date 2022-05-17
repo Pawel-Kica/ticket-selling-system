@@ -1,6 +1,9 @@
+// Nest
 import { Module } from '@nestjs/common';
-import { TrainsService } from './trains.service';
+// Controllers
 import { TrainsController } from './trains.controller';
+// Services
+import { TrainsService } from './trains.service';
 
 @Module({
   controllers: [TrainsController],

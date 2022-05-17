@@ -1,5 +1,4 @@
 // Nest
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
   Controller,
   Post,
@@ -7,6 +6,7 @@ import {
   UploadedFile,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 // Decorators
 import { ApiFile } from '../../../decorators/apiFile.decorator';
 // Services
@@ -14,20 +14,23 @@ import { EmployeesService } from '../../employees/employees.service';
 // Validation
 import { ApplyValidation } from '../../../validation/validationPipe';
 import { createEmployeeSchema } from './../../../validation/schemas/employee.schema';
-import { defaultEmployeePhotoPath } from '../../../prisma/seed/data/employees.seed.data';
+// Types
 import { CreateEmployeeDto } from '../../dto/employee/dto/create-employee.dto';
-import { RequireAdmin } from '../../../guards/roles.';
+// Guards
+import { RequireAdmin } from '../../../guards/requireRole.guard';
+// Config
+import { defaultEmployeePhotoPath } from '../../../config/files.config';
 
 @ApiBearerAuth()
+@UseGuards(RequireAdmin)
 @ApiTags('Admin - employees')
 @Controller('admin/employees')
-@UseGuards(RequireAdmin)
 export class AdminEmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
   @ApiFile()
-  create(
+  async create(
     @UploadedFile() file,
     @Body(ApplyValidation(createEmployeeSchema)) body: CreateEmployeeDto,
   ) {

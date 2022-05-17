@@ -1,5 +1,3 @@
-
-  export class ConnectCarriageDto {
-    id: string;
-  }
-  
+export class ConnectCarriageDto {
+  id: string;
+}

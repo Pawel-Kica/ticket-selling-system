@@ -1,6 +1,10 @@
-import generateIdPrefixes from './generateData';
-import faker from '@faker-js/faker';
+// Types
 import { Role } from '@prisma/client';
+// Tools
+import faker from '@faker-js/faker';
+import { generateIdPrefixes } from './helpers';
+// Data
+import { userPrefix } from './prefixes';
 import { adminLoginBody } from '../../../tests/data/admin.test.data';
 import {
   managerUserId,
@@ -8,7 +12,6 @@ import {
   adminUserId,
   testUserId,
 } from '../../../tests/data/ids';
-import { userPrefix } from './prefixes';
 
 function generateUsers(n: number) {
   const result = [];
