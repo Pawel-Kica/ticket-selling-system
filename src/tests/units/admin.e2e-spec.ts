@@ -20,7 +20,7 @@ import {
 } from '../data/admin.test.data';
 import { TestingModule } from '@nestjs/testing';
 
-describe('USERS CRUD', () => {
+describe('ADMIN', () => {
   let seedService: SeedService;
   let app: TestingModule;
 
@@ -32,6 +32,7 @@ describe('USERS CRUD', () => {
   afterAll(async () => {
     seedService.removeSpecificTable('user');
     seedService.removeSpecificTable('employee');
+
     app.close();
   });
 

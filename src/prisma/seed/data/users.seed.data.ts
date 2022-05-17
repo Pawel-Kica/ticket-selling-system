@@ -1,15 +1,14 @@
+import generateIdPrefixes from './generateData';
 import faker from '@faker-js/faker';
 import { Role } from '@prisma/client';
+import { adminLoginBody } from '../../../tests/data/admin.test.data';
 import {
-  adminId,
-  adminLoginBody,
+  managerUserId,
+  bossUserId,
+  adminUserId,
   testUserId,
-} from '../../../tests/data/admin.test.data';
-import generateIdPrefixes from './generateData';
+} from '../../../tests/data/ids';
 import { userPrefix } from './prefixes';
-
-export const managerUserId = 'manager1';
-export const bossUserId = 'boss1';
 
 function generateUsers(n: number) {
   const result = [];
@@ -32,7 +31,7 @@ export const numberOfManagers = numberOfUsers - numberOfBosses;
 const users = generateUsers(numberOfUsers);
 
 export const adminUser = {
-  id: adminId,
+  id: adminUserId,
   name: 'Admin',
   surname: 'Admin',
   role: Role.admin,

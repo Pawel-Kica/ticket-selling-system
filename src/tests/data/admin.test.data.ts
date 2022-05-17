@@ -6,9 +6,8 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { validateSchema } from '../../validation/validationPipe';
 import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
 import { defaultEmployeePhotoPath } from '../../prisma/seed/data/employees.seed.data';
+import { testUserId } from './ids';
 
-export const adminId = 'admin1';
-export const testUserId = 'test1';
 export const adminLoginBody = {
   email: 'admin@example.com',
   password: 'Admin1234!',

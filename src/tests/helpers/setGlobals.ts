@@ -1,6 +1,11 @@
 import { Response } from 'supertest';
 import { sign } from 'jsonwebtoken';
-import { adminId } from '../data/admin.test.data';
+import {
+  adminUserId,
+  bossUserId,
+  managerUserId,
+  testUserId,
+} from '../data/ids';
 
 export function removeTestToken() {
   global.test_token = '';
@@ -14,7 +19,16 @@ export function generateTestToken(id: string) {
   });
 }
 export function generateAdminToken() {
-  generateTestToken(adminId);
+  generateTestToken(adminUserId);
+}
+export function generateBossToken() {
+  generateTestToken(bossUserId);
+}
+export function generateManagerToken() {
+  generateTestToken(managerUserId);
+}
+export function generateUserToken() {
+  generateTestToken(testUserId);
 }
 
 export function setTestTokenRes(res: Response) {
