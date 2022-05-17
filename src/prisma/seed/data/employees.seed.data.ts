@@ -23,13 +23,46 @@ function generateEmployees(n: number) {
 }
 
 export const defaultEmployeePhotoPath = `${employeePrefix}0`;
-
 export const numberOfEmployees = 30;
 export const numberOfConductors = numberOfEmployees / 2;
 export const numberOfDrivers = numberOfEmployees - numberOfConductors;
 
+export const employeesTestData = [
+  {
+    id: '1',
+    name: 'Trudie',
+    surname: "O'Hara",
+    dateOfBirth: '1991-11-07T13:59:56.038Z',
+    address: 'High Point',
+    telephoneNumber: '225.803.3471 x952',
+    position: 'conductor',
+    photoPath: 'employee0',
+  },
+  {
+    id: '2',
+    name: 'Trent',
+    surname: 'Schaefer',
+    dateOfBirth: '1982-06-15T11:41:02.269Z',
+    address: 'Pflugerville',
+    telephoneNumber: '1-545-920-8971 x53827',
+    position: 'conductor',
+    photoPath: 'employee0',
+  },
+  {
+    id: '3',
+    name: 'Elza',
+    surname: 'Schultz',
+    dateOfBirth: '1991-09-10T05:07:04.796Z',
+    address: 'Milwaukee',
+    telephoneNumber: '266-307-5485',
+    position: 'conductor',
+    photoPath: 'employee0',
+  },
+];
+
 const employeesData = generateEmployees(numberOfEmployees);
-export const employeesSeedData = generateIdPrefixes(
-  employeesData,
-  employeePrefix,
-);
+
+export const employeesSeedData = [
+  ...employeesTestData,
+  ...generateIdPrefixes(employeesData, employeePrefix),
+];

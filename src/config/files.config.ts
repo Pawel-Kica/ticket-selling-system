@@ -1,14 +1,12 @@
 import { join } from 'path';
 
-export const mainDir = join('public');
-
-export const mainPath =
-  process.env.NODE_ENV === 'test'
-    ? join(process.cwd(), `${mainDir}`, 'test')
-    : join(process.cwd(), `${mainDir}`);
-
 export const imagesFolderName = 'images';
-
-export const mainImagesPath = join(mainPath, imagesFolderName);
-
 export const imagesExtension = 'jpg';
+
+export const publicPath = join(process.cwd(), 'public');
+export const srcPath = join(process.cwd(), 'src');
+
+export const mainPublicPath =
+  process.env.NODE_ENV === 'test' ? join(publicPath, 'test') : publicPath;
+
+export const mainImagesPath = join(mainPublicPath, imagesFolderName);

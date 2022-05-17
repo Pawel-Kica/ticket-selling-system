@@ -19,7 +19,7 @@ import { PricesModule } from './resource/prices/prices.module';
 import { RoutesModule } from './resource/routes/routes.module';
 import { TicketsModule } from './resource/tickets/tickets.module';
 // Others
-import { mainDir } from './config/files.config';
+import { publicPath } from './config/files.config';
 import { PostInterceptor } from './interceptors/postMethod';
 import { TrainsModule } from './resource/trains/trains.module';
 import { CarriageModule } from './resource/carriage/carriage.module';
@@ -34,7 +34,7 @@ import { CarriageModule } from './resource/carriage/carriage.module';
       },
     }),
     MulterModule.register({
-      dest: `./${mainDir}`,
+      dest: `./${publicPath}`,
     }),
     JwtModule,
     UsersModule,

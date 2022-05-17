@@ -9,9 +9,10 @@ import {
   imagesExtension,
   imagesFolderName,
   mainImagesPath,
+  srcPath,
 } from './../../config/files.config';
 import { logInfo, logError } from '../../utils/logger';
-import { existsSync, remove, mkdir, copyFileSync } from 'fs-extra';
+import { existsSync, remove, mkdir, copyFileSync, ensureDir } from 'fs-extra';
 import { trainsSeedData } from './data/trains.seed.data';
 import { routesSeedData } from './data/routes.seed.data';
 import { carriagesSeedData } from './data/carriages.seed.data';
@@ -21,14 +22,7 @@ export class SeedService {
   constructor(private readonly prisma: PrismaService) {}
 
   private loggerContext = 'Seed';
-  private seedImagesPath = join(
-    process.cwd(),
-    'src',
-    'prisma',
-    'seed',
-    'data',
-    'images',
-  );
+  private seedImagesPath = join(srcPath, 'prisma', 'seed', 'data', 'images');
   private readonly dataToSeed = {
     user: usersSeedData,
     station: stationsSeedData,
@@ -61,8 +55,10 @@ export class SeedService {
   }
   private async removeStoredImages() {
     this.logSeedInfo('Remove currently stored images');
-    await remove(mainImagesPath);
-    await mkdir(mainImagesPath);
+
+    if (existsSync(mainImagesPath)) await remove(mainImagesPath);
+    await ensureDir(mainImagesPath);
+
     this.logSeedInfo(
       `${
         imagesFolderName.charAt(0).toLocaleUpperCase() +
@@ -88,6 +84,7 @@ export class SeedService {
       dataset.map((data: any) => this.prisma[modelName].create({ data })),
     );
     if (modelName === 'employee') {
+      await this.removeStoredImages();
       dataset.map((data) => {
         const name = `${data.photoPath}.${imagesExtension}`;
         const savePath = join(mainImagesPath, name);
@@ -100,7 +97,6 @@ export class SeedService {
   }
 
   async main() {
-    await this.removeStoredImages();
     await this.seedModel('user');
     await this.seedModel('station');
     await this.seedModel('route');

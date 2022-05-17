@@ -5,10 +5,7 @@ import {
   Post,
   Body,
   UploadedFile,
-  UsePipes,
   UseGuards,
-  Get,
-  Param,
 } from '@nestjs/common';
 // Decorators
 import { ApiFile } from '../../../decorators/apiFile.decorator';
@@ -30,8 +27,10 @@ export class AdminEmployeesController {
 
   @Post()
   @ApiFile()
-  @UsePipes(ApplyValidation(createEmployeeSchema))
-  create(@UploadedFile() file, @Body() body: CreateEmployeeDto) {
+  create(
+    @UploadedFile() file,
+    @Body(ApplyValidation(createEmployeeSchema)) body: CreateEmployeeDto,
+  ) {
     if (!file) body.photoPath = defaultEmployeePhotoPath;
     return this.employeesService.create(body);
   }

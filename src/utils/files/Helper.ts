@@ -1,6 +1,6 @@
-import { ensureDir } from 'fs-extra';
 import { Request } from 'express';
 import { randomBytes } from 'crypto';
+import { ensureDir } from 'fs-extra';
 import { imagesExtension, mainImagesPath } from '../../config/files.config';
 import { UnsupportedMediaTypeException } from '@nestjs/common';
 
