@@ -8,7 +8,10 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 // Config
 import { defaultEmployeePhotoPath } from '../../config/files.config';
 // Responses
-import { NotFoundError, SuccessTestResponse } from '../helpers/responses';
+import {
+  NotFoundErrorInstance,
+  SuccessTestResponse,
+} from '../helpers/responses';
 // Validation
 import { validateSchema } from '../../validation/validationPipe';
 import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
@@ -66,7 +69,7 @@ export const blockUserObj = {
   invalid: {
     notFound: {
       param: '2115',
-      response: NotFoundError,
+      response: NotFoundErrorInstance,
     },
   },
 };

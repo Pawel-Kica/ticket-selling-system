@@ -30,9 +30,11 @@ export const numberOfEmployees = 30;
 export const numberOfConductors = numberOfEmployees / 2;
 export const numberOfDrivers = numberOfEmployees - numberOfConductors;
 
+export const testEmployeeId = 'e1';
+
 export const employeesTestData = [
   {
-    id: '1',
+    id: testEmployeeId,
     name: 'Trudie',
     surname: "O'Hara",
     dateOfBirth: '1991-11-07T13:59:56.038Z',
@@ -42,7 +44,7 @@ export const employeesTestData = [
     photoPath: 'employee0',
   },
   {
-    id: '2',
+    id: 'e2',
     name: 'Trent',
     surname: 'Schaefer',
     dateOfBirth: '1982-06-15T11:41:02.269Z',
@@ -52,7 +54,7 @@ export const employeesTestData = [
     photoPath: 'employee0',
   },
   {
-    id: '3',
+    id: 'e3',
     name: 'Elza',
     surname: 'Schultz',
     dateOfBirth: '1991-09-10T05:07:04.796Z',

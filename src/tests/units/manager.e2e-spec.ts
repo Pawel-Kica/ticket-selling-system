@@ -7,7 +7,10 @@ import { generateManagerToken, generateUserToken } from '../helpers/setGlobals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
-import { getAllEmployeesObj } from './../data/manager.test.data';
+import {
+  getAllEmployeesObj,
+  getSingleEmployeeObj,
+} from './../data/manager.test.data';
 // Responses
 import { ForbiddenError } from '../helpers/responses';
 
@@ -48,6 +51,8 @@ describe('MANAGER', () => {
     });
   });
   describe('EMPLOYEES', () => {
+    const { valid, invalid } = getSingleEmployeeObj;
+
     it('ANONYMOUS should NOT be able to access `employees data', async () => {
       generateUserToken();
       await testGETRequest('/manager/employees', ForbiddenError);
@@ -56,6 +61,16 @@ describe('MANAGER', () => {
     it('MANAGER should be able to access employees data', async () => {
       generateManagerToken();
       await testGETRequest('/manager/employees', getAllEmployeesObj);
+    });
+
+    it('MANAGER should NOT be able to access single employee data that does not exist', async () => {
+      await testGETRequest(
+        `/manager/employees/${invalid.param}`,
+        invalid.response,
+      );
+    });
+    it('MANAGER should be able to access single employee data', async () => {
+      await testGETRequest(`/manager/employees/${valid.param}`, valid.response);
     });
   });
 });

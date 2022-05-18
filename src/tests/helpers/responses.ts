@@ -14,7 +14,7 @@ import {
 export const ConflictExceptionError = new ConflictException();
 export const InvalidCredentialsError = new InvalidCredentials();
 export const ForbiddenError = new ForbiddenException();
-export const NotFoundError = new NotFoundException();
+export const NotFoundErrorInstance = new NotFoundException();
 export const BlockedResourceError = new BlockedResourceException();
 
 export const TokenResponse = { data: {}, status: 200, omit: 'token' };
