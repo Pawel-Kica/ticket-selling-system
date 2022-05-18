@@ -3,7 +3,6 @@ import { PrismaService } from 'nestjs-prisma';
 import { ConflictException, Injectable } from '@nestjs/common';
 // Types
 import {
-  TicketMainSelect,
   CreateTicketPrismaDto,
   TicketWhereDto,
   ValidateAndCreateTicketDto,

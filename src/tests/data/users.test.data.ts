@@ -10,6 +10,7 @@ import {
   TokenResponse,
 } from '../helpers/responses';
 // Validation
+import { DocumentType } from '@prisma/client';
 import { createUserSchema } from '../../validation/schemas/user.schema';
 import { validateSchema } from '../../validation/validationPipe';
 
@@ -19,6 +20,8 @@ export const createUserBody = {
   email: 'ElonMusk@spacex.com',
   password: 'Tesla123!',
   passwordRepetition: 'Tesla123!',
+  documentType: DocumentType.identityCard,
+  documentNumber: 'p100s',
 };
 export const userResponse = {
   data: {

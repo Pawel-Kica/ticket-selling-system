@@ -46,17 +46,18 @@ export class SeedService {
   private logSeedError = (mess: string) => {
     logError(mess, this.loggerContext);
   };
+  async removeAllTables() {
+    await this.removeSpecificTable('user');
+    await this.removeSpecificTable('station');
+    await this.removeSpecificTable('employee');
 
-  private async seedAllData() {
-    return Promise.all(
-      Object.keys(this.dataToSeed).map(async (e) => await this.seedModel(e)),
-    );
+    // On Cascade
+    // await this.removeSpecificTable('route');
+    // await this.removeSpecificTable('train');
+    // await this.removeSpecificTable('carriage');
+    // await this.removeSpecificTable('price');
   }
-  private async removeAllTables() {
-    return Promise.all(
-      this.models.map((modelKey) => this.prisma[modelKey].deleteMany()),
-    );
-  }
+
   private async removeStoredImages() {
     this.logSeedInfo('Remove currently stored images');
 

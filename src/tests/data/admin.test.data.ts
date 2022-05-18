@@ -1,6 +1,7 @@
 // Nest
 import { HttpStatus } from '@nestjs/common';
 // Tools
+import { DocumentType } from '@prisma/client';
 import { modifyObject, omit } from '../../utils/objects';
 // Data
 import { testUserId } from './id.test.data';
@@ -31,6 +32,8 @@ export const createUserByAdminBody = {
   surname: 'Mysliwiec',
   role: 'default',
   passwordRepetition: 'Passoword1!',
+  documentType: DocumentType.identityCard,
+  documentNumber: '0909',
   ...createUserByAdminLoginBody,
 };
 

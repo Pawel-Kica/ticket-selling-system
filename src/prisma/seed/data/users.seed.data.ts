@@ -1,5 +1,5 @@
 // Types
-import { Role } from '@prisma/client';
+import { Role, DocumentType } from '@prisma/client';
 // Tools
 import faker from '@faker-js/faker';
 import { generateIdPrefixes } from './helpers';
@@ -21,6 +21,8 @@ function generateUsers(n: number) {
       surname: faker.name.lastName(),
       email: `user${i}@example.com`,
       password: `Password1!${i}`,
+      documentType: DocumentType.identityCard,
+      documentNumber: `document${i}`,
       role: i < numberOfManagers ? Role.manager : Role.boss,
     });
   }
@@ -38,6 +40,8 @@ export const adminUser = {
   name: 'Admin',
   surname: 'Admin',
   role: Role.admin,
+  documentNumber: '123',
+  documentType: DocumentType.identityCard,
   ...adminLoginBody,
 };
 export const testUser = {
@@ -46,6 +50,8 @@ export const testUser = {
   surname: 'Depp',
   email: 'johnnydeep@example.com',
   password: 'Password1!',
+  documentNumber: '456',
+  documentType: DocumentType.identityCard,
   role: Role.default,
 };
 export const managerUser = {
@@ -54,6 +60,8 @@ export const managerUser = {
   surname: 'Comte',
   email: 'august@example.com',
   password: 'Password1!',
+  documentNumber: '789',
+  documentType: DocumentType.identityCard,
   role: Role.manager,
 };
 export const bossUser = {
@@ -62,6 +70,8 @@ export const bossUser = {
   surname: 'Nakomoto',
   email: 'satoshi@example.com',
   password: 'Password1!',
+  documentNumber: '101112',
+  documentType: DocumentType.identityCard,
   role: Role.boss,
 };
 

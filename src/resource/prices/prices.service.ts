@@ -25,6 +25,8 @@ export class PricesService {
       endStationId,
     });
     if (!price)
-      throw new InvalidRequestedBody('Something went wrong, try again later');
+      throw new InvalidRequestedBody(
+        'We are not selling tickets for this route yet, try again later',
+      );
   }
 }

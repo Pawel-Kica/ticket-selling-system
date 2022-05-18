@@ -24,7 +24,7 @@
     "prisma:format": "npx prisma format",
     "prisma:push": "npx prisma db push",
     "prisma:push:test": "NODE_ENV=test npx prisma db push",
-    "prisma:update": "npm run generate && npm run push",
+    "prisma:update": "npm run prisma:format && npm run prisma:generate && npm run prisma:push",
     "prisma:docker": "docker-compose up db -d && npm run generate && npm run push",
     "studio": "npx prisma studio",
     "seed:main": "ts-node ./src/prisma/seed/index.ts"

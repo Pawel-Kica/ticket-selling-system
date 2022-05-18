@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { Role } from '@prisma/client';
+import { Role, DocumentType } from '@prisma/client';
 import { joiValidateEnums } from '../helpers/customValidators';
 import { regexEnglishAlphabet, regexPassword } from '../helpers/regexes';
 
@@ -25,6 +25,10 @@ const joiCreateUser = {
   ...joiNameSurname,
   ...joiPassword,
   ...joiEmail,
+  documentType: Joi.string().custom(
+    joiValidateEnums(Object.keys(DocumentType)),
+  ),
+  documentNumber: Joi.string(),
   passwordRepetition: Joi.any()
     .valid(Joi.ref('password'))
     .required()
