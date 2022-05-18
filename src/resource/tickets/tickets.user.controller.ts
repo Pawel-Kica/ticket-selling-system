@@ -9,6 +9,7 @@ import { TicketsService } from './tickets.service';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { UserId } from '../../decorators/userId.decorator';
+import { SuccessResponse } from '../../utils/responses';
 
 @ApiBearerAuth()
 @UseGuards(RequireUser)
@@ -33,10 +34,10 @@ export class TicketsController {
     @Body(ApplyValidation(createTicketSchema))
     body: CreateTicketExtendedDto,
   ) {
-    const ticket = await this.ticketsService.validateAndCreate({
+    await this.ticketsService.validateAndCreate({
       ...body,
       userId: id,
     });
-    return ticket;
+    return SuccessResponse;
   }
 }

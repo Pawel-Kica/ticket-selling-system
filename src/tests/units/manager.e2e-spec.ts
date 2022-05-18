@@ -27,10 +27,7 @@ describe('MANAGER', () => {
     await seedService.seedModel('employee');
   });
   afterAll(async () => {
-    seedService.removeSpecificTable('user');
-    seedService.removeSpecificTable('station');
-    seedService.removeSpecificTable('employee');
-
+    await seedService.removeAllTables();
     app.close();
   });
 

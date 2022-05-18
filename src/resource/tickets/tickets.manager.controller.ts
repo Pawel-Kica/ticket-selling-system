@@ -15,6 +15,7 @@ import { TicketsService } from './tickets.service';
 // Validation
 import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
+import { SuccessResponse } from '../../utils/responses';
 
 @ApiBearerAuth()
 @ApiTags('Manager - Tickets')
@@ -51,6 +52,7 @@ export class TicketsManagerController {
     body: ValidateAndCreateTicketDto,
   ) {
     await this.usersService.checkIfUserExists({ id: body.userId });
-    return this.ticketsService.validateAndCreate(body);
+    await this.ticketsService.validateAndCreate(body);
+    return SuccessResponse;
   }
 }

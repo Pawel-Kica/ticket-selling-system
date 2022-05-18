@@ -19,11 +19,10 @@ export const NotFoundErrorInstance = new NotFoundException();
 export const BlockedResourceError = new BlockedResourceException();
 
 export const InvalidCarriageIdError = new InvalidRequestedBody(
-  'Invalid carriage number',
+  'Invalid carriage id',
 );
-export const InvalidTrainIdError = new InvalidRequestedBody(
-  'Invalid train number',
-);
+export const InvalidTrainIdError = new InvalidRequestedBody('Invalid train id');
+
 export const InvalidSeatNumberError = new InvalidRequestedBody(
   'Invalid seat number',
 );
