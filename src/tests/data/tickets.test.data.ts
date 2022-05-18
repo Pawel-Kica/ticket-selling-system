@@ -1,3 +1,4 @@
+import { type } from 'os';
 import {
   carriagePrefix,
   stationPrefix,
@@ -5,7 +6,6 @@ import {
 } from '../../prisma/seed/data/prefixes';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
-import { createUserSchema } from '../../validation/schemas/user.schema';
 import { validateSchema } from '../../validation/validationPipe';
 import {
   InvalidCarriageIdError,
@@ -14,7 +14,6 @@ import {
   InvalidTrainIdError,
   SuccessTestResponse,
 } from '../helpers/responses';
-import { invalidCreateUserBody } from './users.test.data';
 
 const createTicketBody = {
   seat: 40,
@@ -97,3 +96,54 @@ export const createTicketObj = {
     },
   },
 };
+
+// export const getTicketsResponse = {
+//   data: {
+//     '0': {
+//       carriage: {
+//         id: 'carriage1',
+//         numberOfSeats: 40,
+//         type: 'regular',
+//       },
+//       endStation: {
+//         name: 'Jamaica Station',
+//       },
+//       seat: 40,
+//       startStation: {
+//         name: 'New York Penn Station',
+//       },
+//       state: 'bought',
+//       timeOfOperation: '2022-05-18T07:41:37.169Z',
+//       train: {
+//         route: {
+//           arrivalTime: '2022-05-22T07:41:34.508Z',
+//           departureTime: '2022-05-21T08:41:34.508Z',
+//           endStation: {
+//             name: 'Jamaica Station',
+//           },
+//           startStation: {
+//             name: 'New York Penn Station',
+//           },
+//           stationsBetween: [
+//             {
+//               arrivalTime: '2022-05-21T11:41:34.508Z',
+//               departureTime: '2022-05-21T11:46:34.508Z',
+//               station: {
+//                 name: 'Grand Central Terminal',
+//               },
+//             },
+//             {
+//               arrivalTime: '2022-05-21T15:41:34.508Z',
+//               departureTime: '2022-05-21T15:46:34.508Z',
+//               station: {
+//                 name: 'Toronto Union Station',
+//               },
+//             },
+//           ],
+//         },
+//       },
+//     },
+//   },
+//   status: 200,
+//   omit: ['timeOfOperation', 'train'],
+// };
