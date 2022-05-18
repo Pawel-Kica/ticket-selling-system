@@ -1,6 +1,6 @@
 import { ConsoleLogger } from '@nestjs/common';
 
-const singleton = (function () {
+const main = (function () {
   let logger = null;
   return {
     getLogger: () => {
@@ -10,7 +10,7 @@ const singleton = (function () {
   };
 })();
 
-const logger = singleton.getLogger();
+const logger = main.getLogger();
 
 export const logInfo = (mess: string, context = '') => {
   if (process.env.NODE_ENV !== 'test' || process.env.FORCE_LOG === 'true') {

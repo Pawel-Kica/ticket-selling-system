@@ -1,10 +1,14 @@
+// Nest
+import { TestingModule } from '@nestjs/testing';
+// Tools
 import startTestServer from '../startTestServer';
-import { createUserObj } from '../data/users.test.data';
-import { loginUserObj } from '../data/users.test.data';
 import { removeTestToken } from '../helpers/setGlobals';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
-import { TestingModule } from '@nestjs/testing';
+// Services
 import { SeedService } from '../../prisma/seed/seed.service';
+// Data
+import { createUserObj } from '../data/users.test.data';
+import { loginUserObj } from '../data/users.test.data';
 
 describe('USERS CRUD', () => {
   let app: TestingModule;

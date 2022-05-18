@@ -11,7 +11,7 @@ export function omit(obj: any, props?: string[] | string) {
   return result;
 }
 
-export function addToObject(spy: { [x: string]: string }, str: string) {
+export function modifyObject(spy: { [x: string]: string }, str: string) {
   const newObj = { ...spy };
   Object.keys(newObj).forEach(function (key) {
     newObj[key] = `${newObj[key]}${str}`;

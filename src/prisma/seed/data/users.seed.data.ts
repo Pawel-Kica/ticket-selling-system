@@ -11,7 +11,7 @@ import {
   bossUserId,
   adminUserId,
   testUserId,
-} from '../../../tests/data/ids';
+} from '../../../tests/data/id.test.data';
 
 function generateUsers(n: number) {
   const result = [];

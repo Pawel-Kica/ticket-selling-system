@@ -1,6 +1,8 @@
 // Nest
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+// Interceptors
+import { PostInterceptor } from './interceptors/postStatusCode.interceptor';
 // Middlewares
 import { Trimmer } from './middleware/trimmer.middleware';
 import { Deserialize } from './middleware/deserialize.middleware';
@@ -10,19 +12,18 @@ import { prismaHashPasswordMiddleware } from './middleware/prismaHashPassword.mi
 import { PrismaModule } from 'nestjs-prisma';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from './utils/jwt/jwt.module';
+import { MulterModule } from '@nestjs/platform-express';
 import { UsersModule } from './resource/users/users.module';
 import { AdminModule } from './resource/admin/admin.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { StationsModule } from './resource/stations/stations.module';
-import { EmployeesModule } from './resource/employees/employees.module';
+import { TrainsModule } from './resource/trains/trains.module';
 import { PricesModule } from './resource/prices/prices.module';
 import { RoutesModule } from './resource/routes/routes.module';
 import { TicketsModule } from './resource/tickets/tickets.module';
-// Others
-import { publicPath } from './config/files.config';
-import { PostInterceptor } from './interceptors/postStatusCode.interceptor';
-import { TrainsModule } from './resource/trains/trains.module';
 import { CarriageModule } from './resource/carriage/carriage.module';
+import { StationsModule } from './resource/stations/stations.module';
+import { EmployeesModule } from './resource/employees/employees.module';
+// Config
+import { publicPath } from './config/files.config';
 
 @Module({
   imports: [

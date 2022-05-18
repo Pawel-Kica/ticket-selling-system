@@ -19,15 +19,15 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --runInBand --config ./src/tests/jest-e2e.json",
-    "generate": "npx prisma generate",
-    "migrate": "npx prisma migrate dev",
-    "format:prisma": "npx prisma format",
-    "push": "npx prisma db push",
-    "push:test": "NODE_ENV=test npx prisma db push",
-    "upt:prisma": "npm run generate && npm run push",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:generate": "npx prisma generate",
+    "prisma:format": "npx prisma format",
+    "prisma:push": "npx prisma db push",
+    "prisma:push:test": "NODE_ENV=test npx prisma db push",
+    "prisma:update": "npm run generate && npm run push",
+    "prisma:docker": "docker-compose up db -d && npm run generate && npm run push",
     "studio": "npx prisma studio",
-    "dockerdb": "docker-compose up db -d && npm run generate && npm run push",
-    "seed": "ts-node ./src/prisma/seed/index.ts"
+    "seed:main": "ts-node ./src/prisma/seed/index.ts"
   },
   "dependencies": {
     "@joi/date": "^2.1.0",

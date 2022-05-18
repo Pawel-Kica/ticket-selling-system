@@ -1,24 +1,30 @@
-import startTestServer from '../startTestServer';
-import { TokenResponse } from '../helpers/responses';
-import { generateTestToken, generateAdminToken } from '../helpers/setGlobals';
-import { BlockedResourceError } from '../helpers/responses';
-import { SeedService } from '../../prisma/seed/seed.service';
+// Nest
+import { TestingModule } from '@nestjs/testing';
+// Tools
 import {
   testAuthEndpoint,
   testDELETERequest,
   testPATCHRequest,
   testPOSTRequest,
 } from '../helpers/testEndpoint';
+import startTestServer from '../startTestServer';
+import { generateTestToken, generateAdminToken } from '../helpers/setGlobals';
+// Services
+import { SeedService } from '../../prisma/seed/seed.service';
+// Responses
+import { TokenResponse } from '../helpers/responses';
+import { BlockedResourceError } from '../helpers/responses';
+// Data
 import {
   adminLoginBody,
   blockUserObj,
   createEmployeeObj,
+  createUserByAdminLoginBody,
   createUserByAdminObj,
   removeUserObj,
   unblockUserObj,
   updateRolesObj,
 } from '../data/admin.test.data';
-import { TestingModule } from '@nestjs/testing';
 
 describe('ADMIN', () => {
   let seedService: SeedService;
@@ -60,9 +66,19 @@ describe('ADMIN', () => {
       it('ADMIN should be able to create a user', async () => {
         await testPOSTRequest('/admin/users', valid.body, valid.response);
       });
+      it('USER should be able to login', async () => {
+        await testPOSTRequest(
+          '/users/login',
+          createUserByAdminLoginBody,
+          TokenResponse,
+        );
+      });
     });
     describe('BLOCK USER', () => {
       const { valid, invalid } = blockUserObj;
+      beforeAll(() => {
+        generateAdminToken();
+      });
 
       it('ADMIN should be NOT be able to block not existing users', async () => {
         await testPATCHRequest(
@@ -85,8 +101,11 @@ describe('ADMIN', () => {
     });
     describe('UNBLOCK USER', () => {
       const { valid, invalid } = unblockUserObj;
-      it('ADMIN should be NOT be able to unblock not existing users', async () => {
+      beforeAll(() => {
         generateAdminToken();
+      });
+
+      it('ADMIN should be NOT be able to unblock not existing users', async () => {
         await testPATCHRequest(
           `/admin/users/unblock/${invalid.notFound.param}`,
           {},
@@ -107,8 +126,11 @@ describe('ADMIN', () => {
     });
     describe('SET ROLES', () => {
       const { valid, invalid } = updateRolesObj;
-      it('ADMIN should NOT be able to update non existings users roles', async () => {
+      beforeAll(() => {
         generateAdminToken();
+      });
+
+      it('ADMIN should NOT be able to update non existings users roles', async () => {
         await testPATCHRequest(
           `/admin/users/role/${invalid.notFound.param}/inv`,
           {},
@@ -129,8 +151,11 @@ describe('ADMIN', () => {
     });
     describe('REMOVE USER', () => {
       const { valid, invalid } = removeUserObj;
-      it('ADMIN should NOT be able to remove non existings users', async () => {
+      beforeAll(() => {
         generateAdminToken();
+      });
+
+      it('ADMIN should NOT be able to remove non existings users', async () => {
         await testDELETERequest(
           `/admin/users/${invalid.notFound.param}`,
           {},
@@ -156,6 +181,7 @@ describe('ADMIN', () => {
       beforeAll(() => {
         generateAdminToken();
       });
+
       it('ADMIN should NOT be able to create employee with invalid body', async () => {
         await testPOSTRequest(
           '/admin/employees',

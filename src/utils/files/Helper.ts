@@ -1,8 +1,12 @@
+// Types
 import { Request } from 'express';
+// Tools
 import { randomBytes } from 'crypto';
 import { ensureDir } from 'fs-extra';
-import { imagesExtension, imagesPath } from '../../config/files.config';
+// Responses
 import { UnsupportedMediaTypeException } from '@nestjs/common';
+// Config
+import { imagesExtension, imagesPath } from '../../config/files.config';
 
 export class FileUploadHelper {
   static async customFileName(

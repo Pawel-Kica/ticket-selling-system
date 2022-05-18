@@ -1,12 +1,18 @@
+// Nest
 import { HttpStatus } from '@nestjs/common';
-import { addToObject, omit } from '../../utils/objects';
-import { NotFoundError, SuccessTestResponse } from '../helpers/responses';
-import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
+// Tools
+import { modifyObject, omit } from '../../utils/objects';
+// Data
+import { testUserId } from './id.test.data';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
-import { validateSchema } from '../../validation/validationPipe';
-import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
-import { testUserId } from './ids';
+// Config
 import { defaultEmployeePhotoPath } from '../../config/files.config';
+// Responses
+import { NotFoundError, SuccessTestResponse } from '../helpers/responses';
+// Validation
+import { validateSchema } from '../../validation/validationPipe';
+import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
+import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
 
 export const adminLoginBody = {
   email: 'admin@example.com',
@@ -16,6 +22,7 @@ export const createUserByAdminLoginBody = {
   email: 'kamil@example.com',
   password: 'Passoword1!',
 };
+
 export const createUserByAdminBody = {
   name: 'Kamil',
   surname: 'Mysliwiec',
@@ -24,7 +31,7 @@ export const createUserByAdminBody = {
   ...createUserByAdminLoginBody,
 };
 
-export const invalidCreateUserByAdminBody = addToObject(
+export const invalidCreateUserByAdminBody = modifyObject(
   createUserByAdminLoginBody,
   '!',
 );
@@ -83,7 +90,7 @@ const createEmployeeBody = {
   telephoneNumber: '123456789',
   position: 'driver',
 };
-const invalidCreateEmployeeBody = addToObject(createEmployeeBody, '!');
+const invalidCreateEmployeeBody = modifyObject(createEmployeeBody, '!');
 
 export const createEmployeeObj = {
   valid: {

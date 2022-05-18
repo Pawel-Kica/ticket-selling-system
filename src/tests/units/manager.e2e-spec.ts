@@ -1,11 +1,15 @@
-import startTestServer from '../startTestServer';
+// Nest
 import { TestingModule } from '@nestjs/testing';
-import { SeedService } from '../../prisma/seed/seed.service';
+// Tools
+import startTestServer from '../startTestServer';
 import { testAuthEndpoint, testGETRequest } from '../helpers/testEndpoint';
 import { generateManagerToken, generateUserToken } from '../helpers/setGlobals';
-import { ForbiddenError } from '../helpers/responses';
-import { employeesSeedData } from '../../prisma/seed/data/employees.seed.data';
+// Services
+import { SeedService } from '../../prisma/seed/seed.service';
+// Data
 import { getAllEmployeesObj } from './../data/manager.test.data';
+// Responses
+import { ForbiddenError } from '../helpers/responses';
 
 describe('MANAGER', () => {
   let app: TestingModule;
@@ -22,6 +26,7 @@ describe('MANAGER', () => {
   afterAll(async () => {
     seedService.removeSpecificTable('user');
     seedService.removeSpecificTable('station');
+    seedService.removeSpecificTable('employee');
 
     app.close();
   });

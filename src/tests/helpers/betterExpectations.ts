@@ -1,4 +1,6 @@
+// Tools
 import { omit } from '../../utils/objects';
+// Types
 import {
   equalToError,
   equalToRes,

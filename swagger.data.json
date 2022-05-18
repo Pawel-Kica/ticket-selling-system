@@ -1,11 +1,3 @@
-{
-  "email": "admin@example.com",
-  "password": "Admin1234!"
-}
-{
-  "email": "johnnydeep@example.com",
-  "password": "Password1!"
-}
 // user
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWQiOiJ0ZXN0MSIsImlhdCI6OTk5OTk5OTk5OX0.4XfK4WnoGWU-WSNm37qZoQAwsZtkDBeTTd41NNGvufQ
 

@@ -1,14 +1,17 @@
+// Nest
 import { HttpStatus } from '@nestjs/common';
-import { pick } from '../../utils/objects';
+// Tools
+import { omit, modifyObject, pick } from '../../utils/objects';
+// Responses
 import { InvalidRequestedBody } from '../../utils/responses/errors';
-import { addToObject, omit } from '../../utils/objects';
-import { createUserSchema } from '../../validation/schemas/user.schema';
-import { validateSchema } from '../../validation/validationPipe';
 import {
   ConflictExceptionError,
   InvalidCredentialsError,
   TokenResponse,
 } from '../helpers/responses';
+// Validation
+import { createUserSchema } from '../../validation/schemas/user.schema';
+import { validateSchema } from '../../validation/validationPipe';
 
 export const createUserBody = {
   name: 'Elon',
@@ -30,7 +33,7 @@ export const userResponse = {
   omit: 'id',
 };
 
-export const invalidCreateUserBody = addToObject(createUserBody, '!');
+export const invalidCreateUserBody = modifyObject(createUserBody, '!');
 
 export const createUserObj = {
   valid: {
@@ -45,7 +48,7 @@ export const createUserObj = {
       ),
     },
     emailAlreadyExists: {
-      // triggered after successful request(creating an account)
+      // running after successful request (creating an account)
       body: createUserBody,
       response: ConflictExceptionError,
     },
