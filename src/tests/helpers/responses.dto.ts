@@ -10,7 +10,7 @@ import {
   InvalidCredentials,
   InvalidRequestedBody,
 } from '../../utils/responses/errors';
-import { SuccessResponse } from '../../utils/responses';
+import { SuccessResponse } from '../../utils/responses/main.dto';
 
 export const ConflictExceptionError = new ConflictException();
 export const InvalidCredentialsError = new InvalidCredentials();

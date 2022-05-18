@@ -6,6 +6,7 @@ import {
   ValidateAndCreateTicketDto,
   TicketsLookupQuery,
   TicketUserSelect,
+  CreateTicketByManagerResponseDto,
 } from '../../@types/models/tickets.types.dto';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
@@ -13,14 +14,13 @@ import { RequireManager } from '../../guards/requireRole.guard';
 import { UsersService } from '../users/users.service';
 import { TicketsService } from './tickets.service';
 // Validation
-import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
-import { SuccessResponse } from '../../utils/responses';
+import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
 
 @ApiBearerAuth()
+@UseGuards(RequireManager)
 @ApiTags('Manager - Tickets')
 @Controller('manager/tickets')
-@UseGuards(RequireManager)
 export class TicketsManagerController {
   constructor(
     private readonly ticketsService: TicketsService,
@@ -47,12 +47,12 @@ export class TicketsManagerController {
   }
 
   @Post()
-  async book(
+  async create(
     @Body(ApplyValidation(createTicketByManagerSchema))
     body: ValidateAndCreateTicketDto,
-  ) {
+  ): Promise<CreateTicketByManagerResponseDto> {
     await this.usersService.checkIfUserExists({ id: body.userId });
-    await this.ticketsService.validateAndCreate(body);
-    return SuccessResponse;
+    const ticket = await this.ticketsService.validateAndCreate(body);
+    return ticket;
   }
 }

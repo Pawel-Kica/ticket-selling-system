@@ -12,7 +12,7 @@ import {
   getSingleEmployeeObj,
 } from './../data/manager.test.data';
 // Responses
-import { ForbiddenError } from '../helpers/responses';
+import { ForbiddenError } from '../helpers/responses.dto';
 
 describe('MANAGER', () => {
   let app: TestingModule;
@@ -50,7 +50,7 @@ describe('MANAGER', () => {
   describe('EMPLOYEES', () => {
     const { valid, invalid } = getSingleEmployeeObj;
 
-    it('ANONYMOUS should NOT be able to access `employees data', async () => {
+    it('ANONYMOUS should NOT be able to access employees data', async () => {
       generateUserToken();
       await testGETRequest('/manager/employees', ForbiddenError);
     });
@@ -68,6 +68,14 @@ describe('MANAGER', () => {
     });
     it('MANAGER should be able to access single employee data', async () => {
       await testGETRequest(`/manager/employees/${valid.param}`, valid.response);
+    });
+  });
+  describe('TICKETS', () => {
+    it('MANAGER should be able to buy ticket for user', async () => {
+      //
+    });
+    it('MANAGER should be able to BOOK ticket for user', async () => {
+      //
     });
   });
 });

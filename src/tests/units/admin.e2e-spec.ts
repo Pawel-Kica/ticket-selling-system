@@ -12,8 +12,8 @@ import { generateTestToken, generateAdminToken } from '../helpers/setGlobals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Responses
-import { TokenResponse } from '../helpers/responses';
-import { BlockedResourceError } from '../helpers/responses';
+import { TokenResponse } from '../helpers/responses.dto';
+import { BlockedResourceError } from '../helpers/responses.dto';
 // Data
 import {
   adminLoginBody,

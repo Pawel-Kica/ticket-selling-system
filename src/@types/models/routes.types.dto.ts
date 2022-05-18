@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Route, RoutePoint, Station } from '@prisma/client';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export type RouteWhereDto = Prisma.RouteWhereInput;
@@ -13,7 +13,8 @@ export class RoutesLookupQuery {
   date: string;
 }
 
-export const RouteMainSelect: RouteSelectDto = {
+export const RouteMainSelect = Prisma.validator<RouteSelectDto>()({
+  id: true,
   startStation: {
     select: {
       name: true,
@@ -22,13 +23,14 @@ export const RouteMainSelect: RouteSelectDto = {
   departureTime: true,
   stationsBetween: {
     select: {
-      departureTime: true,
-      arrivalTime: true,
       station: {
         select: {
           name: true,
         },
       },
+      departureTime: true,
+      arrivalTime: true,
+      order: true,
     },
     orderBy: {
       order: 'asc',
@@ -40,4 +42,35 @@ export const RouteMainSelect: RouteSelectDto = {
     },
   },
   arrivalTime: true,
-};
+  train: {
+    select: {
+      type: true,
+    },
+  },
+});
+
+// how to avoid nestjs stupid validation
+class LocalTrainType {
+  type: string;
+}
+class localRoutePoint {
+  station: {
+    name: Station['name'];
+  };
+  departureTime: RoutePoint['departureTime'];
+  arrivalTime: RoutePoint['arrivalTime'];
+  order: RoutePoint['order'];
+}
+export class RouteMainEntity {
+  id: Route['id'];
+  startStation: {
+    name: Station['name'];
+  };
+  departureTime: Route['departureTime'];
+  stationsBetween: localRoutePoint[];
+  endStation: {
+    name: Station['name'];
+  };
+  arrivalTime: Route['arrivalTime'];
+  train: LocalTrainType[];
+}

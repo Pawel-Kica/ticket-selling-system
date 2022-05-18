@@ -8,7 +8,7 @@ import {
   ConflictExceptionError,
   InvalidCredentialsError,
   TokenResponse,
-} from '../helpers/responses';
+} from '../helpers/responses.dto';
 // Validation
 import { DocumentType } from '@prisma/client';
 import { createUserSchema } from '../../validation/schemas/user.schema';

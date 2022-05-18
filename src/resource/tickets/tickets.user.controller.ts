@@ -1,7 +1,8 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
-  CreateTicketExtendedDto,
+  CreateTicketExtDto,
+  CreateTicketResponseDto,
   TicketMainSelect,
 } from '../../@types/models/tickets.types.dto';
 import { RequireUser } from '../../guards/requireUser.guard';
@@ -9,7 +10,6 @@ import { TicketsService } from './tickets.service';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { UserId } from '../../decorators/userId.decorator';
-import { SuccessResponse } from '../../utils/responses';
 
 @ApiBearerAuth()
 @UseGuards(RequireUser)
@@ -32,12 +32,12 @@ export class TicketsController {
   async create(
     @UserId() id: string,
     @Body(ApplyValidation(createTicketSchema))
-    body: CreateTicketExtendedDto,
-  ) {
-    await this.ticketsService.validateAndCreate({
+    body: CreateTicketExtDto,
+  ): Promise<CreateTicketResponseDto> {
+    const ticket = await this.ticketsService.validateAndCreate({
       ...body,
       userId: id,
     });
-    return SuccessResponse;
+    return ticket;
   }
 }

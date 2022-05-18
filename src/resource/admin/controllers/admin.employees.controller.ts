@@ -15,6 +15,7 @@ import { EmployeesService } from '../../employees/employees.service';
 import { ApplyValidation } from '../../../validation/validationPipe';
 import { createEmployeeSchema } from './../../../validation/schemas/employee.schema';
 // Types
+import { EmployeeEntityDto } from '../../../@types/models/employees.types.dto';
 import { CreateEmployeeDto } from '../../dto/employee/dto/create-employee.dto';
 // Guards
 import { RequireAdmin } from '../../../guards/requireRole.guard';
@@ -33,7 +34,7 @@ export class AdminEmployeesController {
   async create(
     @UploadedFile() file,
     @Body(ApplyValidation(createEmployeeSchema)) body: CreateEmployeeDto,
-  ) {
+  ): Promise<EmployeeEntityDto> {
     if (!file) body.photoPath = defaultEmployeePhotoPath;
     return this.employeesService.create(body);
   }

@@ -12,7 +12,7 @@ import { defaultEmployeePhotoPath } from '../../config/files.config';
 import {
   NotFoundErrorInstance,
   SuccessTestResponse,
-} from '../helpers/responses';
+} from '../helpers/responses.dto';
 // Validation
 import { validateSchema } from '../../validation/validationPipe';
 import { createUserByAdminSchema } from '../../validation/schemas/user.schema';

@@ -5,7 +5,7 @@ import { equalToRes, equalToType } from '../../@types/tests/expectations.types';
 import { getTestToken, setTestTokenRes } from './setGlobals';
 import { expectToEqualRes, expectToEqualError } from './betterExpectations';
 // Responses
-import { ForbiddenError, SuccessTestResponse } from './responses';
+import { ForbiddenError, SuccessTestResponse } from './responses.dto';
 
 export const afterTest = (res: Response, equalTo: equalToType) => {
   setTestTokenRes(res);

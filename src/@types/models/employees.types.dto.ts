@@ -1,10 +1,11 @@
 // Nest
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 // Prisma
-import { Prisma } from '@prisma/client';
+import { Position, Prisma } from '@prisma/client';
 // Tools
 import { Transform } from 'class-transformer';
 import { ToNumber } from '../../utils/query/transform';
+import { Employee } from './../../resource/dto/employee/entities/employee.entity';
 
 export type CreateEmployeeDtoPrisma = Prisma.EmployeeCreateInput;
 export type EmployeeWhereUniqueDto = Prisma.EmployeeWhereUniqueInput;
@@ -17,13 +18,14 @@ export class FindManyEmployeesQuery {
   take: number;
 }
 
-export const EmployeeMainSelect = {
-  id: true,
-  name: true,
-  surname: true,
-  dateOfBirth: true,
-  address: true,
-  telephoneNumber: true,
-  position: true,
-  photoPath: true,
-};
+export class EmployeeEntityDto {
+  id: Employee['id'];
+  name: Employee['name'];
+  surname: Employee['surname'];
+  dateOfBirth: Employee['dateOfBirth'];
+  address: Employee['address'];
+  telephoneNumber: Employee['telephoneNumber'];
+  @ApiProperty({ enum: Position })
+  position: Position;
+  photoPath: Employee['photoPath'];
+}

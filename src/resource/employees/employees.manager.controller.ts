@@ -9,7 +9,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 // Types
-import { FindManyEmployeesQuery } from '../../@types/models/employees.types.dto';
+import {
+  EmployeeEntityDto,
+  FindManyEmployeesQuery,
+} from '../../@types/models/employees.types.dto';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Services
@@ -23,12 +26,14 @@ export class EmployeesManagerController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Get()
-  async findMany(@Query() { take }: FindManyEmployeesQuery) {
+  async findMany(
+    @Query() { take }: FindManyEmployeesQuery,
+  ): Promise<EmployeeEntityDto[]> {
     return this.employeesService.findMany({}, take);
   }
 
   @Get(':id')
-  async findUnique(@Param('id') id: string) {
+  async findUnique(@Param('id') id: string): Promise<EmployeeEntityDto> {
     const employee = await this.employeesService.findUnique({ id });
     if (!employee) throw new NotFoundException();
     return employee;

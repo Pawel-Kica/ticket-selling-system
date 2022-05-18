@@ -4,7 +4,10 @@ import { Controller, Post, UseGuards } from '@nestjs/common';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Responses
-import { SuccessResponse } from '../../utils/responses';
+import {
+  SuccessResponse,
+  SuccessResponseDto,
+} from '../../utils/responses/main.dto';
 
 @ApiBearerAuth()
 @UseGuards(RequireManager)
@@ -12,7 +15,7 @@ import { SuccessResponse } from '../../utils/responses';
 @Controller('manager')
 export class ManagerController {
   @Post('auth')
-  auth() {
+  auth(): SuccessResponseDto {
     return SuccessResponse;
   }
 }

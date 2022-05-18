@@ -8,6 +8,7 @@ import { UsersService } from './users.service';
 import {
   CreateUserDtoExtended,
   LoginUserDto,
+  CreateUserResponseDto,
 } from '../../@types/models/users.types.dto';
 // Validation
 import {
@@ -18,7 +19,11 @@ import { ApplyValidation } from '../../validation/validationPipe';
 // Guards
 import { RequireUser } from '../../guards/requireUser.guard';
 // Responses
-import { SuccessResponse } from '../../utils/responses';
+import {
+  SuccessResponse,
+  SuccessResponseDto,
+  TokenResponseDto,
+} from '../../utils/responses/main.dto';
 import { InvalidCredentials } from '../../utils/responses/errors';
 
 @ApiTags('Users - Main')
@@ -31,13 +36,17 @@ export class UsersController {
 
   @Post()
   @UsePipes(ApplyValidation(createUserSchema))
-  async create(@Body() body: CreateUserDtoExtended) {
+  async create(
+    @Body() body: CreateUserDtoExtended,
+  ): Promise<CreateUserResponseDto> {
     return this.usersService.createUserHandler(body);
   }
 
   @Post('login')
   @UsePipes(ApplyValidation(loginUserSchema))
-  async login(@Body() { email, password }: LoginUserDto) {
+  async login(
+    @Body() { email, password }: LoginUserDto,
+  ): Promise<TokenResponseDto> {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
 
@@ -49,7 +58,7 @@ export class UsersController {
   @ApiBearerAuth()
   @Post('auth')
   @UseGuards(RequireUser)
-  auth() {
+  auth(): SuccessResponseDto {
     return SuccessResponse;
   }
 }

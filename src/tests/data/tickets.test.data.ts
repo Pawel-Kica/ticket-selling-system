@@ -1,19 +1,21 @@
-import { type } from 'os';
+// Data
 import {
   carriagePrefix,
   stationPrefix,
   trainPrefix,
 } from '../../prisma/seed/data/prefixes';
-import { InvalidRequestedBody } from '../../utils/responses/errors';
-import { createTicketSchema } from '../../validation/schemas/ticket.schema';
+// Validation
 import { validateSchema } from '../../validation/validationPipe';
+import { createTicketSchema } from '../../validation/schemas/ticket.schema';
+// Responses
+import { InvalidRequestedBody } from '../../utils/responses/errors';
 import {
   InvalidCarriageIdError,
   InvalidSeatNumberError,
   InvalidStationsError,
   InvalidTrainIdError,
   SuccessTestResponse,
-} from '../helpers/responses';
+} from '../helpers/responses.dto';
 
 const createTicketBody = {
   seat: 40,

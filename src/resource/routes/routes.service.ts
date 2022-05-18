@@ -17,10 +17,7 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 export class RoutesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(
-    where?: RouteWhereDto,
-    select: RouteSelectDto = RouteMainSelect,
-  ) {
+  async findMany(where: RouteWhereDto, select = RouteMainSelect) {
     return this.prisma.route.findMany({
       where,
       select,
@@ -48,52 +45,55 @@ export class RoutesService {
       lt?: string;
     };
   }) {
-    return this.findMany({
-      OR: [
-        {
-          startStationId,
-          endStationId,
-          departureTime,
-        },
-        {
-          startStationId,
-          stationsBetween: {
-            some: {
-              stationId: endStationId,
-              departureTime,
-            },
+    return this.findMany(
+      {
+        OR: [
+          {
+            startStationId,
+            endStationId,
+            departureTime,
           },
-        },
-        {
-          AND: [
-            {
-              stationsBetween: {
-                some: {
-                  stationId: startStationId,
-                  departureTime,
-                },
+          {
+            startStationId,
+            stationsBetween: {
+              some: {
+                stationId: endStationId,
+                departureTime,
               },
             },
-            {
-              stationsBetween: {
-                some: {
-                  stationId: endStationId,
+          },
+          {
+            AND: [
+              {
+                stationsBetween: {
+                  some: {
+                    stationId: startStationId,
+                    departureTime,
+                  },
                 },
               },
-            },
-          ],
-        },
-        {
-          stationsBetween: {
-            some: {
-              stationId: startStationId,
-              departureTime,
-            },
+              {
+                stationsBetween: {
+                  some: {
+                    stationId: endStationId,
+                  },
+                },
+              },
+            ],
           },
-          endStationId,
-        },
-      ],
-    });
+          {
+            stationsBetween: {
+              some: {
+                stationId: startStationId,
+                departureTime,
+              },
+            },
+            endStationId,
+          },
+        ],
+      },
+      RouteMainSelect,
+    );
   }
 
   async validateRoute({

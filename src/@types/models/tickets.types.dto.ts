@@ -1,4 +1,4 @@
-import { Prisma, State } from '@prisma/client';
+import { Prisma, State, Station, Ticket } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 // dto
 import { RouteMainSelect } from './routes.types.dto';
@@ -8,14 +8,14 @@ export type CreateTicketPrismaDto = Prisma.TicketCreateInput;
 export type TicketWhereDto = Prisma.TicketWhereInput;
 export type TicketSelectDto = Prisma.TicketSelect;
 
-export class CreateTicketExtendedDto extends CreateTicketDto {
-  trainId: string;
-  carriageId: string;
-  startStationId: string;
-  endStationId: string;
+export class CreateTicketExtDto extends CreateTicketDto {
+  trainId: Ticket['trainId'];
+  carriageId: Ticket['carriageId'];
+  startStationId: Ticket['startStationId'];
+  endStationId: Ticket['endStationId'];
 }
-export class ValidateAndCreateTicketDto extends CreateTicketExtendedDto {
-  userId: string;
+export class ValidateAndCreateTicketDto extends CreateTicketExtDto {
+  userId: Ticket['userId'];
   @ApiProperty({ enum: State })
   state?: State;
 }
@@ -31,6 +31,22 @@ export class TicketsLookupQuery {
   state: State;
   @ApiPropertyOptional()
   routeId: string;
+}
+export class CreateTicketResponseDto {
+  id: Ticket['id'];
+  seat: Ticket['seat'];
+  userId: Ticket['userId'];
+  trainId: Ticket['trainId'];
+  carriageId: Ticket['carriageId'];
+  startStationId: Ticket['startStationId'];
+  endStationId: Ticket['endStationId'];
+  state: State = State.bought;
+  timeOfOperation: Ticket['timeOfOperation'];
+}
+
+export class CreateTicketByManagerResponseDto extends CreateTicketResponseDto {
+  @ApiProperty({ enum: State })
+  state: State;
 }
 
 export const TicketMainSelect = {

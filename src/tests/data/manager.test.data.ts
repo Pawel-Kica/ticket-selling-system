@@ -2,7 +2,7 @@ import {
   employeesTestData,
   testEmployeeId,
 } from '../../prisma/seed/data/employees.seed.data';
-import { NotFoundErrorInstance } from '../helpers/responses';
+import { NotFoundErrorInstance } from '../helpers/responses.dto';
 
 function formatEmployeesResponse(employees: any[]) {
   const result = {};

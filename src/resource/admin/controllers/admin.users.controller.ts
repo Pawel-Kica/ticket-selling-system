@@ -12,7 +12,10 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 // Types
 import { Role } from '@prisma/client';
-import { CreateUserByAdminDto } from '../../../@types/models/users.types.dto';
+import {
+  CreateUserByAdminDto,
+  CreateUserResponseDto,
+} from '../../../@types/models/users.types.dto';
 // Guards
 import { RequireAdmin } from '../../../guards/requireRole.guard';
 // Validation
@@ -21,7 +24,10 @@ import { createUserByAdminSchema } from '../../../validation/schemas/user.schema
 // Services
 import { UsersService } from '../../users/users.service';
 // Responses
-import { SuccessResponse } from '../../../utils/responses';
+import {
+  SuccessResponse,
+  SuccessResponseDto,
+} from '../../../utils/responses/main.dto';
 
 @ApiBearerAuth()
 @UseGuards(RequireAdmin)
@@ -32,32 +38,37 @@ export class AdminUsersController {
 
   @Post()
   @UsePipes(ApplyValidation(createUserByAdminSchema))
-  async create(@Body() body: CreateUserByAdminDto) {
+  async create(
+    @Body() body: CreateUserByAdminDto,
+  ): Promise<CreateUserResponseDto> {
     return this.usersService.createUserHandler(body);
   }
 
   @Patch('block/:id')
-  async blockUser(@Param('id') id: string) {
+  async blockUser(@Param('id') id: string): Promise<SuccessResponseDto> {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { blocked: true });
     return SuccessResponse;
   }
   @Patch('unblock/:id')
-  async unblockUser(@Param('id') id: string) {
+  async unblockUser(@Param('id') id: string): Promise<SuccessResponseDto> {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { blocked: false });
     return SuccessResponse;
   }
 
   @Patch('role/:id/:role')
-  async updateRole(@Param('id') id: string, @Param('role') role: Role) {
+  async updateRole(
+    @Param('id') id: string,
+    @Param('role') role: Role,
+  ): Promise<SuccessResponseDto> {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { role });
     return SuccessResponse;
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<SuccessResponseDto> {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.remove({ id });
     return SuccessResponse;

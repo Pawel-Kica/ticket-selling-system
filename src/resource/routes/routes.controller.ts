@@ -8,7 +8,10 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 // Types
-import { RoutesLookupQuery } from '../../@types/models/routes.types.dto';
+import {
+  RouteMainEntity,
+  RoutesLookupQuery,
+} from '../../@types/models/routes.types.dto';
 // Tools
 import * as moment from 'moment';
 // Services
@@ -22,7 +25,7 @@ export class RoutesController {
   @Get()
   async findMany(
     @Query() { startStationId, endStationId, date }: RoutesLookupQuery,
-  ) {
+  ): Promise<RouteMainEntity[]> {
     const fDate = moment(date, 'DD-MM-YYYY');
     const gt = fDate.startOf('day').toISOString() ?? undefined;
     const lt = fDate.endOf('day').toISOString() ?? undefined;
