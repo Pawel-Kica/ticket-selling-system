@@ -4,9 +4,8 @@ import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
   RouteMainSelect,
-  RouteSelectDto,
   RouteWhereDto,
-  RouteWhereUniqueInput,
+  RouteWhereUniqueDto,
 } from '../../@types/models/routes.types.dto';
 // Tools
 import * as moment from 'moment';
@@ -23,11 +22,7 @@ export class RoutesService {
       select,
     });
   }
-
-  async findUnique(
-    where: RouteWhereUniqueInput,
-    select: RouteSelectDto = RouteMainSelect,
-  ) {
+  async findUnique(where: RouteWhereUniqueDto, select = RouteMainSelect) {
     return this.prisma.route.findUnique({ where, select });
   }
 

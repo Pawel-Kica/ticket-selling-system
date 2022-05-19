@@ -3,10 +3,11 @@ import { PrismaService } from 'nestjs-prisma';
 import { ConflictException, Injectable } from '@nestjs/common';
 // Types
 import {
-  CreateTicketPrismaDto,
-  TicketWhereDto,
-  ValidateAndCreateTicketDto,
-  TicketSelectDto,
+  CreateTicketPrisma,
+  TicketWhere,
+  CreateTicketParams,
+  ticketMainSelect,
+  ticketUserSelect,
 } from '../../@types/models/tickets.types.dto';
 // Services
 import { PricesService } from '../prices/prices.service';
@@ -24,16 +25,19 @@ export class TicketsService {
     private readonly carriagesService: CarriagesService,
   ) {}
 
-  async create(data: CreateTicketPrismaDto) {
+  async create(data: CreateTicketPrisma) {
     return this.prisma.ticket.create({ data });
   }
-  async findMany(where?: TicketWhereDto, select?: TicketSelectDto) {
+  async findManyIncludeUsers(where?: TicketWhere) {
     return this.prisma.ticket.findMany({
       where,
-      select,
+      select: ticketUserSelect,
     });
   }
-  async findFirst(where: TicketWhereDto) {
+  async findManyIncludeTrains(where?: TicketWhere) {
+    return this.prisma.ticket.findMany({ where, select: ticketMainSelect });
+  }
+  async findFirst(where: TicketWhere) {
     return this.prisma.ticket.findFirst({ where });
   }
 
@@ -59,7 +63,7 @@ export class TicketsService {
     endStationId,
     seat,
     state,
-  }: ValidateAndCreateTicketDto) {
+  }: CreateTicketParams) {
     return this.create({
       state,
       seat,
@@ -99,7 +103,7 @@ export class TicketsService {
     userId,
     state,
     seat,
-  }: ValidateAndCreateTicketDto) {
+  }: CreateTicketParams) {
     const { type: carriageType } = await this.carriagesService.validateCarriage(
       {
         carriageId,

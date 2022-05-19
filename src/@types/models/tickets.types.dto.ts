@@ -1,23 +1,43 @@
-import { Prisma, State, Station, Ticket } from '@prisma/client';
+import {
+  Carriage,
+  CarriageType,
+  Prisma,
+  State,
+  Station,
+  Train,
+  User,
+} from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-// dto
-import { RouteMainSelect } from './routes.types.dto';
+// Types
+import { RouteEntity, RouteMainSelect } from './routes.types.dto';
+import { Ticket } from '../../resource/dto/ticket/entities/ticket.entity';
 import { CreateTicketDto } from '../../resource/dto/ticket/dto/create-ticket.dto';
 
-export type CreateTicketPrismaDto = Prisma.TicketCreateInput;
-export type TicketWhereDto = Prisma.TicketWhereInput;
-export type TicketSelectDto = Prisma.TicketSelect;
+export type CreateTicketPrisma = Prisma.TicketCreateInput;
+export type TicketWhere = Prisma.TicketWhereInput;
+export type TicketSelect = Prisma.TicketSelect;
 
-export class CreateTicketExtDto extends CreateTicketDto {
+export class CreateTicketBody extends CreateTicketDto {
   trainId: Ticket['trainId'];
   carriageId: Ticket['carriageId'];
   startStationId: Ticket['startStationId'];
   endStationId: Ticket['endStationId'];
 }
-export class ValidateAndCreateTicketDto extends CreateTicketExtDto {
+export class CreateTicketParams extends CreateTicketBody {
   userId: Ticket['userId'];
   @ApiProperty({ enum: State })
   state?: State;
+}
+export class CreateTicketResponse {
+  id: Ticket['id'];
+  seat: Ticket['seat'];
+  userId: Ticket['userId'];
+  trainId: Ticket['trainId'];
+  carriageId: Ticket['carriageId'];
+  startStationId: Ticket['startStationId'];
+  endStationId: Ticket['endStationId'];
+  state: State = State.bought;
+  timeOfOperation: Ticket['timeOfOperation'];
 }
 
 export class TicketsLookupQuery {
@@ -32,24 +52,13 @@ export class TicketsLookupQuery {
   @ApiPropertyOptional()
   routeId: string;
 }
-export class CreateTicketResponseDto {
-  id: Ticket['id'];
-  seat: Ticket['seat'];
-  userId: Ticket['userId'];
-  trainId: Ticket['trainId'];
-  carriageId: Ticket['carriageId'];
-  startStationId: Ticket['startStationId'];
-  endStationId: Ticket['endStationId'];
-  state: State = State.bought;
-  timeOfOperation: Ticket['timeOfOperation'];
-}
 
-export class CreateTicketByManagerResponseDto extends CreateTicketResponseDto {
+export class CreateTicketByManagerResponse extends CreateTicketResponse {
   @ApiProperty({ enum: State })
   state: State;
 }
 
-export const TicketMainSelect = {
+export const ticketMainSelect = Prisma.validator<TicketSelect>()({
   seat: true,
   train: {
     select: {
@@ -77,9 +86,33 @@ export const TicketMainSelect = {
   },
   state: true,
   timeOfOperation: true,
-};
+});
 
-export const TicketUserSelect = {
+export class TicketEntity {
+  seat: Ticket['seat'];
+  train: {
+    route: RouteEntity;
+  };
+  startStation: {
+    name: Station['name'];
+  };
+  endStation: {
+    name: Station['name'];
+  };
+  carriage: {
+    id: Carriage['id'];
+    type: Carriage['type'];
+    numberOfSeats: Carriage['numberOfSeats'];
+  };
+  state: Ticket['state'];
+  timeOfOperation: Ticket['timeOfOperation'];
+}
+
+export const ticketUserSelect = Prisma.validator<TicketSelect>()({
+  state: true,
+  seat: true,
+  startStation: true,
+  endStation: true,
   user: {
     select: {
       id: true,
@@ -87,16 +120,37 @@ export const TicketUserSelect = {
       surname: true,
     },
   },
-  trainId: true,
   carriage: {
     select: {
       id: true,
       type: true,
     },
   },
-  state: true,
-  seat: true,
-  startStation: true,
-  endStation: true,
+  trainId: true,
   timeOfOperation: true,
-};
+});
+
+export class TicketUserSelectEntity {
+  user: {
+    id: User['id'];
+    name: User['name'];
+    surname: User['surname'];
+  };
+  trainId: Train['id'];
+  carriage: {
+    id: Carriage['id'];
+    // @ApiProperty({ enum: State })
+    type: CarriageType;
+  };
+  timeOfOperation: Ticket['timeOfOperation'];
+  @ApiProperty({ enum: State })
+  state: State;
+  startStation: {
+    id: Station['id'];
+    name: Station['name'];
+  };
+  endStation: {
+    id: Station['id'];
+    name: Station['name'];
+  };
+}

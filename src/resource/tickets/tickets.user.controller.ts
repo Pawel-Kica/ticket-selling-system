@@ -1,9 +1,9 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
-  CreateTicketExtDto,
-  CreateTicketResponseDto,
-  TicketMainSelect,
+  CreateTicketParams,
+  CreateTicketResponse,
+  TicketEntity,
 } from '../../@types/models/tickets.types.dto';
 import { RequireUser } from '../../guards/requireUser.guard';
 import { TicketsService } from './tickets.service';
@@ -19,21 +19,18 @@ export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Get()
-  async getUserTickets(@UserId() id: string) {
-    return this.ticketsService.findMany(
-      {
-        userId: id,
-      },
-      TicketMainSelect,
-    );
+  async get(@UserId() id: string): Promise<TicketEntity[]> {
+    return this.ticketsService.findManyIncludeTrains({
+      userId: id,
+    });
   }
 
   @Post()
   async create(
     @UserId() id: string,
     @Body(ApplyValidation(createTicketSchema))
-    body: CreateTicketExtDto,
-  ): Promise<CreateTicketResponseDto> {
+    body: CreateTicketParams,
+  ): Promise<CreateTicketResponse> {
     const ticket = await this.ticketsService.validateAndCreate({
       ...body,
       userId: id,

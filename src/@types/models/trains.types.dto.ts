@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client';
-import { ApiPropertyOptional } from '@nestjs/swagger';
-// dto
+import { Prisma, Train, TrainType } from '@prisma/client';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+// Types
 import { RouteMainSelect } from './routes.types.dto';
 
 export type TrainWhereDto = Prisma.TrainWhereInput;
@@ -27,3 +27,13 @@ export const TrainMainSelect = {
     select: RouteMainSelect,
   },
 };
+
+export class TrainEntity {
+  id: Train['id'];
+  routeId: Train['routeId'];
+  bossId: Train['bossId'];
+  driverId: Train['driverId'];
+  driverHelperId: Train['driverHelperId'];
+  @ApiProperty({ enum: TrainType })
+  type: TrainType;
+}

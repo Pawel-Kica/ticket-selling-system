@@ -9,7 +9,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 // Types
 import {
-  RouteMainEntity,
+  RouteEntity,
   RoutesLookupQuery,
 } from '../../@types/models/routes.types.dto';
 // Tools
@@ -25,7 +25,7 @@ export class RoutesController {
   @Get()
   async findMany(
     @Query() { startStationId, endStationId, date }: RoutesLookupQuery,
-  ): Promise<RouteMainEntity[]> {
+  ): Promise<RouteEntity[]> {
     const fDate = moment(date, 'DD-MM-YYYY');
     const gt = fDate.startOf('day').toISOString() ?? undefined;
     const lt = fDate.endOf('day').toISOString() ?? undefined;
@@ -38,7 +38,7 @@ export class RoutesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<RouteEntity> {
     const result = await this.routesService.findUnique({ id });
     if (!result) throw new NotFoundException();
     return result;

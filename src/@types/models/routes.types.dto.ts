@@ -2,7 +2,7 @@ import { Prisma, Route, RoutePoint, Station } from '@prisma/client';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export type RouteWhereDto = Prisma.RouteWhereInput;
-export type RouteWhereUniqueInput = Prisma.RouteWhereUniqueInput;
+export type RouteWhereUniqueDto = Prisma.RouteWhereUniqueInput;
 export type RouteSelectDto = Prisma.RouteSelect;
 export class RoutesLookupQuery {
   @ApiPropertyOptional()
@@ -50,10 +50,10 @@ export const RouteMainSelect = Prisma.validator<RouteSelectDto>()({
 });
 
 // how to avoid nestjs stupid validation
-class LocalTrainType {
+class _trainType {
   type: string;
 }
-class localRoutePoint {
+class _stationsBetween {
   station: {
     name: Station['name'];
   };
@@ -61,16 +61,16 @@ class localRoutePoint {
   arrivalTime: RoutePoint['arrivalTime'];
   order: RoutePoint['order'];
 }
-export class RouteMainEntity {
+export class RouteEntity {
   id: Route['id'];
   startStation: {
     name: Station['name'];
   };
   departureTime: Route['departureTime'];
-  stationsBetween: localRoutePoint[];
+  stationsBetween: _stationsBetween[];
   endStation: {
     name: Station['name'];
   };
   arrivalTime: Route['arrivalTime'];
-  train: LocalTrainType[];
+  train: _trainType[];
 }

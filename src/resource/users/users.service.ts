@@ -7,7 +7,7 @@ import {
 // Prisma
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-// Dto
+// Types
 import { CreateUserDto } from '../dto/user/dto/create-user.dto';
 import { UserWhereUniqueDto } from '../../@types/models/users.types.dto';
 // Tools

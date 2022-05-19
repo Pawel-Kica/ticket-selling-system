@@ -3,10 +3,10 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 // Types
 import {
-  ValidateAndCreateTicketDto,
+  CreateTicketParams,
   TicketsLookupQuery,
-  TicketUserSelect,
-  CreateTicketByManagerResponseDto,
+  CreateTicketByManagerResponse,
+  TicketUserSelectEntity,
 } from '../../@types/models/tickets.types.dto';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
@@ -31,26 +31,23 @@ export class TicketsManagerController {
   async findMany(
     @Query()
     { trainId, carriageId, state, routeId, userId }: TicketsLookupQuery,
-  ) {
-    return this.ticketsService.findMany(
-      {
-        trainId,
-        userId,
-        carriageId,
-        state,
-        train: {
-          routeId,
-        },
+  ): Promise<TicketUserSelectEntity[]> {
+    return this.ticketsService.findManyIncludeUsers({
+      trainId,
+      userId,
+      carriageId,
+      state,
+      train: {
+        routeId,
       },
-      TicketUserSelect,
-    );
+    });
   }
 
   @Post()
   async create(
     @Body(ApplyValidation(createTicketByManagerSchema))
-    body: ValidateAndCreateTicketDto,
-  ): Promise<CreateTicketByManagerResponseDto> {
+    body: CreateTicketParams,
+  ): Promise<CreateTicketByManagerResponse> {
     await this.usersService.checkIfUserExists({ id: body.userId });
     const ticket = await this.ticketsService.validateAndCreate(body);
     return ticket;
