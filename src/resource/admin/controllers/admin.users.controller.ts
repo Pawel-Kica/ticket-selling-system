@@ -4,7 +4,7 @@ import {
   Controller,
   Delete,
   Param,
-  Patch,
+  Put,
   Post,
   UseGuards,
   UsePipes,
@@ -44,20 +44,20 @@ export class AdminUsersController {
     return this.usersService.createUserHandler(body);
   }
 
-  @Patch('block/:id')
+  @Put('block/:id')
   async blockUser(@Param('id') id: string): Promise<SuccessResponseDto> {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { blocked: true });
     return SuccessResponse;
   }
-  @Patch('unblock/:id')
+  @Put('unblock/:id')
   async unblockUser(@Param('id') id: string): Promise<SuccessResponseDto> {
     await this.usersService.checkIfUserExists({ id });
     await this.usersService.update({ id }, { blocked: false });
     return SuccessResponse;
   }
 
-  @Patch('role/:id/:role')
+  @Put('role/:id/:role')
   async updateRole(
     @Param('id') id: string,
     @Param('role') role: Role,

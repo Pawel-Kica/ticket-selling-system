@@ -4,7 +4,7 @@ import { TestingModule } from '@nestjs/testing';
 import {
   testAuthEndpoint,
   testDELETERequest,
-  testPATCHRequest,
+  testPUTRequest,
   testPOSTRequest,
 } from '../helpers/testEndpoint';
 import startTestServer from '../startTestServer';
@@ -81,14 +81,14 @@ describe('ADMIN', () => {
       });
 
       it('ADMIN should be NOT be able to block not existing users', async () => {
-        await testPATCHRequest(
+        await testPUTRequest(
           `/admin/users/block/${invalid.notFound.param}`,
           {},
           invalid.notFound.response,
         );
       });
       it('ADMIN should be able to block users', async () => {
-        await testPATCHRequest(
+        await testPUTRequest(
           `/admin/users/block/${valid.param}`,
           {},
           valid.response,
@@ -106,14 +106,14 @@ describe('ADMIN', () => {
       });
 
       it('ADMIN should be NOT be able to unblock not existing users', async () => {
-        await testPATCHRequest(
+        await testPUTRequest(
           `/admin/users/unblock/${invalid.notFound.param}`,
           {},
           invalid.notFound.response,
         );
       });
       it('ADMIN should be able to unblock users', async () => {
-        await testPATCHRequest(
+        await testPUTRequest(
           `/admin/users/unblock/${valid.param}`,
           {},
           valid.response,
@@ -131,14 +131,14 @@ describe('ADMIN', () => {
       });
 
       it('ADMIN should NOT be able to update non existings users roles', async () => {
-        await testPATCHRequest(
+        await testPUTRequest(
           `/admin/users/role/${invalid.notFound.param}/inv`,
           {},
           invalid.notFound.response,
         );
       });
       it('ADMIN should be able to update users roles', async () => {
-        await testPATCHRequest(
+        await testPUTRequest(
           `/admin/users/role/${valid.param}/${valid.role}`,
           {},
           valid.response,

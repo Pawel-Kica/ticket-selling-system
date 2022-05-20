@@ -35,13 +35,13 @@ export async function testPOSTRequest(
   return res;
 }
 
-export async function testPATCHRequest(
+export async function testPUTRequest(
   endpoint: string,
   data: any,
   equalTo: equalToType,
 ) {
   const res = await global.request
-    .patch(`${endpoint}`)
+    .put(`${endpoint}`)
     .set('Authorization', getTestToken())
     .send(data);
 
