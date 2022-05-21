@@ -19,6 +19,7 @@ describe('USERS CRUD', () => {
   afterAll(async () => {
     seedService = app.get(SeedService);
     seedService.removeSpecificTable('user');
+    removeTestToken();
     app.close();
   });
 

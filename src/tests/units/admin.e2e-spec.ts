@@ -8,7 +8,11 @@ import {
   testPOSTRequest,
 } from '../helpers/testEndpoint';
 import startTestServer from '../startTestServer';
-import { generateTestToken, generateAdminToken } from '../helpers/setGlobals';
+import {
+  generateTestToken,
+  generateAdminToken,
+  removeTestToken,
+} from '../helpers/setGlobals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Responses
@@ -38,7 +42,7 @@ describe('ADMIN', () => {
   afterAll(async () => {
     seedService.removeSpecificTable('user');
     seedService.removeSpecificTable('employee');
-
+    removeTestToken();
     app.close();
   });
 
@@ -176,7 +180,7 @@ describe('ADMIN', () => {
     });
   });
   describe('EMPLOYEES', () => {
-    describe('CREATE', () => {
+    describe('CREATE EMPLOYEE', () => {
       const { valid, invalid } = createEmployeeObj;
       beforeAll(() => {
         generateAdminToken();

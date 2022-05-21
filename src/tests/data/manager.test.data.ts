@@ -12,16 +12,16 @@ import { NotFoundErrorInstance } from '../helpers/responses.dto';
 import { testUserId } from './id.test.data';
 import { ticketOmitProperties } from './tickets.test.data';
 
-function formatEmployeesResponse(employees: any[]) {
+export function formatArrayResponse(arr: any[]) {
   const result = {};
-  employees.forEach((e, idx) => {
+  arr.forEach((e, idx) => {
     result[idx] = e;
   });
   return result;
 }
 
 export const getAllEmployeesObj = {
-  data: formatEmployeesResponse(employeesTestData),
+  data: formatArrayResponse(employeesTestData),
   status: 200,
   omit: [],
 };
@@ -76,5 +76,13 @@ export const createTicketByManagerObj = {
       },
     },
   },
-  invalid: {},
+  invalid: {
+    notFoundUser: {
+      body: {
+        ...buyTicketByManagerBody,
+        userId: 'notFound123',
+      },
+      response: NotFoundErrorInstance,
+    },
+  },
 };

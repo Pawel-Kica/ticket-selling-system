@@ -3,12 +3,11 @@ import { TestingModule } from '@nestjs/testing';
 // Tools
 import startTestServer from '../startTestServer';
 import { testPOSTRequest } from '../helpers/testEndpoint';
-import { generateUserToken } from '../helpers/setGlobals';
+import { generateUserToken, removeTestToken } from '../helpers/setGlobals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 import { createTicketObj } from './../data/tickets.test.data';
 import { ConflictExceptionError } from '../helpers/responses.dto';
-// Data
 
 describe('TICKETS', () => {
   let app: TestingModule;
@@ -21,6 +20,7 @@ describe('TICKETS', () => {
   });
   afterAll(async () => {
     await seedService.removeAllTables();
+    removeTestToken();
     app.close();
   });
 

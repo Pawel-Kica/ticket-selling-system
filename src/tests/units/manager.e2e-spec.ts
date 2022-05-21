@@ -7,7 +7,11 @@ import {
   testGETRequest,
   testPOSTRequest,
 } from '../helpers/testEndpoint';
-import { generateManagerToken, generateUserToken } from '../helpers/setGlobals';
+import {
+  generateManagerToken,
+  generateUserToken,
+  removeTestToken,
+} from '../helpers/setGlobals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
@@ -30,6 +34,7 @@ describe('MANAGER', () => {
   });
   afterAll(async () => {
     await seedService.removeAllTables();
+    removeTestToken();
     app.close();
   });
 
@@ -74,6 +79,13 @@ describe('MANAGER', () => {
   });
   describe('TICKETS', () => {
     const { valid, invalid } = createTicketByManagerObj;
+    it('MANAGER should NOT be able to buy/book ticket for user that does not exist', async () => {
+      await testPOSTRequest(
+        '/manager/tickets',
+        invalid.notFoundUser.body,
+        invalid.notFoundUser.response,
+      );
+    });
     it('MANAGER should be able to buy ticket for user', async () => {
       await testPOSTRequest(
         '/manager/tickets',
