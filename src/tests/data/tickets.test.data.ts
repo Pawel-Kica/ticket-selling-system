@@ -4,6 +4,8 @@ import {
   stationPrefix,
   trainPrefix,
 } from '../../prisma/seed/data/prefixes';
+import { State } from '@prisma/client';
+import { testUserId } from './id.test.data';
 // Validation
 import { validateSchema } from '../../validation/validationPipe';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
@@ -14,76 +16,115 @@ import {
   InvalidSeatNumberError,
   InvalidStationsError,
   InvalidTrainIdError,
-  SuccessTestResponse,
 } from '../helpers/responses.dto';
 
-const createTicketBody = {
+const createTicketBodyStationsStartEnd = {
   seat: 40,
   trainId: `${trainPrefix}1`,
   carriageId: `${carriagePrefix}1`,
   startStationId: `${stationPrefix}1`,
   endStationId: `${stationPrefix}4`,
 };
+const createTicketBodyStationsStartBetween = {
+  ...createTicketBodyStationsStartEnd,
+  endStationId: `${stationPrefix}3`,
+  seat: 1,
+};
+const createTicketBodyStationsBetween = {
+  ...createTicketBodyStationsStartEnd,
+  startStationId: `${stationPrefix}2`,
+  endStationId: `${stationPrefix}3`,
+  seat: 2,
+};
+const createTicketBodyStationsBetweenEnd = {
+  ...createTicketBodyStationsStartEnd,
+  startStationId: `${stationPrefix}2`,
+  seat: 3,
+};
+
+const ticketOmitProperties = ['id', 'timeOfOperation'];
 
 export const createTicketObj = {
   valid: {
     startEnd: {
-      body: createTicketBody,
-      response: SuccessTestResponse,
+      body: createTicketBodyStationsStartEnd,
+      response: {
+        data: {
+          ...createTicketBodyStationsStartEnd,
+          state: State.bought,
+          userId: testUserId,
+        },
+        status: 200,
+        omit: ticketOmitProperties,
+      },
     },
     startBetween: {
-      body: {
-        ...createTicketBody,
-        endStationId: `${stationPrefix}3`,
-        seat: 1,
+      body: createTicketBodyStationsStartBetween,
+      response: {
+        data: {
+          ...createTicketBodyStationsStartBetween,
+          state: State.bought,
+          userId: testUserId,
+        },
+        status: 200,
+        omit: ticketOmitProperties,
       },
-      response: SuccessTestResponse,
     },
     between: {
-      body: {
-        ...createTicketBody,
-        startStationId: `${stationPrefix}2`,
-        endStationId: `${stationPrefix}3`,
-        seat: 2,
+      body: createTicketBodyStationsBetween,
+      response: {
+        data: {
+          ...createTicketBodyStationsBetween,
+          state: State.bought,
+          userId: testUserId,
+        },
+        status: 200,
+        omit: ticketOmitProperties,
       },
-      response: SuccessTestResponse,
     },
     betweenEnd: {
-      body: {
-        ...createTicketBody,
-        startStationId: `${stationPrefix}2`,
-        seat: 3,
+      body: createTicketBodyStationsBetweenEnd,
+      response: {
+        data: {
+          ...createTicketBodyStationsBetweenEnd,
+          state: State.bought,
+          userId: testUserId,
+        },
+        status: 200,
+        omit: ticketOmitProperties,
       },
-      response: SuccessTestResponse,
     },
   },
   invalid: {
     carriageId: {
       body: {
-        ...createTicketBody,
+        ...createTicketBodyStationsStartEnd,
         carriageId: 'carriage0',
       },
       response: InvalidCarriageIdError,
     },
     trainId: {
       body: {
-        ...createTicketBody,
+        ...createTicketBodyStationsStartEnd,
         trainId: 'train2',
       },
       response: InvalidTrainIdError,
     },
     seatNumber: {
       body: {
-        ...createTicketBody,
+        ...createTicketBodyStationsStartEnd,
         seat: 41,
       },
       response: new InvalidRequestedBody(
-        validateSchema(createTicketSchema, { ...createTicketBody, seat: 41 }),
+        validateSchema(createTicketSchema, {
+          ...createTicketBodyStationsStartEnd,
+          seat: 41,
+        }),
       ),
     },
     carriageType: {
       body: {
-        ...createTicketBody,
+        ...createTicketBodyStationsStartEnd,
         carriageId: `${carriagePrefix}2`,
         seat: 21,
       },
@@ -91,61 +132,10 @@ export const createTicketObj = {
     },
     stations: {
       body: {
-        ...createTicketBody,
+        ...createTicketBodyStationsStartEnd,
         startStationId: `${stationPrefix}5`,
       },
       response: InvalidStationsError,
     },
   },
 };
-
-// export const getTicketsResponse = {
-//   data: {
-//     '0': {
-//       carriage: {
-//         id: 'carriage1',
-//         numberOfSeats: 40,
-//         type: 'regular',
-//       },
-//       endStation: {
-//         name: 'Jamaica Station',
-//       },
-//       seat: 40,
-//       startStation: {
-//         name: 'New York Penn Station',
-//       },
-//       state: 'bought',
-//       timeOfOperation: '2022-05-18T07:41:37.169Z',
-//       train: {
-//         route: {
-//           arrivalTime: '2022-05-22T07:41:34.508Z',
-//           departureTime: '2022-05-21T08:41:34.508Z',
-//           endStation: {
-//             name: 'Jamaica Station',
-//           },
-//           startStation: {
-//             name: 'New York Penn Station',
-//           },
-//           stationsBetween: [
-//             {
-//               arrivalTime: '2022-05-21T11:41:34.508Z',
-//               departureTime: '2022-05-21T11:46:34.508Z',
-//               station: {
-//                 name: 'Grand Central Terminal',
-//               },
-//             },
-//             {
-//               arrivalTime: '2022-05-21T15:41:34.508Z',
-//               departureTime: '2022-05-21T15:46:34.508Z',
-//               station: {
-//                 name: 'Toronto Union Station',
-//               },
-//             },
-//           ],
-//         },
-//       },
-//     },
-//   },
-//   status: 200,
-//   omit: ['timeOfOperation', 'train'],
-// };

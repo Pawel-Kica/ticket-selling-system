@@ -1,7 +1,13 @@
-import { Prisma, Train, TrainType } from '@prisma/client';
+import {
+  Carriage,
+  CarriageType,
+  Prisma,
+  Train,
+  TrainType,
+} from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 // Types
-import { RouteMainSelect } from './routes.types.dto';
+import { RouteEntity, RouteMainSelect } from './routes.types.dto';
 
 export type TrainWhereDto = Prisma.TrainWhereInput;
 export type TrainWhereUniqueDto = Prisma.TrainWhereUniqueInput;
@@ -10,6 +16,15 @@ export type TrainSelectDto = Prisma.TrainSelect;
 export class TrainsLookupQuery {
   @ApiPropertyOptional()
   routeId: string;
+}
+export class TrainEntity {
+  id: Train['id'];
+  routeId: Train['routeId'];
+  bossId: Train['bossId'];
+  driverId: Train['driverId'];
+  driverHelperId: Train['driverHelperId'];
+  @ApiProperty({ enum: TrainType })
+  type: TrainType;
 }
 
 export const TrainMainSelect = {
@@ -28,12 +43,19 @@ export const TrainMainSelect = {
   },
 };
 
-export class TrainEntity {
+class _carriageType {
+  numberOfSeats: Carriage['numberOfSeats'];
+  type: CarriageType;
+  _count: {
+    ticket: number;
+  };
+}
+
+export class TrainDetailsEntity {
   id: Train['id'];
-  routeId: Train['routeId'];
-  bossId: Train['bossId'];
-  driverId: Train['driverId'];
-  driverHelperId: Train['driverHelperId'];
   @ApiProperty({ enum: TrainType })
   type: TrainType;
+  routeId: Train['routeId'];
+  carriage: _carriageType[];
+  route: RouteEntity;
 }
