@@ -18,6 +18,5 @@ export class TrainsService {
   }
   async findUniqueIncludeDetails(where: TrainWhereUniqueDto) {
     return this.prisma.train.findUnique({ where, select: TrainMainSelect });
-    //
   }
 }

@@ -42,7 +42,7 @@ const createTicketBodyStationsBetweenEnd = {
   seat: 3,
 };
 
-const ticketOmitProperties = ['id', 'timeOfOperation'];
+export const ticketOmitProperties = ['id', 'timeOfOperation'];
 
 export const createTicketObj = {
   valid: {

@@ -2,12 +2,17 @@
 import { TestingModule } from '@nestjs/testing';
 // Tools
 import startTestServer from '../startTestServer';
-import { testAuthEndpoint, testGETRequest } from '../helpers/testEndpoint';
+import {
+  testAuthEndpoint,
+  testGETRequest,
+  testPOSTRequest,
+} from '../helpers/testEndpoint';
 import { generateManagerToken, generateUserToken } from '../helpers/setGlobals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
 import {
+  createTicketByManagerObj,
   getAllEmployeesObj,
   getSingleEmployeeObj,
 } from './../data/manager.test.data';
@@ -21,10 +26,7 @@ describe('MANAGER', () => {
     app = await startTestServer();
     seedService = app.get(SeedService);
 
-    await seedService.seedModel('user');
-    await seedService.seedModel('station');
-    await seedService.seedModel('route');
-    await seedService.seedModel('employee');
+    await seedService.main();
   });
   afterAll(async () => {
     await seedService.removeAllTables();
@@ -71,11 +73,20 @@ describe('MANAGER', () => {
     });
   });
   describe('TICKETS', () => {
+    const { valid, invalid } = createTicketByManagerObj;
     it('MANAGER should be able to buy ticket for user', async () => {
-      //
+      await testPOSTRequest(
+        '/manager/tickets',
+        valid.buy.body,
+        valid.buy.response,
+      );
     });
     it('MANAGER should be able to BOOK ticket for user', async () => {
-      //
+      await testPOSTRequest(
+        '/manager/tickets',
+        valid.book.body,
+        valid.book.response,
+      );
     });
   });
 });
