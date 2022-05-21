@@ -9,9 +9,13 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 export class PricesService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findMany(where: PriceWhereInput, take = 10) {
+    return this.prisma.price.findMany({ where, take });
+  }
   async findFirst(where: PriceWhereInput) {
     return this.prisma.price.findFirst({ where });
   }
+
   async checkPriceAvailability({
     carriageType,
     trainType,

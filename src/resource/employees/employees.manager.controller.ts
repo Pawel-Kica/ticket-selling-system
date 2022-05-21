@@ -9,10 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 // Types
-import {
-  EmployeeEntityDto,
-  FindManyEmployeesQuery,
-} from '../../@types/models/employees.types.dto';
+import { EmployeeEntityDto } from '../../@types/models/employees.types.dto';
+import { EmployeesLookupQuery } from '../../utils/query';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Services
@@ -27,7 +25,7 @@ export class EmployeesManagerController {
 
   @Get()
   async findMany(
-    @Query() { take }: FindManyEmployeesQuery,
+    @Query() { take }: EmployeesLookupQuery,
   ): Promise<EmployeeEntityDto[]> {
     return this.employeesService.findMany({}, take);
   }
