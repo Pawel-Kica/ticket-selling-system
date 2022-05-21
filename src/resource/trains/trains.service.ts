@@ -11,7 +11,12 @@ export class TrainsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findMany(where?: TrainWhereDto) {
-    return this.prisma.train.findMany({ where });
+    return this.prisma.train.findMany({
+      where,
+      orderBy: {
+        id: 'asc',
+      },
+    });
   }
   async findUnique(where: TrainWhereUniqueDto) {
     return this.prisma.train.findUnique({ where });

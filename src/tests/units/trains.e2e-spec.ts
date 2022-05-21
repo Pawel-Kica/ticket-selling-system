@@ -2,25 +2,26 @@
 import { TestingModule } from '@nestjs/testing';
 // Tools
 import startTestServer from '../startTestServer';
+import { testGETRequest } from '../helpers/testEndpoint';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
-import { stationsSeedData } from '../../prisma/seed/data/stations.seed.data';
+import { viewAllTrainsResponse } from '../data/trains.test.data';
 
-describe('STATIONS', () => {
+describe('TRAINS', () => {
   let app: TestingModule;
   let seedService: SeedService;
   beforeAll(async () => {
     app = await startTestServer();
     seedService = app.get(SeedService);
-    await seedService.seedModel('station');
+
+    await seedService.main();
   });
   afterAll(async () => {
-    seedService.removeSpecificTable('station');
+    await seedService.removeAllTables();
     app.close();
   });
-  it('ANONYMOUS should be able to view all stations', async () => {
-    const res = await global.request.get('/stations');
-    expect(res.body.length).toEqual(stationsSeedData.length);
+  it('ANONYMOUS should be able to view all trains', async () => {
+    await testGETRequest('/trains', viewAllTrainsResponse);
   });
 });
