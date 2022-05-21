@@ -1,9 +1,11 @@
-import { Prisma, Route, Station } from '@prisma/client';
+import { TrainInfoDto } from './trains.types.dto';
+import { Prisma, Route } from '@prisma/client';
+import { carriageInfoSelect } from './carriage.types.dto';
 import {
-  carriageInfoSelect,
-  _stationsBetweenInfoDto,
-  _trainInfoDto,
-} from './helpers.dto';
+  StationEntity,
+  StationsBetweenInfoDto,
+  stationsBetweenSelect,
+} from './stations.types.dto';
 
 export type RouteWhereInput = Prisma.RouteWhereInput;
 export type RouteWhereUniqueInput = Prisma.RouteWhereUniqueInput;
@@ -16,12 +18,7 @@ export const routeMainSelect = Prisma.validator<RouteSelect>()({
   endStation: true,
   arrivalTime: true,
   stationsBetween: {
-    select: {
-      station: true,
-      departureTime: true,
-      arrivalTime: true,
-      order: true,
-    },
+    select: stationsBetweenSelect,
     orderBy: {
       order: 'asc',
     },
@@ -39,16 +36,10 @@ export const routeMainSelect = Prisma.validator<RouteSelect>()({
 
 export class RouteEntity {
   id: Route['id'];
-  startStation: {
-    id: Station['id'];
-    name: Station['name'];
-  };
-  departureTime: Date;
-  endStation: {
-    id: Station['id'];
-    name: Station['name'];
-  };
-  arrivalTime: Date;
-  stationsBetween: _stationsBetweenInfoDto[];
-  train: _trainInfoDto[];
+  startStation: StationEntity;
+  departureTime: Route['departureTime'];
+  endStation: StationEntity;
+  arrivalTime: Route['arrivalTime'];
+  stationsBetween: StationsBetweenInfoDto[];
+  train: TrainInfoDto[];
 }
