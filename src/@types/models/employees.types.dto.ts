@@ -8,9 +8,9 @@ import { ToNumber } from '../../utils/query/transform';
 import { Employee } from './../../resource/dto/employee/entities/employee.entity';
 
 export type CreateEmployeeDtoPrisma = Prisma.EmployeeCreateInput;
-export type EmployeeWhereUniqueDto = Prisma.EmployeeWhereUniqueInput;
-export type EmployeeWhereDto = Prisma.EmployeeWhereInput;
-export type EmployeeSelectDto = Prisma.EmployeeSelect;
+export type EmployeeWhereUniqueInput = Prisma.EmployeeWhereUniqueInput;
+export type EmployeeWhereInput = Prisma.EmployeeWhereInput;
+export type EmployeeSelect = Prisma.EmployeeSelect;
 
 export class FindManyEmployeesQuery {
   @ApiPropertyOptional()

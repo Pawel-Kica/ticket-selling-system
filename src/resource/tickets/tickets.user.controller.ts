@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
-  CreateTicketParams,
+  CreateTicketBody,
   CreateTicketResponse,
   TicketEntity,
 } from '../../@types/models/tickets.types.dto';
@@ -29,7 +29,7 @@ export class TicketsController {
   async create(
     @UserId() id: string,
     @Body(ApplyValidation(createTicketSchema))
-    body: CreateTicketParams,
+    body: CreateTicketBody,
   ): Promise<CreateTicketResponse> {
     const ticket = await this.ticketsService.validateAndCreate({
       ...body,

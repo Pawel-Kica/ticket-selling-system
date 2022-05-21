@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
-  EmployeeWhereDto,
-  EmployeeWhereUniqueDto,
+  EmployeeWhereInput,
+  EmployeeWhereUniqueInput,
 } from '../../@types/models/employees.types.dto';
 import { CreateEmployeeDto } from '../dto/employee/dto/create-employee.dto';
 
@@ -15,7 +15,7 @@ export class EmployeesService {
   async create(data: CreateEmployeeDto) {
     return this.prisma.employee.create({ data });
   }
-  async findMany(where?: EmployeeWhereDto, take = 3) {
+  async findMany(where?: EmployeeWhereInput, take = 3) {
     return this.prisma.employee.findMany({
       where,
       take,
@@ -24,7 +24,7 @@ export class EmployeesService {
       },
     });
   }
-  async findUnique(where: EmployeeWhereUniqueDto) {
+  async findUnique(where: EmployeeWhereUniqueInput) {
     return this.prisma.employee.findUnique({ where });
   }
 }

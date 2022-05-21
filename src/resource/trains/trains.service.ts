@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import {
-  TrainMainSelect,
-  TrainWhereDto,
-  TrainWhereUniqueDto,
+  trainDetailsSelect,
+  TrainWhereInput,
+  TrainWhereUniqueInput,
 } from '../../@types/models/trains.types.dto';
 
 @Injectable()
 export class TrainsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(where?: TrainWhereDto) {
+  async findMany(where?: TrainWhereInput) {
     return this.prisma.train.findMany({
       where,
       orderBy: {
@@ -18,10 +18,10 @@ export class TrainsService {
       },
     });
   }
-  async findUnique(where: TrainWhereUniqueDto) {
+  async findUnique(where: TrainWhereUniqueInput) {
     return this.prisma.train.findUnique({ where });
   }
-  async findUniqueIncludeDetails(where: TrainWhereUniqueDto) {
-    return this.prisma.train.findUnique({ where, select: TrainMainSelect });
+  async findUniqueIncludeDetails(where: TrainWhereUniqueInput) {
+    return this.prisma.train.findUnique({ where, select: trainDetailsSelect });
   }
 }

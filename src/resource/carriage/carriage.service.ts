@@ -4,14 +4,14 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import { CarriageType } from '@prisma/client';
-import { CarriageWhereUniqueDto } from '../../@types/models/carriage.types.dto';
+import { CarriageWhereUniqueInput } from '../../@types/models/carriage.types.dto';
 // Responses
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 
 @Injectable()
 export class CarriagesService {
   constructor(private readonly prisma: PrismaService) {}
-  async findUnique(where: CarriageWhereUniqueDto) {
+  async findUnique(where: CarriageWhereUniqueInput) {
     return this.prisma.carriage.findUnique({
       where,
     });

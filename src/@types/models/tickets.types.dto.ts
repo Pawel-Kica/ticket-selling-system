@@ -7,9 +7,9 @@ import {
   Train,
   User,
 } from '@prisma/client';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 // Types
-import { RouteEntity, RouteMainSelect } from './routes.types.dto';
+import { RouteEntity, routeMainSelect } from './routes.types.dto';
 import { Ticket } from '../../resource/dto/ticket/entities/ticket.entity';
 import { CreateTicketDto } from '../../resource/dto/ticket/dto/create-ticket.dto';
 
@@ -40,30 +40,18 @@ export class CreateTicketResponse {
   timeOfOperation: Ticket['timeOfOperation'];
 }
 
-export class TicketsLookupQuery {
-  @ApiPropertyOptional()
-  userId: string;
-  @ApiPropertyOptional()
-  trainId: string;
-  @ApiPropertyOptional()
-  carriageId: string;
-  @ApiPropertyOptional({ enum: State })
-  state: State;
-  @ApiPropertyOptional()
-  routeId: string;
-}
-
 export class CreateTicketByManagerResponse extends CreateTicketResponse {
   @ApiProperty({ enum: State })
   state: State;
 }
 
 export const ticketMainSelect = Prisma.validator<TicketSelect>()({
+  id: true,
   seat: true,
   train: {
     select: {
       route: {
-        select: RouteMainSelect,
+        select: routeMainSelect,
       },
     },
   },
@@ -89,6 +77,7 @@ export const ticketMainSelect = Prisma.validator<TicketSelect>()({
 });
 
 export class TicketEntity {
+  id: Ticket['id'];
   seat: Ticket['seat'];
   train: {
     route: RouteEntity;
@@ -139,7 +128,7 @@ export class TicketUserSelectEntity {
   trainId: Train['id'];
   carriage: {
     id: Carriage['id'];
-    // @ApiProperty({ enum: State })
+    // @ApiProperty({ enum: CarriageType/ })
     type: CarriageType;
   };
   timeOfOperation: Ticket['timeOfOperation'];

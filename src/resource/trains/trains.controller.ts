@@ -4,7 +4,7 @@ import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 // Services
 import { TrainsService } from './trains.service';
 import {
-  TrainDetailsEntity,
+  TrainDetailsDto,
   TrainEntity,
 } from '../../@types/models/trains.types.dto';
 
@@ -19,7 +19,7 @@ export class TrainsController {
   }
 
   @Get(':id')
-  async findUnique(@Param('id') id: string): Promise<TrainDetailsEntity> {
+  async findUnique(@Param('id') id: string): Promise<TrainDetailsDto> {
     const train = await this.trainsService.findUniqueIncludeDetails({ id });
     if (!train) throw new NotFoundException();
 

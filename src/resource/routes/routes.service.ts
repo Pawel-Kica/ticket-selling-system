@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
-  RouteMainSelect,
-  RouteWhereDto,
-  RouteWhereUniqueDto,
+  routeMainSelect,
+  RouteWhereInput,
+  RouteWhereUniqueInput,
 } from '../../@types/models/routes.types.dto';
 // Tools
 import * as moment from 'moment';
@@ -16,13 +16,13 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 export class RoutesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(where: RouteWhereDto, select = RouteMainSelect) {
+  async findMany(where: RouteWhereInput, select = routeMainSelect) {
     return this.prisma.route.findMany({
       where,
       select,
     });
   }
-  async findUnique(where: RouteWhereUniqueDto, select = RouteMainSelect) {
+  async findUnique(where: RouteWhereUniqueInput, select = routeMainSelect) {
     return this.prisma.route.findUnique({ where, select });
   }
 
@@ -87,7 +87,7 @@ export class RoutesService {
           },
         ],
       },
-      RouteMainSelect,
+      routeMainSelect,
     );
   }
 

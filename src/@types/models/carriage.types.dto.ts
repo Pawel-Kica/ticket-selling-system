@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 
-export type CarriageWhereUniqueDto = Prisma.CarriageWhereUniqueInput;
-export type CarriageSelectDto = Prisma.CarriageSelect;
+export type CarriageWhereUniqueInput = Prisma.CarriageWhereUniqueInput;
+export type CarriageSelect = Prisma.CarriageSelect;
 
-export const CarriageMainSelect: CarriageSelectDto = {
+export const CarriageMainSelect: CarriageSelect = {
   _count: {
     select: {
       ticket: true,

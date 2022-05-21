@@ -6,8 +6,8 @@ import { DocumentType, Prisma, Role, User } from '@prisma/client';
 import { CreateUserDto } from '../../resource/dto/user/dto/create-user.dto';
 
 export type CreateUserDtoPrisma = Prisma.UserCreateInput;
-export type UpdateUserDto = Prisma.UserUpdateInput;
-export type UserWhereUniqueDto = Prisma.UserWhereUniqueInput;
+export type UpdateUserInput = Prisma.UserUpdateInput;
+export type UserWhereUniqueInput = Prisma.UserWhereUniqueInput;
 export class CreateUserDtoExtended extends CreateUserDto {
   passwordRepetition: string;
 }
@@ -21,6 +21,7 @@ export class CreateUserByAdminDto extends CreateUserDtoExtended {
 }
 
 export class CreateUserResponseDto {
+  id: User['id'];
   name: User['name'];
   surname: User['surname'];
   email: User['email'];

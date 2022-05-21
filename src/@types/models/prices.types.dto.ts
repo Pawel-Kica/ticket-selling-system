@@ -1,3 +1,3 @@
 import { Prisma } from '@prisma/client';
 
-export type PriceWhereDto = Prisma.PriceWhereInput;
+export type PriceWhereInput = Prisma.PriceWhereInput;

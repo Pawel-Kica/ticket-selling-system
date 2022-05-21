@@ -4,10 +4,10 @@ import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 // Types
 import {
   CreateTicketParams,
-  TicketsLookupQuery,
   CreateTicketByManagerResponse,
   TicketUserSelectEntity,
 } from '../../@types/models/tickets.types.dto';
+import { TicketsLookupQuery } from '../../utils/query';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Services

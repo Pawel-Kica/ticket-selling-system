@@ -1,33 +1,23 @@
-import { Prisma, Route, RoutePoint, Station } from '@prisma/client';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Prisma, Route, Station } from '@prisma/client';
+import {
+  carriageInfoSelect,
+  _stationsBetweenInfoDto,
+  _trainInfoDto,
+} from './helpers.dto';
 
-export type RouteWhereDto = Prisma.RouteWhereInput;
-export type RouteWhereUniqueDto = Prisma.RouteWhereUniqueInput;
-export type RouteSelectDto = Prisma.RouteSelect;
-export class RoutesLookupQuery {
-  @ApiPropertyOptional()
-  startStationId: string;
-  @ApiPropertyOptional()
-  endStationId: string;
-  @ApiPropertyOptional()
-  date: string;
-}
+export type RouteWhereInput = Prisma.RouteWhereInput;
+export type RouteWhereUniqueInput = Prisma.RouteWhereUniqueInput;
+export type RouteSelect = Prisma.RouteSelect;
 
-export const RouteMainSelect = Prisma.validator<RouteSelectDto>()({
+export const routeMainSelect = Prisma.validator<RouteSelect>()({
   id: true,
-  startStation: {
-    select: {
-      name: true,
-    },
-  },
+  startStation: true,
   departureTime: true,
+  endStation: true,
+  arrivalTime: true,
   stationsBetween: {
     select: {
-      station: {
-        select: {
-          name: true,
-        },
-      },
+      station: true,
       departureTime: true,
       arrivalTime: true,
       order: true,
@@ -36,41 +26,29 @@ export const RouteMainSelect = Prisma.validator<RouteSelectDto>()({
       order: 'asc',
     },
   },
-  endStation: {
-    select: {
-      name: true,
-    },
-  },
-  arrivalTime: true,
   train: {
     select: {
+      id: true,
       type: true,
+      carriage: {
+        select: carriageInfoSelect,
+      },
     },
   },
 });
 
-// how to avoid nestjs stupid validation
-class _trainType {
-  type: string;
-}
-class _stationsBetween {
-  station: {
-    name: Station['name'];
-  };
-  departureTime: RoutePoint['departureTime'];
-  arrivalTime: RoutePoint['arrivalTime'];
-  order: RoutePoint['order'];
-}
 export class RouteEntity {
   id: Route['id'];
   startStation: {
+    id: Station['id'];
     name: Station['name'];
   };
-  departureTime: Route['departureTime'];
-  stationsBetween: _stationsBetween[];
+  departureTime: Date;
   endStation: {
+    id: Station['id'];
     name: Station['name'];
   };
-  arrivalTime: Route['arrivalTime'];
-  train: _trainType[];
+  arrivalTime: Date;
+  stationsBetween: _stationsBetweenInfoDto[];
+  train: _trainInfoDto[];
 }

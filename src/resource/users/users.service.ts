@@ -9,7 +9,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import { CreateUserDto } from '../dto/user/dto/create-user.dto';
-import { UserWhereUniqueDto } from '../../@types/models/users.types.dto';
+import { UserWhereUniqueInput } from '../../@types/models/users.types.dto';
 // Tools
 import { omit } from '../../utils/objects';
 
@@ -23,17 +23,17 @@ export class UsersService {
   async findMany() {
     return this.prisma.user.findMany();
   }
-  async findUnique(where: UserWhereUniqueDto) {
+  async findUnique(where: UserWhereUniqueInput) {
     return this.prisma.user.findUnique({ where });
   }
-  async update(where: UserWhereUniqueDto, data: Prisma.UserUpdateInput) {
+  async update(where: UserWhereUniqueInput, data: Prisma.UserUpdateInput) {
     return this.prisma.user.update({ where, data });
   }
-  async remove(where: UserWhereUniqueDto) {
+  async remove(where: UserWhereUniqueInput) {
     return this.prisma.user.delete({ where });
   }
 
-  async checkIfUserExists(where: UserWhereUniqueDto) {
+  async checkIfUserExists(where: UserWhereUniqueInput) {
     const user = await this.findUnique(where);
     if (!user) throw new NotFoundException();
     return user;

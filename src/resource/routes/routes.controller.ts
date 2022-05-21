@@ -7,13 +7,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-// Types
-import {
-  RouteEntity,
-  RoutesLookupQuery,
-} from '../../@types/models/routes.types.dto';
 // Tools
 import * as moment from 'moment';
+// Types
+import { RoutesLookupQuery } from '../../utils/query';
+import { RouteEntity } from '../../@types/models/routes.types.dto';
 // Services
 import { RoutesService } from './routes.service';
 
