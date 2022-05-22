@@ -58,17 +58,20 @@ export const createUserObj = {
   },
 };
 
+export const loginUserBody = pick(createUserBody, ['email', 'password']);
+export const invalidCredentialsLoginUserBody = {
+  ...loginUserBody,
+  password: 'Password1!',
+};
+
 export const loginUserObj = {
   valid: {
-    body: pick(createUserBody, ['email', 'password']),
+    body: loginUserBody,
     response: TokenResponse,
   },
   invalid: {
     credentials: {
-      body: {
-        ...pick(createUserBody, ['email']),
-        password: 'Password1!',
-      },
+      body: invalidCredentialsLoginUserBody,
       response: InvalidCredentialsError,
     },
   },

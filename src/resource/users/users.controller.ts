@@ -1,6 +1,21 @@
 // Nest
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Controller, Post, Body, UsePipes, UseGuards } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  UsePipes,
+  UseGuards,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
 // Services
 import { AuthService } from './auth.service';
 import { UsersService } from './users.service';
@@ -25,6 +40,18 @@ import {
   TokenResponseDto,
 } from '../../utils/responses/main.dto';
 import { InvalidCredentials } from '../../utils/responses/errors';
+// Data
+import {
+  createUserBody,
+  invalidCreateUserBody,
+  invalidCredentialsLoginUserBody,
+  loginUserBody,
+} from '../../tests/data/users.test.data';
+import {
+  ApiBadRequestSchemaDescription,
+  ApiForbiddenResponseDescription,
+  schemaBadRequestDescription,
+} from '../../utils/responses/swagger';
 
 @ApiTags('Users - Main')
 @Controller('users')
@@ -35,6 +62,39 @@ export class UsersController {
   ) {}
 
   @Post()
+  @ApiOperation({
+    description: `Creates a new user with default role`,
+  })
+  @ApiBody({
+    type: CreateUserDtoExtended,
+    examples: {
+      valid: {
+        summary: 'Valid',
+        value: createUserBody,
+      },
+      invalidSchema: {
+        summary: 'Invalid schema',
+        value: invalidCreateUserBody,
+      },
+      types: {
+        summary: 'Types',
+        description: 'For enum values, look in body dto/schema',
+        value: {
+          documentType: 'passport',
+          passwordRepetition: 'string',
+          name: 'string',
+          surname: 'string',
+          email: 'string',
+          password: 'string',
+          documentNumber: 'string',
+        },
+      },
+    },
+  })
+  @ApiBadRequestSchemaDescription()
+  @ApiConflictResponse({
+    description: 'Conflict, email already exists in database',
+  })
   @UsePipes(ApplyValidation(createUserSchema))
   async create(
     @Body() body: CreateUserDtoExtended,
@@ -43,6 +103,32 @@ export class UsersController {
   }
 
   @Post('login')
+  @ApiOperation({
+    description: `Login request or in other words, obtaining an authentication token`,
+  })
+  @ApiBody({
+    type: LoginUserDto,
+    examples: {
+      valid: {
+        summary: 'Valid',
+        value: loginUserBody,
+      },
+      invalidCredentials: {
+        summary: 'Invalid credentials',
+        value: invalidCredentialsLoginUserBody,
+      },
+      types: {
+        summary: 'Types',
+        value: {
+          email: 'string',
+          password: 'string',
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({
+    description: `${schemaBadRequestDescription} / Invalid login credentials`,
+  })
   @UsePipes(ApplyValidation(loginUserSchema))
   async login(
     @Body() { email, password }: LoginUserDto,
@@ -57,7 +143,12 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Post('auth')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(RequireUser)
+  @ApiOperation({
+    description: `Checks if the authentication token is valid`,
+  })
+  @ApiForbiddenResponseDescription()
   auth(): SuccessResponseDto {
     return SuccessResponse;
   }
