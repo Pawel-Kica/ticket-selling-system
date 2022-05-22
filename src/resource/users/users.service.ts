@@ -1,17 +1,20 @@
 // Nest
 import {
   ConflictException,
+  ExecutionContext,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 // Prisma
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import { CreateUserDto } from '../dto/user/dto/create-user.dto';
 import { UserWhereUniqueInput } from '../../@types/models/users.types.dto';
 // Tools
 import { omit } from '../../utils/objects';
+import { BlockedResourceException } from '../../utils/responses/errors';
 
 @Injectable()
 export class UsersService {
@@ -31,6 +34,25 @@ export class UsersService {
   }
   async remove(where: UserWhereUniqueInput) {
     return this.prisma.user.delete({ where });
+  }
+  async requireRole(
+    context: ExecutionContext,
+    roles: Role[],
+    forbiddenRoles: Role[] = [],
+  ) {
+    try {
+      const { id } = context.switchToHttp().getResponse().locals.user;
+      const { blocked, role } = await this.findUnique({ id });
+
+      if (blocked) throw new BlockedResourceException();
+      if (!roles.includes(role) || forbiddenRoles.includes(role))
+        throw new Error();
+
+      return true;
+    } catch (e) {
+      if (e instanceof BlockedResourceException) throw e;
+      throw new ForbiddenException();
+    }
   }
 
   async checkIfUserExists(where: UserWhereUniqueInput) {

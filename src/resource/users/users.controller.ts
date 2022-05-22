@@ -126,7 +126,8 @@ export class UsersController {
     },
   })
   @ApiBadRequestResponse({
-    description: `${schemaBadRequestDescription} / Invalid login credentials`,
+    description: `${schemaBadRequestDescription}
+    \nInvalid login credentials`,
   })
   @UsePipes(ApplyValidation(loginUserSchema))
   @HttpCode(HttpStatus.OK)
