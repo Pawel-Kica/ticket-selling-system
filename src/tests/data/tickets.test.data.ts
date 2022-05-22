@@ -17,6 +17,7 @@ import {
   InvalidStationsError,
   InvalidTrainIdError,
 } from '../helpers/responses.dto';
+import { HttpStatus } from '@nestjs/common';
 
 const createTicketBodyStationsStartEnd = {
   seat: 40,
@@ -54,7 +55,7 @@ export const createTicketObj = {
           state: State.bought,
           userId: testUserId,
         },
-        status: 200,
+        status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
       },
     },
@@ -66,7 +67,7 @@ export const createTicketObj = {
           state: State.bought,
           userId: testUserId,
         },
-        status: 200,
+        status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
       },
     },
@@ -78,7 +79,7 @@ export const createTicketObj = {
           state: State.bought,
           userId: testUserId,
         },
-        status: 200,
+        status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
       },
     },
@@ -90,7 +91,7 @@ export const createTicketObj = {
           state: State.bought,
           userId: testUserId,
         },
-        status: 200,
+        status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
       },
     },

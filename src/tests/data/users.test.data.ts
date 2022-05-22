@@ -32,7 +32,7 @@ export const userResponse = {
     role: 'default',
     blocked: false,
   },
-  status: HttpStatus.OK,
+  status: HttpStatus.CREATED,
   omit: 'id',
 };
 

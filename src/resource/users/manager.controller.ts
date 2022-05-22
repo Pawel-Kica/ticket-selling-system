@@ -1,6 +1,12 @@
 // Nest
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Responses
@@ -14,6 +20,7 @@ import {
 @ApiTags('Manager - main')
 @Controller('manager')
 export class ManagerController {
+  @HttpCode(HttpStatus.OK)
   @Post('auth')
   auth(): SuccessResponseDto {
     return SuccessResponse;

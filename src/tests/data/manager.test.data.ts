@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { State } from '@prisma/client';
 import {
   employeesTestData,
@@ -63,7 +64,7 @@ export const createTicketByManagerObj = {
       body: buyTicketByManagerBody,
       response: {
         data: buyTicketByManagerBody,
-        status: 200,
+        status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
       },
     },
@@ -71,7 +72,7 @@ export const createTicketByManagerObj = {
       body: bookTicketByManagerBody,
       response: {
         data: bookTicketByManagerBody,
-        status: 200,
+        status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
       },
     },

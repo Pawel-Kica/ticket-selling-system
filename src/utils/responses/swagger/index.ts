@@ -3,6 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiForbiddenResponse,
   ApiOkResponse,
+  ApiOperation,
 } from '@nestjs/swagger';
 
 export const schemaBadRequestDescription =
@@ -23,6 +24,8 @@ export const ApiSuccessResponse = () =>
 
 export const ApiAuthEndpointResponse = () =>
   applyDecorators(
-    ApiSuccessResponse,
-    ApiForbiddenResponse({ description: 'Forbidden' }),
+    ApiOperation({
+      description: `Checks if the authentication token and role are valid`,
+    }),
+    ApiForbiddenResponseDescription(),
   );

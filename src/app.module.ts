@@ -58,12 +58,12 @@ import { publicPath } from './config/files.config';
     TrainsModule,
     CarriageModule,
   ],
-  providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: PostInterceptor,
-    },
-  ],
+  // providers: [
+  //   {
+  //     provide: APP_INTERCEPTOR,
+  //     useClass: PostInterceptor,
+  //   },
+  // ],
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {

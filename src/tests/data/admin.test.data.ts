@@ -50,7 +50,7 @@ export const createUserByAdminObj = {
         ...omit(createUserByAdminBody, ['password', 'passwordRepetition']),
         blocked: false,
       },
-      status: HttpStatus.OK,
+      status: HttpStatus.CREATED,
       omit: 'id',
     },
   },
@@ -103,7 +103,7 @@ export const createEmployeeObj = {
     body: createEmployeeBody,
     response: {
       data: { ...createEmployeeBody, photoPath: defaultEmployeePhotoPath },
-      status: 200,
+      status: HttpStatus.CREATED,
       omit: 'id',
     },
   },

@@ -48,8 +48,8 @@ import {
   loginUserBody,
 } from '../../tests/data/users.test.data';
 import {
+  ApiAuthEndpointResponse,
   ApiBadRequestSchemaDescription,
-  ApiForbiddenResponseDescription,
   schemaBadRequestDescription,
 } from '../../utils/responses/swagger';
 
@@ -61,7 +61,6 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
-  @Post()
   @ApiOperation({
     description: `Creates a new user with default role`,
   })
@@ -96,13 +95,13 @@ export class UsersController {
     description: 'Conflict, email already exists in database',
   })
   @UsePipes(ApplyValidation(createUserSchema))
+  @Post()
   async create(
     @Body() body: CreateUserDtoExtended,
   ): Promise<CreateUserResponseDto> {
     return this.usersService.createUserHandler(body);
   }
 
-  @Post('login')
   @ApiOperation({
     description: `Login request or in other words, obtaining an authentication token`,
   })
@@ -130,25 +129,22 @@ export class UsersController {
     description: `${schemaBadRequestDescription} / Invalid login credentials`,
   })
   @UsePipes(ApplyValidation(loginUserSchema))
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
   async login(
     @Body() { email, password }: LoginUserDto,
   ): Promise<TokenResponseDto> {
     const user = await this.usersService.findUnique({ email });
     if (!user) throw new InvalidCredentials();
-
     await this.authService.verifyPassword(password, user.password);
-
     return { token: this.authService.createAuthToken(user.id) };
   }
 
   @ApiBearerAuth()
-  @Post('auth')
-  @HttpCode(HttpStatus.OK)
+  @ApiAuthEndpointResponse()
   @UseGuards(RequireUser)
-  @ApiOperation({
-    description: `Checks if the authentication token is valid`,
-  })
-  @ApiForbiddenResponseDescription()
+  @HttpCode(HttpStatus.OK)
+  @Post('auth')
   auth(): SuccessResponseDto {
     return SuccessResponse;
   }
