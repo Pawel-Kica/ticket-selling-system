@@ -1,7 +1,8 @@
-import { CarriageType, Position, State, TrainType } from '@prisma/client';
+import { CarriageType, Position, Role, State, TrainType } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { ToNumber } from './transform';
+import { IsEnum, IsString } from 'class-validator';
 
 export class TakeQuery {
   @ApiPropertyOptional()
@@ -64,4 +65,12 @@ export class EmployeesLookupQuery extends TakeQuery {
 export class BossTrainsLookupQuery {
   @ApiPropertyOptional()
   bossId: string;
+}
+
+export class AdminUpdateUserRoleQuery {
+  @IsString()
+  id: string;
+  @ApiProperty({ enum: Role })
+  @IsEnum(Role)
+  role: Role;
 }

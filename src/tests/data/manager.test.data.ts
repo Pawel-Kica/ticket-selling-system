@@ -10,7 +10,7 @@ import {
   stationPrefix,
 } from '../../prisma/seed/data/prefixes';
 import { NotFoundErrorInstance } from '../helpers/responses.dto';
-import { testUserId } from './id.test.data';
+import { testUserID } from './id.test.data';
 import { ticketOmitProperties } from './tickets.test.data';
 
 export function formatArrayResponse(arr: any[]) {
@@ -44,7 +44,7 @@ export const getSingleEmployeeObj = {
 
 const buyTicketByManagerBody = {
   state: State.bought,
-  userId: testUserId,
+  userId: testUserID,
   seat: 40,
   trainId: `${trainPrefix}1`,
   carriageId: `${carriagePrefix}1`,

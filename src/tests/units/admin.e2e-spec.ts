@@ -84,7 +84,7 @@ describe('ADMIN', () => {
         generateAdminToken();
       });
 
-      it('ADMIN should be NOT be able to block not existing users', async () => {
+      it('ADMIN should NOT be able to block a user that does not exist', async () => {
         await testPUTRequest(
           `/admin/users/block/${invalid.notFound.param}`,
           {},
@@ -109,7 +109,7 @@ describe('ADMIN', () => {
         generateAdminToken();
       });
 
-      it('ADMIN should be NOT be able to unblock not existing users', async () => {
+      it('ADMIN should NOT be able to unblock a user that does not exist', async () => {
         await testPUTRequest(
           `/admin/users/unblock/${invalid.notFound.param}`,
           {},
@@ -136,14 +136,14 @@ describe('ADMIN', () => {
 
       it('ADMIN should NOT be able to update non existings users roles', async () => {
         await testPUTRequest(
-          `/admin/users/role/${invalid.notFound.param}/inv`,
+          `/admin/users/role?id=${invalid.notFound.param}&role=inv`,
           {},
           invalid.notFound.response,
         );
       });
       it('ADMIN should be able to update users roles', async () => {
         await testPUTRequest(
-          `/admin/users/role/${valid.param}/${valid.role}`,
+          `/admin/users/role?id=${valid.param}&role=${valid.role}`,
           {},
           valid.response,
         );

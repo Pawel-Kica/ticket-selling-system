@@ -1,10 +1,9 @@
 // Nest
 import { HttpStatus } from '@nestjs/common';
 // Tools
-import { DocumentType } from '@prisma/client';
 import { modifyObject, omit } from '../../utils/objects';
 // Data
-import { testUserId } from './id.test.data';
+import { testUserID } from './id.test.data';
 import { InvalidRequestedBody } from '../../utils/responses/errors';
 // Config
 import { defaultEmployeePhotoPath } from '../../config/files.config';
@@ -17,30 +16,27 @@ import {
 import { validateSchema } from '../../validation/validationPipe';
 import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
 import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
+import {
+  createUserBody,
+  invalidCreateUserBody,
+  loginUserBody,
+} from './users.test.data';
 
 export const adminLoginBody = {
   email: 'admin@example.com',
   password: 'Admin1234!',
 };
-export const createUserByAdminLoginBody = {
-  email: 'kamil@example.com',
-  password: 'Passoword1!',
-};
+export const createUserByAdminLoginBody = loginUserBody;
 
 export const createUserByAdminBody = {
-  name: 'Kamil',
-  surname: 'Mysliwiec',
+  ...createUserBody,
   role: 'default',
-  passwordRepetition: 'Passoword1!',
-  documentType: DocumentType.identityCard,
-  documentNumber: '0909',
-  ...createUserByAdminLoginBody,
 };
 
-export const invalidCreateUserByAdminBody = modifyObject(
-  createUserByAdminLoginBody,
-  '!',
-);
+export const invalidCreateUserByAdminBody = {
+  ...invalidCreateUserBody,
+  role: 'adminn',
+};
 
 export const createUserByAdminObj = {
   valid: {
@@ -48,6 +44,10 @@ export const createUserByAdminObj = {
     response: {
       data: {
         ...omit(createUserByAdminBody, ['password', 'passwordRepetition']),
+        //emailToLowerCase middleware
+        email: createUserBody.email.toLowerCase(),
+        //default properties
+        role: 'default',
         blocked: false,
       },
       status: HttpStatus.CREATED,
@@ -66,7 +66,7 @@ export const createUserByAdminObj = {
 
 export const blockUserObj = {
   valid: {
-    param: testUserId,
+    param: testUserID,
     response: SuccessTestResponse,
   },
   invalid: {

@@ -24,6 +24,7 @@ import { StationsModule } from './resource/stations/stations.module';
 import { EmployeesModule } from './resource/employees/employees.module';
 // Config
 import { publicPath } from './config/files.config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { publicPath } from './config/files.config';
     TrainsModule,
     CarriageModule,
   ],
+  controllers: [AppController],
   // providers: [
   //   {
   //     provide: APP_INTERCEPTOR,

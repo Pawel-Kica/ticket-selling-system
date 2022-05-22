@@ -14,7 +14,7 @@ export class InvalidRequestedBody extends HttpException {
 
 export class BlockedResourceException extends HttpException {
   constructor() {
-    super({ message: 'Account blocked' }, 400);
+    super({ message: 'Account blocked' }, 403);
   }
 }
 

@@ -28,7 +28,7 @@ const joiCreateUser = {
   documentType: Joi.string().custom(
     joiValidateEnums(Object.keys(DocumentType)),
   ),
-  documentNumber: Joi.string(),
+  documentNumber: Joi.string().alphanum(),
   passwordRepetition: Joi.any()
     .valid(Joi.ref('password'))
     .required()

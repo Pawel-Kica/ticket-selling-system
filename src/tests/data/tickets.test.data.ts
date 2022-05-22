@@ -5,7 +5,7 @@ import {
   trainPrefix,
 } from '../../prisma/seed/data/prefixes';
 import { State } from '@prisma/client';
-import { testUserId } from './id.test.data';
+import { testUserID } from './id.test.data';
 // Validation
 import { validateSchema } from '../../validation/validationPipe';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
@@ -53,7 +53,7 @@ export const createTicketObj = {
         data: {
           ...createTicketBodyStationsStartEnd,
           state: State.bought,
-          userId: testUserId,
+          userId: testUserID,
         },
         status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
@@ -65,7 +65,7 @@ export const createTicketObj = {
         data: {
           ...createTicketBodyStationsStartBetween,
           state: State.bought,
-          userId: testUserId,
+          userId: testUserID,
         },
         status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
@@ -77,7 +77,7 @@ export const createTicketObj = {
         data: {
           ...createTicketBodyStationsBetween,
           state: State.bought,
-          userId: testUserId,
+          userId: testUserID,
         },
         status: HttpStatus.CREATED,
         omit: ticketOmitProperties,
@@ -89,7 +89,7 @@ export const createTicketObj = {
         data: {
           ...createTicketBodyStationsBetweenEnd,
           state: State.bought,
-          userId: testUserId,
+          userId: testUserID,
         },
         status: HttpStatus.CREATED,
         omit: ticketOmitProperties,

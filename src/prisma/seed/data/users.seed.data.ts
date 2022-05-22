@@ -7,10 +7,10 @@ import { generateIdPrefixes } from './helpers';
 import { userPrefix } from './prefixes';
 import { adminLoginBody } from '../../../tests/data/admin.test.data';
 import {
-  managerUserId,
-  bossUserId,
-  adminUserId,
-  testUserId,
+  managerUserID,
+  bossUserID,
+  adminUserID,
+  testUserID,
 } from '../../../tests/data/id.test.data';
 
 function generateUsers(n: number) {
@@ -36,7 +36,7 @@ export const numberOfManagers = numberOfUsers - numberOfBosses;
 const users = generateUsers(numberOfUsers);
 
 export const adminUser = {
-  id: adminUserId,
+  id: adminUserID,
   name: 'Admin',
   surname: 'Admin',
   role: Role.admin,
@@ -45,7 +45,7 @@ export const adminUser = {
   ...adminLoginBody,
 };
 export const testUser = {
-  id: testUserId,
+  id: testUserID,
   name: 'Johnny',
   surname: 'Depp',
   email: 'johnnydeep@example.com',
@@ -55,7 +55,7 @@ export const testUser = {
   role: Role.default,
 };
 export const managerUser = {
-  id: managerUserId,
+  id: managerUserID,
   name: 'August',
   surname: 'Comte',
   email: 'august@example.com',
@@ -65,7 +65,7 @@ export const managerUser = {
   role: Role.manager,
 };
 export const bossUser = {
-  id: bossUserId,
+  id: bossUserID,
   name: 'Satoshi',
   surname: 'Nakomoto',
   email: 'satoshi@example.com',

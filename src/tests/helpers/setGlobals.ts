@@ -4,10 +4,10 @@ import { Response } from 'supertest';
 import { sign } from 'jsonwebtoken';
 // Data
 import {
-  adminUserId,
-  bossUserId,
-  managerUserId,
-  testUserId,
+  adminUserID,
+  bossUserID,
+  managerUserID,
+  testUserID,
 } from '../data/id.test.data';
 
 export function removeTestToken() {
@@ -22,16 +22,16 @@ export function generateTestToken(id: string) {
   });
 }
 export function generateAdminToken() {
-  generateTestToken(adminUserId);
+  generateTestToken(adminUserID);
 }
 export function generateBossToken() {
-  generateTestToken(bossUserId);
+  generateTestToken(bossUserID);
 }
 export function generateManagerToken() {
-  generateTestToken(managerUserId);
+  generateTestToken(managerUserID);
 }
 export function generateUserToken() {
-  generateTestToken(testUserId);
+  generateTestToken(testUserID);
 }
 
 export function setTestTokenRes(res: Response) {

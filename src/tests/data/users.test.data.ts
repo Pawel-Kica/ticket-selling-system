@@ -36,7 +36,10 @@ export const userResponse = {
   omit: 'id',
 };
 
-export const invalidCreateUserBody = modifyObject(createUserBody, '!');
+export const invalidCreateUserBody = {
+  ...modifyObject(createUserBody, '!'),
+  password: 'regex123',
+};
 
 export const createUserObj = {
   valid: {

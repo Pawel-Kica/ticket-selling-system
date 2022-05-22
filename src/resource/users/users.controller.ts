@@ -3,7 +3,6 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
-  ApiConflictResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -39,6 +38,12 @@ import {
   SuccessResponseDto,
   TokenResponseDto,
 } from '../../utils/responses/main.dto';
+import {
+  ApiAuthEndpointResponse,
+  ApiInvalidRequestedBodySchemaResponse,
+  ApiEmailAlreadyExists,
+  schemaBadRequestDescription,
+} from '../../utils/responses/swagger';
 import { InvalidCredentials } from '../../utils/responses/errors';
 // Data
 import {
@@ -47,11 +52,6 @@ import {
   invalidCredentialsLoginUserBody,
   loginUserBody,
 } from '../../tests/data/users.test.data';
-import {
-  ApiAuthEndpointResponse,
-  ApiBadRequestSchemaDescription,
-  schemaBadRequestDescription,
-} from '../../utils/responses/swagger';
 
 @ApiTags('Users - Main')
 @Controller('users')
@@ -79,21 +79,19 @@ export class UsersController {
         summary: 'Types',
         description: 'For enum values, look in body dto/schema',
         value: {
-          documentType: 'passport',
-          passwordRepetition: 'string',
           name: 'string',
           surname: 'string',
           email: 'string',
           password: 'string',
+          passwordRepetition: 'string',
+          documentType: 'passport',
           documentNumber: 'string',
         },
       },
     },
   })
-  @ApiBadRequestSchemaDescription()
-  @ApiConflictResponse({
-    description: 'Conflict, email already exists in database',
-  })
+  @ApiInvalidRequestedBodySchemaResponse()
+  @ApiEmailAlreadyExists()
   @UsePipes(ApplyValidation(createUserSchema))
   @Post()
   async create(

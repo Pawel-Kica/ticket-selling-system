@@ -14,12 +14,14 @@ import {
   SuccessResponse,
   SuccessResponseDto,
 } from '../../utils/responses/main.dto';
+import { ApiAuthEndpointResponse } from '../../utils/responses/swagger';
 
 @ApiBearerAuth()
 @UseGuards(RequireAdmin)
 @ApiTags('Admin - main')
 @Controller('admin')
 export class AdminController {
+  @ApiAuthEndpointResponse()
   @HttpCode(HttpStatus.OK)
   @Post('auth')
   auth(): SuccessResponseDto {

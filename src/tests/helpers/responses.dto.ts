@@ -33,7 +33,7 @@ export const NotFoundPriceError = new InvalidRequestedBody(
   'We are not selling tickets for this route yet, try again later',
 );
 
-export const TokenResponse = { data: {}, status: 200, omit: 'token' };
+export const TokenResponse = { data: {}, status: HttpStatus.OK, omit: 'token' };
 
 export const SuccessTestResponse = {
   data: SuccessResponse,
