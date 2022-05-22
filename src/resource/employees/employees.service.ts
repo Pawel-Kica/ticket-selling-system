@@ -15,7 +15,7 @@ export class EmployeesService {
   async create(data: CreateEmployeeDto) {
     return this.prisma.employee.create({ data });
   }
-  async findMany(where?: EmployeeWhereInput, take = 3) {
+  async findMany(where: EmployeeWhereInput, take = 3) {
     return this.prisma.employee.findMany({
       where,
       take,

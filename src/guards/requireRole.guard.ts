@@ -57,3 +57,19 @@ export class RequireBoss implements CanActivate {
     }
   }
 }
+
+@Injectable()
+export class RequireHigherRole implements CanActivate {
+  constructor(private readonly usersService: UsersService) {}
+  async canActivate(context: ExecutionContext) {
+    try {
+      const { id } = context.switchToHttp().getResponse().locals.user;
+      const { role } = await this.usersService.findUnique({ id });
+
+      if (role !== Role.boss && role !== Role.manager) throw new Error();
+      return true;
+    } catch (_e) {
+      throw new ForbiddenException();
+    }
+  }
+}

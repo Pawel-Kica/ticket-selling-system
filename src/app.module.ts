@@ -32,6 +32,16 @@ import { publicPath } from './config/files.config';
       isGlobal: true,
       prismaServiceOptions: {
         middlewares: [prismaHashPasswordMiddleware()],
+        prismaOptions: {
+          datasources: {
+            db: {
+              url:
+                process.env.NODE_ENV === 'test'
+                  ? process.env.TEST_DATABASE_URL
+                  : process.env.DATABASE_URL,
+            },
+          },
+        },
       },
     }),
     MulterModule.register({

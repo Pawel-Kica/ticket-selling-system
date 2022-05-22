@@ -11,7 +11,7 @@ import {
 
 @ApiBearerAuth()
 @UseGuards(RequireBoss)
-@ApiTags('Boss')
+@ApiTags('Boss - Main')
 @Controller('boss')
 export class BossController {
   @Post('auth')

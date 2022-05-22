@@ -1,5 +1,5 @@
-import { CarriageType, State, TrainType } from '@prisma/client';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { CarriageType, Position, State, TrainType } from '@prisma/client';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { ToNumber } from './transform';
 
@@ -50,4 +50,18 @@ export class PricesLookupQuery extends TakeQuery {
   trainType: TrainType;
 }
 
-export class EmployeesLookupQuery extends TakeQuery {}
+export class EmployeesLookupQuery extends TakeQuery {
+  @ApiPropertyOptional()
+  telephoneNumber: string;
+  @ApiPropertyOptional()
+  name: string;
+  @ApiPropertyOptional()
+  surname: string;
+  @ApiProperty({ enum: Position })
+  position: Position;
+}
+
+export class BossTrainsLookupQuery {
+  @ApiPropertyOptional()
+  bossId: string;
+}

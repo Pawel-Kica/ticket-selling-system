@@ -25,9 +25,13 @@ export class EmployeesManagerController {
 
   @Get()
   async findMany(
-    @Query() { take }: EmployeesLookupQuery,
+    @Query()
+    { take, position, name, surname, telephoneNumber }: EmployeesLookupQuery,
   ): Promise<EmployeeEntityDto[]> {
-    return this.employeesService.findMany({}, take);
+    return this.employeesService.findMany(
+      { position, name, surname, telephoneNumber },
+      take,
+    );
   }
 
   @Get(':id')

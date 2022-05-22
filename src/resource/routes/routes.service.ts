@@ -7,10 +7,10 @@ import {
   RouteWhereInput,
   RouteWhereUniqueInput,
 } from '../../@types/models/routes.types.dto';
-// Tools
-import * as moment from 'moment';
 // Responses
 import { InvalidRequestedBody } from '../../utils/responses/errors';
+// Config
+import { gtTimeLimit } from '../../config/dates.config';
 
 @Injectable()
 export class RoutesService {
@@ -29,9 +29,7 @@ export class RoutesService {
   async findManyParamStations({
     startStationId,
     endStationId,
-    departureTime = {
-      gt: moment().add(3, 'd').toISOString(),
-    },
+    departureTime,
   }: {
     startStationId: string;
     endStationId: string;
@@ -101,6 +99,9 @@ export class RoutesService {
     const routes = await this.findManyParamStations({
       startStationId,
       endStationId,
+      departureTime: {
+        gt: gtTimeLimit,
+      },
     });
     if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
   }

@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 // Prisma
 import { Position, Prisma } from '@prisma/client';
 // Tools
-import { TakeQuery } from '../../utils/query';
 import { Employee } from './../../resource/dto/employee/entities/employee.entity';
 
 export type CreateEmployeeDtoPrisma = Prisma.EmployeeCreateInput;
