@@ -17,8 +17,8 @@ export const loginUserSchema = Joi.object({
 }).options({ presence: 'required' });
 
 export const joiNameSurname = {
-  name: Joi.string().pattern(regexEnglishAlphabet),
-  surname: Joi.string().pattern(regexEnglishAlphabet),
+  name: Joi.string().pattern(regexEnglishAlphabet).required(),
+  surname: Joi.string().pattern(regexEnglishAlphabet).required(),
 };
 
 const joiCreateUser = {
