@@ -33,7 +33,7 @@ export class EmployeesController {
         value: defaultEmployeePhotoPath,
       },
       notFound: {
-        value: 'aaaaaaa',
+        value: '123',
       },
     },
   })
@@ -42,6 +42,12 @@ export class EmployeesController {
   })
   @ApiNotFoundResponse({
     description: `Not found - no such file {photoName}.${imagesExtension}`,
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Not found',
+      },
+    },
   })
   @Get('image/:photoName')
   async getPhoto(@Param('photoName') photoName: string, @Res() res: Response) {

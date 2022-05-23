@@ -68,15 +68,13 @@ export class UsersController {
     type: CreateUserDtoExtended,
     examples: {
       valid: {
-        summary: 'Valid',
         value: createUserBody,
       },
       invalidSchema: {
-        summary: 'Invalid schema',
+        summary: 'invalid schema',
         value: invalidCreateUserBody,
       },
       types: {
-        summary: 'Types',
         description: 'For enum values, look in body dto/schema',
         value: {
           name: 'string',
@@ -101,21 +99,19 @@ export class UsersController {
   }
 
   @ApiOperation({
-    description: `Login request or in other words, obtaining an authentication token`,
+    description: `Login request or in other words, obtain an authentication token`,
   })
   @ApiBody({
     type: LoginUserDto,
     examples: {
       valid: {
-        summary: 'Valid',
         value: loginUserBody,
       },
       invalidCredentials: {
-        summary: 'Invalid credentials',
+        summary: 'invalid credentials',
         value: invalidCredentialsLoginUserBody,
       },
       types: {
-        summary: 'Types',
         value: {
           email: 'string',
           password: 'string',

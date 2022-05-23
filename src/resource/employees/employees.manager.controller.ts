@@ -14,7 +14,10 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApiSubjectNotFoundResponse } from '../../utils/responses/swagger';
+import {
+  ApiForbiddenResponseDescription,
+  ApiSubjectNotFoundResponse,
+} from '../../utils/responses/swagger';
 // Types
 import { EmployeeEntityDto } from '../../@types/models/employees.types.dto';
 import { EmployeesLookupQuery } from '../../utils/query';
@@ -30,6 +33,7 @@ import { employeesTestData } from '../../prisma/seed/data/employees.seed.data';
 import { employeePrefix } from '../../prisma/seed/data/prefixes';
 
 @ApiBearerAuth()
+@ApiForbiddenResponseDescription()
 @UseGuards(RequireManager)
 @ApiTags('Manager - employees')
 @Controller('manager/employees')
@@ -117,16 +121,17 @@ export class EmployeesManagerController {
   }
 
   @ApiOperation({
-    description: `Find unique employee`,
+    description: `Finds unique employee`,
   })
   @ApiParam({
     name: 'id',
-    description: 'Specify the employeeID to be retrieved',
+    description: 'Specify the employee ID to be found',
     examples: {
       valid: {
-        value: `${employeePrefix}0`,
+        value: `${employeePrefix}1`,
       },
       notFound: {
+        summary: 'not found',
         value: '123',
       },
     },

@@ -9,8 +9,9 @@ import {
   InvalidCredentialsError,
   TokenResponse,
 } from '../helpers/responses.dto';
-// Validation
+// Types
 import { DocumentType } from '@prisma/client';
+// Validation
 import { createUserSchema } from '../../validation/schemas/user.schema';
 import { validateSchema } from '../../validation/validationPipe';
 

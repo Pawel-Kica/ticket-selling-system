@@ -37,7 +37,7 @@ import {
 
 @ApiBearerAuth()
 @ApiTags('Admin - employees')
-// @UseGuards(RequireAdmin)
+@UseGuards(RequireAdmin)
 @ApiForbiddenResponseDescription()
 @Controller('admin/employees')
 export class AdminEmployeesController {
@@ -48,6 +48,12 @@ export class AdminEmployeesController {
   })
   @ApiUnsupportedMediaTypeResponse({
     description: 'Unsupported media type - "only .jpg files are allowed"',
+    schema: {
+      example: {
+        statusCode: 415,
+        message: 'Unsupported Media Type',
+      },
+    },
   })
   @ApiInvalidRequestedBodySchemaResponse()
   @Post()
