@@ -30,7 +30,10 @@ import { RequireAdmin } from '../../../guards/requireRole.guard';
 import { defaultEmployeePhotoPath } from '../../../config/files.config';
 // Tools
 import { omit } from '../../../utils/objects';
-import { ApiForbiddenResponseDescription } from '../../../utils/responses/swagger';
+import {
+  ApiForbiddenResponseDescription,
+  ApiInvalidRequestedBodySchemaResponse,
+} from '../../../utils/responses/swagger';
 
 @ApiBearerAuth()
 @ApiTags('Admin - employees')
@@ -41,11 +44,12 @@ export class AdminEmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @ApiOperation({
-    description: `Creates a new employee with specified data and photo (can be accessed via /employees/image/{photoPath})`,
+    description: `Creates a new employee with specified data and photo (photo can be accessed via /employees/image/{photoPath})`,
   })
   @ApiUnsupportedMediaTypeResponse({
     description: 'Unsupported media type - "only .jpg files are allowed"',
   })
+  @ApiInvalidRequestedBodySchemaResponse()
   @Post()
   @ApiFile()
   async create(

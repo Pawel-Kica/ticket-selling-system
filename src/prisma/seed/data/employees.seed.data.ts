@@ -60,7 +60,7 @@ export const employeesTestData = [
     dateOfBirth: '1991-09-10T05:07:04.796Z',
     address: 'Milwaukee',
     telephoneNumber: '266-307-5485',
-    position: 'conductor',
+    position: 'driver',
     photoPath: 'employee0',
   },
 ];

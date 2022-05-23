@@ -8,6 +8,8 @@ import {
 } from '../../@types/models/employees.types.dto';
 import { CreateEmployeeDto } from '../dto/employee/dto/create-employee.dto';
 
+export const defaultEmployeesTakeNumber = 3;
+
 @Injectable()
 export class EmployeesService {
   constructor(private readonly prisma: PrismaService) {}
@@ -15,7 +17,7 @@ export class EmployeesService {
   async create(data: CreateEmployeeDto) {
     return this.prisma.employee.create({ data });
   }
-  async findMany(where: EmployeeWhereInput, take = 3) {
+  async findMany(where: EmployeeWhereInput, take = defaultEmployeesTakeNumber) {
     return this.prisma.employee.findMany({
       where,
       take,

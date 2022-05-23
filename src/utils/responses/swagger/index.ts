@@ -6,6 +6,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { applyDecorators } from '@nestjs/common';
+import { lowerCaseFirstLetter } from '../../strings';
 
 export const schemaBadRequestDescription =
   'Requested body includes invalid values, read schema messages from response';
@@ -35,11 +36,14 @@ export const ApiForbiddenResponseDescription = () =>
     }),
   );
 
-export const ApiUserNotFoundResponse = () =>
+export const ApiUserNotFoundResponse = () => ApiSubjectNotFoundResponse('User');
+
+export const ApiSubjectNotFoundResponse = (subject: string) =>
   applyDecorators(
     ApiNotFoundResponse({
-      description:
-        'User not found - cannot perform operation on a user that does not exist',
+      description: `${subject} not found - cannot perform operation on a ${lowerCaseFirstLetter(
+        subject,
+      )} that does not exist`,
     }),
   );
 

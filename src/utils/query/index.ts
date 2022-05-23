@@ -58,7 +58,7 @@ export class EmployeesLookupQuery extends TakeQuery {
   name: string;
   @ApiPropertyOptional()
   surname: string;
-  @ApiProperty({ enum: Position })
+  @ApiPropertyOptional({ enum: Position })
   position: Position;
 }
 

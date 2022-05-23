@@ -25,9 +25,12 @@ export function ApiFile() {
           name: { type: 'string', example: 'Ansel' },
           surname: { type: 'string', example: 'Elgort' },
           dateOfBirth: { type: 'date', example: '2004-05-26T04:04:21.684Z' },
-          address: { type: 'string' },
-          telephoneNumber: { type: 'string' },
-          position: { type: 'position' },
+          address: {
+            type: 'string',
+            example: 'Champs Elysees 1',
+          },
+          telephoneNumber: { type: 'string', example: '123456789' },
+          position: { type: 'position', example: 'driver' },
           file: {
             type: 'string',
             format: 'binary',

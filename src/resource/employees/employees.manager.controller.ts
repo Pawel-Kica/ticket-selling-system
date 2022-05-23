@@ -7,14 +7,27 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ApiSubjectNotFoundResponse } from '../../utils/responses/swagger';
 // Types
 import { EmployeeEntityDto } from '../../@types/models/employees.types.dto';
 import { EmployeesLookupQuery } from '../../utils/query';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Services
-import { EmployeesService } from './employees.service';
+import {
+  defaultEmployeesTakeNumber,
+  EmployeesService,
+} from './employees.service';
+// Data
+import { employeesTestData } from '../../prisma/seed/data/employees.seed.data';
+import { employeePrefix } from '../../prisma/seed/data/prefixes';
 
 @ApiBearerAuth()
 @UseGuards(RequireManager)
@@ -23,6 +36,75 @@ import { EmployeesService } from './employees.service';
 export class EmployeesManagerController {
   constructor(private readonly employeesService: EmployeesService) {}
 
+  @ApiOperation({
+    description: `Returns filtered employees (filtering using query params)`,
+  })
+  @ApiQuery({
+    type: Number,
+    name: 'take',
+    description: 'Specify quantity of employees you want to retrieve',
+    examples: {
+      empty: {
+        value: '',
+      },
+      default: {
+        value: defaultEmployeesTakeNumber,
+      },
+    },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'name',
+    description: 'Filter by name property',
+    examples: {
+      empty: {
+        value: '',
+      },
+      default: {
+        value: employeesTestData[0].name,
+      },
+    },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'surname',
+    description: 'Filter by surname property',
+    examples: {
+      empty: {
+        value: '',
+      },
+      seed: {
+        value: employeesTestData[0].surname,
+      },
+    },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'telephoneNumber',
+    description: 'Filter by telephoneNumber property',
+    examples: {
+      empty: {
+        value: '',
+      },
+      seed: {
+        value: employeesTestData[0].surname,
+      },
+    },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'telephoneNumber',
+    description: 'Filter by telephoneNumber property',
+    examples: {
+      empty: {
+        value: '',
+      },
+      seed: {
+        value: employeesTestData[0].telephoneNumber,
+      },
+    },
+    required: false,
+  })
   @Get()
   async findMany(
     @Query()
@@ -34,6 +116,22 @@ export class EmployeesManagerController {
     );
   }
 
+  @ApiOperation({
+    description: `Find unique employee`,
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Specify the employeeID to be retrieved',
+    examples: {
+      valid: {
+        value: `${employeePrefix}0`,
+      },
+      notFound: {
+        value: '123',
+      },
+    },
+  })
+  @ApiSubjectNotFoundResponse('Employee')
   @Get(':id')
   async findUnique(@Param('id') id: string): Promise<EmployeeEntityDto> {
     const employee = await this.employeesService.findUnique({ id });
