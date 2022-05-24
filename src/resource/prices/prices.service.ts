@@ -5,11 +5,14 @@ import { PrismaService } from 'nestjs-prisma';
 import { PriceWhereInput } from '../../@types/models/prices.types.dto';
 // Responses
 import { InvalidRequestedBody } from '../../utils/responses/errors';
+
+export const defaultPricesTakeNumber = 10;
+
 @Injectable()
 export class PricesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(where: PriceWhereInput, take = 10) {
+  async findMany(where: PriceWhereInput, take = defaultPricesTakeNumber) {
     return this.prisma.price.findMany({ where, take });
   }
   async findFirst(where: PriceWhereInput) {

@@ -44,15 +44,17 @@ export class EmployeesManagerController {
     description: `Returns filtered employees (filtering using query params)`,
   })
   @ApiQuery({
-    type: Number,
     name: 'take',
-    description: 'Specify quantity of employees you want to retrieve',
+    description: 'Specify the number of employees you want to receive',
     examples: {
       empty: {
         value: '',
       },
       default: {
         value: defaultEmployeesTakeNumber,
+      },
+      example: {
+        value: 1,
       },
     },
     required: false,
@@ -64,7 +66,7 @@ export class EmployeesManagerController {
       empty: {
         value: '',
       },
-      default: {
+      seed: {
         value: employeesTestData[0].name,
       },
     },
@@ -125,7 +127,7 @@ export class EmployeesManagerController {
   })
   @ApiParam({
     name: 'id',
-    description: 'Specify the employee ID to be found',
+    description: 'Specify the ID of employee to be found',
     examples: {
       valid: {
         value: `${employeePrefix}1`,

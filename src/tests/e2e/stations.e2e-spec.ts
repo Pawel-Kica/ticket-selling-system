@@ -5,7 +5,7 @@ import startTestServer from '../startTestServer';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
-import { stationsSeedData } from '../../prisma/seed/data/stations.seed.data';
+import { defaultStationsTakeNumber } from '../../resource/stations/stations.service';
 
 describe('STATIONS', () => {
   let app: TestingModule;
@@ -21,6 +21,6 @@ describe('STATIONS', () => {
   });
   it('ANONYMOUS should be able to view all stations', async () => {
     const res = await global.request.get('/stations');
-    expect(res.body.length).toEqual(stationsSeedData.length);
+    expect(res.body.length).toEqual(defaultStationsTakeNumber);
   });
 });
