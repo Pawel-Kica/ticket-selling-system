@@ -8,7 +8,6 @@ import {
   Post,
   UseGuards,
   UsePipes,
-  BadRequestException,
   Query,
 } from '@nestjs/common';
 import {
@@ -162,15 +161,7 @@ export class AdminUsersController {
   @ApiOperation({
     description: `Deletes specified user`,
   })
-  @ApiParam({
-    name: 'id',
-    description: 'Specify the ID of user to be deleted',
-    examples: {
-      userID: {
-        value: testUserID,
-      },
-    },
-  })
+  @ApiQuery(userIDParam('deleted'))
   @ApiUserNotFoundResponse()
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<SuccessResponseDto> {

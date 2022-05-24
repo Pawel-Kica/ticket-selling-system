@@ -44,7 +44,7 @@ import {
   ApiEmailAlreadyExists,
   schemaBadRequestDescription,
 } from '../../utils/responses/swagger';
-import { InvalidCredentials } from '../../utils/responses/errors';
+import { InvalidCredentialsException } from '../../utils/responses/errors';
 // Data
 import {
   createUserBody,
@@ -130,7 +130,7 @@ export class UsersController {
     @Body() { email, password }: LoginUserDto,
   ): Promise<TokenResponseDto> {
     const user = await this.usersService.findUnique({ email });
-    if (!user) throw new InvalidCredentials();
+    if (!user) throw new InvalidCredentialsException();
     await this.authService.verifyPassword(password, user.password);
     return { token: this.authService.createAuthToken(user.id) };
   }

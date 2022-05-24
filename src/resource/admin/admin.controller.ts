@@ -14,9 +14,13 @@ import {
   SuccessResponse,
   SuccessResponseDto,
 } from '../../utils/responses/main.dto';
-import { ApiAuthEndpointResponse } from '../../utils/responses/swagger';
+import {
+  ApiAuthEndpointResponse,
+  ApiForbiddenResponseDescription,
+} from '../../utils/responses/swagger';
 
 @ApiBearerAuth()
+@ApiForbiddenResponseDescription()
 @UseGuards(RequireAdmin)
 @ApiTags('Admin - main')
 @Controller('admin')

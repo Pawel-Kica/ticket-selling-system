@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 // Tools
 import { omit, modifyObject, pick } from '../../utils/objects';
 // Responses
-import { InvalidRequestedBody } from '../../utils/responses/errors';
+import { InvalidRequestedBodyException } from '../../utils/responses/errors';
 import {
   ConflictExceptionError,
   InvalidCredentialsError,
@@ -50,7 +50,7 @@ export const createUserObj = {
   invalid: {
     schema: {
       body: invalidCreateUserBody,
-      response: new InvalidRequestedBody(
+      response: new InvalidRequestedBodyException(
         validateSchema(createUserSchema, invalidCreateUserBody),
       ),
     },

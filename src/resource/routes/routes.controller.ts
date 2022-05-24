@@ -6,7 +6,7 @@ import {
   Query,
   NotFoundException,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 // Tools
 import * as moment from 'moment';
 // Types
@@ -19,14 +19,20 @@ import {
   startStationIdParam,
   endStationIdParam,
   takeParam,
+  uniqueIdParam,
 } from '../../utils/responses/swagger/params';
 import { requestDateFormat } from '../../config/dates.config';
+import { routePrefix } from '../../prisma/seed/data/prefixes';
+import { ApiSubjectNotFoundResponse } from '../../utils/responses/swagger';
 
 @ApiTags('Public - Routes')
 @Controller('routes')
 export class RoutesController {
   constructor(private readonly routesService: RoutesService) {}
 
+  @ApiOperation({
+    description: `Returns filtered routes (filtering using query params)`,
+  })
   @ApiQuery(takeParam('routes', 3, 1))
   @ApiQuery(startStationIdParam)
   @ApiQuery(endStationIdParam)
@@ -47,12 +53,9 @@ export class RoutesController {
   async findMany(
     @Query() { startStationId, endStationId, date, take }: RoutesLookupQuery,
   ): Promise<RouteEntity[]> {
-    console.log(date);
     const fDate = moment(date, requestDateFormat);
     const gt = fDate.startOf('day').toISOString() ?? undefined;
     const lt = fDate.endOf('day').toISOString() ?? undefined;
-    console.log(fDate);
-    console.log(gt, lt);
 
     return this.routesService.findManyParamStations({
       startStationId,
@@ -62,6 +65,11 @@ export class RoutesController {
     });
   }
 
+  @ApiOperation({
+    description: `Returns unique employee`,
+  })
+  @ApiParam(uniqueIdParam('route', `${routePrefix}1`))
+  @ApiSubjectNotFoundResponse('Route')
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<RouteEntity> {
     const result = await this.routesService.findUnique({ id });

@@ -10,7 +10,7 @@ import { testUserID } from './id.test.data';
 import { validateSchema } from '../../validation/validationPipe';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 // Responses
-import { InvalidRequestedBody } from '../../utils/responses/errors';
+import { InvalidRequestedBodyException } from '../../utils/responses/errors';
 import {
   InvalidCarriageIdError,
   InvalidSeatNumberError,
@@ -116,7 +116,7 @@ export const createTicketObj = {
         ...createTicketBodyStationsStartEnd,
         seat: 41,
       },
-      response: new InvalidRequestedBody(
+      response: new InvalidRequestedBodyException(
         validateSchema(createTicketSchema, {
           ...createTicketBodyStationsStartEnd,
           seat: 41,

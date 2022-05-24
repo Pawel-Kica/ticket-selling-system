@@ -22,8 +22,6 @@ export class BossTrainsController {
     @Query() { bossId }: BossTrainsLookupQuery,
     @UserId() id: string,
   ) {
-    console.log(bossId && id);
-    console.log(id && bossId);
     return this.trainsService.findMany({ bossId: bossId ? bossId : id });
   }
 }

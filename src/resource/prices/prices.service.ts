@@ -4,7 +4,7 @@ import { PrismaService } from 'nestjs-prisma';
 // Types
 import { PriceWhereInput } from '../../@types/models/prices.types.dto';
 // Responses
-import { InvalidRequestedBody } from '../../utils/responses/errors';
+import { NotFoundPriceError } from './../../utils/responses/errors';
 
 export const defaultPricesTakeNumber = 10;
 
@@ -31,9 +31,6 @@ export class PricesService {
       startStationId,
       endStationId,
     });
-    if (!price)
-      throw new InvalidRequestedBody(
-        'We are not selling tickets for this route yet, try again later',
-      );
+    if (!price) throw new NotFoundPriceError();
   }
 }

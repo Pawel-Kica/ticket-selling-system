@@ -8,7 +8,7 @@ import {
   RouteWhereUniqueInput,
 } from '../../@types/models/routes.types.dto';
 // Responses
-import { InvalidRequestedBody } from '../../utils/responses/errors';
+import { InvalidStationException } from '../../utils/responses/errors';
 // Config
 import { gtTimeLimit } from '../../config/dates.config';
 
@@ -112,6 +112,6 @@ export class RoutesService {
         gt: gtTimeLimit,
       },
     });
-    if (!routes.length) throw new InvalidRequestedBody('Invalid stations');
+    if (!routes.length) throw new InvalidStationException();
   }
 }

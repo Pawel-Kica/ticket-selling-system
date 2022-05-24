@@ -31,7 +31,7 @@ import {
 // Data
 import { employeesTestData } from '../../prisma/seed/data/employees.seed.data';
 import { employeePrefix } from '../../prisma/seed/data/prefixes';
-import { takeParam } from '../../utils/responses/swagger/params';
+import { takeParam, uniqueIdParam } from '../../utils/responses/swagger/params';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()
@@ -109,21 +109,9 @@ export class EmployeesManagerController {
   }
 
   @ApiOperation({
-    description: `Finds unique employee`,
+    description: `Returns unique employee`,
   })
-  @ApiParam({
-    name: 'id',
-    description: 'Specify the ID of employee to be found',
-    examples: {
-      valid: {
-        value: `${employeePrefix}1`,
-      },
-      notFound: {
-        summary: 'not found',
-        value: '123',
-      },
-    },
-  })
+  @ApiParam(uniqueIdParam('employee', `${employeePrefix}1`))
   @ApiSubjectNotFoundResponse('Employee')
   @Get(':id')
   async findUnique(@Param('id') id: string): Promise<EmployeeEntityDto> {

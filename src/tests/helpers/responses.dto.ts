@@ -7,31 +7,30 @@ import {
 } from '@nestjs/common';
 import {
   BlockedResourceException,
-  InvalidCredentials,
-  InvalidRequestedBody,
+  InvalidCarriageIdException,
+  InvalidCredentialsException,
+  InvalidRequestedBodyException,
+  InvalidSeatNumberException,
+  InvalidStationException,
+  InvalidTrainIdException,
 } from '../../utils/responses/errors';
 import { SuccessResponse } from '../../utils/responses/main.dto';
 
 export const ConflictExceptionError = new ConflictException();
-export const InvalidCredentialsError = new InvalidCredentials();
+export const InvalidCredentialsError = new InvalidCredentialsException();
 export const ForbiddenError = new ForbiddenException();
 export const NotFoundErrorInstance = new NotFoundException();
 export const BlockedResourceError = new BlockedResourceException();
 
-export const InvalidCarriageIdError = new InvalidRequestedBody(
-  'Invalid carriage id',
-);
-export const InvalidTrainIdError = new InvalidRequestedBody('Invalid train id');
-
-export const InvalidSeatNumberError = new InvalidRequestedBody(
-  'Invalid seat number',
-);
-export const InvalidStationsError = new InvalidRequestedBody(
-  'Invalid stations',
-);
-export const NotFoundPriceError = new InvalidRequestedBody(
+// create ticket controller
+export const InvalidCarriageIdError = new InvalidCarriageIdException();
+export const InvalidTrainIdError = new InvalidTrainIdException();
+export const InvalidSeatNumberError = new InvalidSeatNumberException();
+export const InvalidStationsError = new InvalidStationException();
+export const NotFoundPriceError = new InvalidRequestedBodyException(
   'We are not selling tickets for this route yet, try again later',
 );
+//
 
 export const TokenResponse = { data: {}, status: HttpStatus.OK, omit: 'token' };
 

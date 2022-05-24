@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { modifyObject, omit } from '../../utils/objects';
 // Data
 import { testUserID } from './id.test.data';
-import { InvalidRequestedBody } from '../../utils/responses/errors';
+import { InvalidRequestedBodyException } from '../../utils/responses/errors';
 // Config
 import { defaultEmployeePhotoPath } from '../../config/files.config';
 // Responses
@@ -59,7 +59,7 @@ export const createUserByAdminObj = {
   invalid: {
     schema: {
       body: invalidCreateUserByAdminBody,
-      response: new InvalidRequestedBody(
+      response: new InvalidRequestedBodyException(
         validateSchema(createUserByAdminSchema, invalidCreateUserByAdminBody),
       ),
     },
@@ -118,7 +118,7 @@ export const createEmployeeObj = {
   invalid: {
     schema: {
       body: invalidCreateEmployeeBody,
-      response: new InvalidRequestedBody(
+      response: new InvalidRequestedBodyException(
         validateSchema(createEmployeeSchema, invalidCreateEmployeeBody),
       ),
     },

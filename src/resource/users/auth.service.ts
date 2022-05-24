@@ -5,7 +5,7 @@ import { hash, verify } from 'argon2';
 // Services
 import { JwtService } from '../../utils/jwt/jwt.service';
 // Responses
-import { InvalidCredentials } from '../../utils/responses/errors';
+import { InvalidCredentialsException } from '../../utils/responses/errors';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +19,6 @@ export class AuthService {
   }
   async verifyPassword(passwordToVerify: string, hash: string): Promise<void> {
     const valid = await verify(hash, passwordToVerify);
-    if (!valid) throw new InvalidCredentials();
+    if (!valid) throw new InvalidCredentialsException();
   }
 }

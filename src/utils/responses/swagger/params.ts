@@ -1,5 +1,5 @@
-import { stationPrefix } from '../../../prisma/seed/data/prefixes';
 import { testUserID } from '../../../tests/data/id.test.data';
+import { stationPrefix } from '../../../prisma/seed/data/prefixes';
 
 export function userIDParam(action: string) {
   return {
@@ -37,6 +37,26 @@ export function takeParam(
       },
     },
     required: false,
+  };
+}
+
+export function uniqueIdParam(
+  subject: string,
+  valid: string,
+  notFound = '123',
+) {
+  return {
+    name: 'id',
+    description: `Specify the ID of ${subject} to be found`,
+    examples: {
+      valid: {
+        value: valid,
+      },
+      notFound: {
+        summary: 'not found',
+        value: notFound,
+      },
+    },
   };
 }
 

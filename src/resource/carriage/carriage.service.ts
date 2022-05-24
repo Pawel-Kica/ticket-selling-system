@@ -6,7 +6,11 @@ import { PrismaService } from 'nestjs-prisma';
 import { CarriageType } from '@prisma/client';
 import { CarriageWhereUniqueInput } from '../../@types/models/carriage.types.dto';
 // Responses
-import { InvalidRequestedBody } from '../../utils/responses/errors';
+import {
+  InvalidCarriageIdException,
+  InvalidSeatNumberException,
+  InvalidTrainIdException,
+} from '../../utils/responses/errors';
 
 @Injectable()
 export class CarriagesService {
@@ -30,13 +34,12 @@ export class CarriagesService {
       id: carriageId,
     });
 
-    if (!carriage) throw new InvalidRequestedBody('Invalid carriage id');
+    if (!carriage) throw new InvalidCarriageIdException();
 
-    if (carriage.trainId !== trainId)
-      throw new InvalidRequestedBody('Invalid train id');
+    if (carriage.trainId !== trainId) throw new InvalidTrainIdException();
 
     if (seat > 20 && carriage.type === CarriageType.comfort)
-      throw new InvalidRequestedBody('Invalid seat number');
+      throw new InvalidSeatNumberException();
 
     return carriage;
   }
