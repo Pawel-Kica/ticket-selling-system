@@ -5,7 +5,7 @@ import {
   endStationIdParam,
   startStationIdParam,
   takeParam,
-} from '../../utils/responses/swagger/params';
+} from '../../utils/swagger/params';
 import { defaultPricesTakeNumber, PricesService } from './prices.service';
 
 @ApiTags('Public - Prices')

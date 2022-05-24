@@ -33,16 +33,15 @@ export const numberOfUsers = 20;
 export const numberOfBosses = numberOfUsers / 2;
 export const numberOfManagers = numberOfUsers - numberOfBosses;
 
-const users = generateUsers(numberOfUsers);
-
 export const adminUser = {
   id: adminUserID,
   name: 'Admin',
   surname: 'Admin',
+  email: 'admin@gmail.com',
+  password: 'Admin123!',
   role: Role.admin,
   documentNumber: '123',
   documentType: DocumentType.identityCard,
-  ...adminLoginBody,
 };
 export const testUser = {
   id: testUserID,
@@ -80,5 +79,5 @@ export const usersSeedData = [
   testUser,
   managerUser,
   bossUser,
-  ...generateIdPrefixes(users, userPrefix),
+  ...generateIdPrefixes(generateUsers(numberOfUsers), userPrefix),
 ];

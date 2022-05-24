@@ -13,8 +13,8 @@ import { RequireManager } from '../../guards/requireRole.guard';
 import {
   SuccessResponse,
   SuccessResponseDto,
-} from '../../utils/responses/main.dto';
-import { ApiAuthEndpointResponse } from '../../utils/responses/swagger';
+} from '../../@types/utils/responses.types';
+import { ApiAuthEndpointResponse } from '../../utils/swagger';
 
 @ApiBearerAuth()
 @UseGuards(RequireManager)

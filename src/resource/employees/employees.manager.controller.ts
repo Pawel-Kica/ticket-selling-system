@@ -17,7 +17,7 @@ import {
 import {
   ApiForbiddenResponseDescription,
   ApiSubjectNotFoundResponse,
-} from '../../utils/responses/swagger';
+} from '../../utils/swagger';
 // Types
 import { EmployeeEntityDto } from '../../@types/models/employees.types.dto';
 import { EmployeesLookupQuery } from '../../utils/query';
@@ -31,7 +31,7 @@ import {
 // Data
 import { employeesTestData } from '../../prisma/seed/data/employees.seed.data';
 import { employeePrefix } from '../../prisma/seed/data/prefixes';
-import { takeParam, uniqueIdParam } from '../../utils/responses/swagger/params';
+import { takeParam, uniqueIdParam } from '../../utils/swagger/params';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()

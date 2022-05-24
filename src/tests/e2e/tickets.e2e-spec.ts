@@ -1,19 +1,19 @@
 // Nest
 import { TestingModule } from '@nestjs/testing';
 // Tools
-import startTestServer from '../startTestServer';
+import testServer from '../testServer';
 import { testPOSTRequest } from '../helpers/testEndpoint';
-import { generateUserToken, removeTestToken } from '../helpers/setGlobals';
+import { generateUserToken, removeTestToken } from '../helpers/globals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 import { createTicketObj } from './../data/tickets.test.data';
-import { ConflictExceptionError } from '../helpers/responses.dto';
+import { ConflictExceptionError } from '../helpers/responses';
 
 describe('TICKETS', () => {
   let app: TestingModule;
   let seedService: SeedService;
   beforeAll(async () => {
-    app = await startTestServer();
+    app = await testServer();
     seedService = app.get(SeedService);
 
     await seedService.main();

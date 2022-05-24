@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 // Services
 import { JwtService } from '../utils/jwt/jwt.service';
 // Tools
-import { getAuthToken } from '../tests/helpers/setGlobals';
+import { getAuthToken } from '../tests/helpers/globals';
 
 @Injectable()
 export class Deserialize implements NestMiddleware {

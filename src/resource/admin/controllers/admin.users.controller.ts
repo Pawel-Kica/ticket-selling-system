@@ -35,14 +35,14 @@ import { UsersService } from '../../users/users.service';
 import {
   SuccessResponse,
   SuccessResponseDto,
-} from '../../../utils/responses/main.dto';
+} from '../../../@types/utils/responses.types';
 import {
   ApiInvalidRequestedBodySchemaResponse,
   ApiEmailAlreadyExists,
   ApiForbiddenResponseDescription,
   ApiUserNotFoundResponse,
   ApiInvalidParamsResponse,
-} from '../../../utils/responses/swagger';
+} from '../../../utils/swagger';
 // Data
 import {
   createUserByAdminBody,
@@ -50,7 +50,7 @@ import {
 } from '../../../tests/data/admin.test.data';
 import { testUserID } from '../../../tests/data/id.test.data';
 import { AdminUpdateUserRoleQuery } from '../../../utils/query';
-import { userIDParam } from '../../../utils/responses/swagger/params';
+import { userIDParam } from '../../../utils/swagger/params';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()

@@ -37,18 +37,17 @@ import {
   SuccessResponse,
   SuccessResponseDto,
   TokenResponseDto,
-} from '../../utils/responses/main.dto';
+} from '../../@types/utils/responses.types';
 import {
   ApiAuthEndpointResponse,
   ApiInvalidRequestedBodySchemaResponse,
   ApiEmailAlreadyExists,
   schemaBadRequestDescription,
-} from '../../utils/responses/swagger';
+} from '../../utils/swagger';
 import { InvalidCredentialsException } from '../../utils/responses/errors';
 // Data
 import {
-  createUserBody,
-  invalidCreateUserBody,
+  createUserObj,
   invalidCredentialsLoginUserBody,
   loginUserBody,
 } from '../../tests/data/users.test.data';
@@ -68,11 +67,15 @@ export class UsersController {
     type: CreateUserDtoExtended,
     examples: {
       valid: {
-        value: createUserBody,
+        value: createUserObj.valid.body,
       },
       invalidSchema: {
         summary: 'invalid schema',
-        value: invalidCreateUserBody,
+        value: createUserObj.invalid.schema.body,
+      },
+      emailAlreadyExists: {
+        summary: 'email already exists',
+        value: createUserObj.invalid.emailAlreadyExists.body,
       },
       types: {
         description: 'For enum values, look in body dto/schema',

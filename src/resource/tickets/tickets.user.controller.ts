@@ -15,10 +15,10 @@ import { TicketsService } from './tickets.service';
 import { ApplyValidation } from '../../validation/validationPipe';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 // Decorators
-import { UserId } from '../../decorators/userId.decorator';
+import { UserID } from '../../decorators/userID.decorator';
 // Responses
-import { ApiForbiddenResponseDescription } from '../../utils/responses/swagger';
-import { ApiCreateTicket } from '../../utils/responses/swagger/decorators';
+import { ApiForbiddenResponseDescription } from '../../utils/swagger';
+import { ApiCreateTicket } from '../../utils/swagger/decorators';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()
@@ -32,7 +32,7 @@ export class TicketsController {
     description: `Returns user's book/bought tickets`,
   })
   @Get()
-  async get(@UserId() id: string): Promise<TicketEntity[]> {
+  async get(@UserID() id: string): Promise<TicketEntity[]> {
     return this.ticketsService.findManyIncludeTrains({
       userId: id,
     });
@@ -43,7 +43,7 @@ export class TicketsController {
   )
   @Post()
   async create(
-    @UserId() id: string,
+    @UserID() id: string,
     @Body(ApplyValidation(createTicketSchema))
     body: CreateTicketBody,
   ): Promise<CreateTicketResponse> {

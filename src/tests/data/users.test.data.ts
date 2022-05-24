@@ -7,15 +7,16 @@ import { InvalidRequestedBodyException } from '../../utils/responses/errors';
 import {
   ConflictExceptionError,
   InvalidCredentialsError,
+  requestedBodySchemaError,
   TokenResponse,
-} from '../helpers/responses.dto';
+} from '../helpers/responses';
 // Types
 import { DocumentType } from '@prisma/client';
 // Validation
 import { createUserSchema } from '../../validation/schemas/user.schema';
-import { validateSchema } from '../../validation/validationPipe';
+import { usersSeedData } from '../../prisma/seed/data/users.seed.data';
 
-export const createUserBody = {
+const createUserBody = {
   name: 'Elon',
   surname: 'Musk',
   email: 'ElonMusk@spacex.com',
@@ -24,7 +25,11 @@ export const createUserBody = {
   documentType: DocumentType.identityCard,
   documentNumber: 'p100s',
 };
-export const userResponse = {
+const invalidCreateUserBody = {
+  ...modifyObject(createUserBody, '!'),
+  password: 'regex123',
+};
+const userDataResponse = {
   data: {
     ...omit(createUserBody, ['password', 'passwordRepetition']),
     //emailToLowerCase middleware
@@ -37,26 +42,26 @@ export const userResponse = {
   omit: 'id',
 };
 
-export const invalidCreateUserBody = {
-  ...modifyObject(createUserBody, '!'),
-  password: 'regex123',
-};
+export const variable = 12;
 
 export const createUserObj = {
   valid: {
     body: createUserBody,
-    response: userResponse,
+    response: userDataResponse,
   },
   invalid: {
     schema: {
       body: invalidCreateUserBody,
-      response: new InvalidRequestedBodyException(
-        validateSchema(createUserSchema, invalidCreateUserBody),
+      response: requestedBodySchemaError(
+        createUserSchema,
+        invalidCreateUserBody,
       ),
     },
     emailAlreadyExists: {
-      // running after successful request (creating an account)
-      body: createUserBody,
+      body: {
+        ...createUserBody,
+        email: usersSeedData[0].email,
+      },
       response: ConflictExceptionError,
     },
   },

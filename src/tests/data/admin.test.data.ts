@@ -2,41 +2,34 @@
 import { HttpStatus } from '@nestjs/common';
 // Tools
 import * as moment from 'moment';
-import { modifyObject, omit } from '../../utils/objects';
+import { modifyObject, omit, pick } from '../../utils/objects';
 // Data
 import { testUserID } from './id.test.data';
-import { InvalidRequestedBodyException } from '../../utils/responses/errors';
+import { adminUser } from '../../prisma/seed/data/users.seed.data';
 // Config
 import { defaultEmployeePhotoPath } from '../../config/files.config';
 // Responses
 import {
   NotFoundErrorInstance,
+  requestedBodySchemaError,
   SuccessTestResponse,
-} from '../helpers/responses.dto';
+} from '../helpers/responses';
 // Validation
-import { validateSchema } from '../../validation/validationPipe';
-import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
-import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
-import {
-  createUserBody,
-  invalidCreateUserBody,
-  loginUserBody,
-} from './users.test.data';
 import { requestDateFormat } from '../../config/dates.config';
+import { createUserObj, loginUserBody } from './users.test.data';
+import { createEmployeeSchema } from '../../validation/schemas/employee.schema';
+import { createUserByAdminSchema } from '../../validation/schemas/user.schema';
 
-export const adminLoginBody = {
-  email: 'admin@example.com',
-  password: 'Admin1234!',
-};
-export const createUserByAdminLoginBody = loginUserBody;
+export const adminLoginBody = pick(adminUser, ['email', 'password']);
+
+export const userCreatedByAdminLoginBody = loginUserBody;
 
 export const createUserByAdminBody = {
-  ...createUserBody,
+  ...createUserObj.valid.body,
   role: 'default',
 };
-
 export const invalidCreateUserByAdminBody = {
-  ...invalidCreateUserBody,
+  ...createUserObj.invalid.schema.body,
   role: 'adminn',
 };
 
@@ -46,9 +39,9 @@ export const createUserByAdminObj = {
     response: {
       data: {
         ...omit(createUserByAdminBody, ['password', 'passwordRepetition']),
-        //emailToLowerCase middleware
-        email: createUserBody.email.toLowerCase(),
-        //default properties
+        // emailToLowerCase middleware
+        email: createUserByAdminBody.email.toLowerCase(),
+        // default properties
         role: 'default',
         blocked: false,
       },
@@ -59,8 +52,9 @@ export const createUserByAdminObj = {
   invalid: {
     schema: {
       body: invalidCreateUserByAdminBody,
-      response: new InvalidRequestedBodyException(
-        validateSchema(createUserByAdminSchema, invalidCreateUserByAdminBody),
+      response: requestedBodySchemaError(
+        createUserByAdminSchema,
+        invalidCreateUserByAdminBody,
       ),
     },
   },
@@ -80,6 +74,7 @@ export const blockUserObj = {
 };
 
 export const unblockUserObj = blockUserObj;
+
 export const updateRolesObj = {
   ...blockUserObj,
   valid: {
@@ -118,8 +113,9 @@ export const createEmployeeObj = {
   invalid: {
     schema: {
       body: invalidCreateEmployeeBody,
-      response: new InvalidRequestedBodyException(
-        validateSchema(createEmployeeSchema, invalidCreateEmployeeBody),
+      response: requestedBodySchemaError(
+        createEmployeeSchema,
+        invalidCreateEmployeeBody,
       ),
     },
   },

@@ -1,7 +1,7 @@
 // Nest
 import { TestingModule } from '@nestjs/testing';
 // Tools
-import startTestServer from '../startTestServer';
+import testServer from '../testServer';
 import {
   testAuthEndpoint,
   testGETRequest,
@@ -11,7 +11,7 @@ import {
   generateManagerToken,
   generateUserToken,
   removeTestToken,
-} from '../helpers/setGlobals';
+} from '../helpers/globals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
@@ -21,13 +21,13 @@ import {
   getSingleEmployeeObj,
 } from './../data/manager.test.data';
 // Responses
-import { ForbiddenError } from '../helpers/responses.dto';
+import { ForbiddenError } from '../helpers/responses';
 
 describe('MANAGER', () => {
   let app: TestingModule;
   let seedService: SeedService;
   beforeAll(async () => {
-    app = await startTestServer();
+    app = await testServer();
     seedService = app.get(SeedService);
 
     await seedService.main();

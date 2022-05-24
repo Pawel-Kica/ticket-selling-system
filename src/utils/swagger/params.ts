@@ -1,5 +1,5 @@
-import { testUserID } from '../../../tests/data/id.test.data';
-import { stationPrefix } from '../../../prisma/seed/data/prefixes';
+import { testUserID } from '../../tests/data/id.test.data';
+import { stationPrefix } from '../../prisma/seed/data/prefixes';
 
 export function userIDParam(action: string) {
   return {

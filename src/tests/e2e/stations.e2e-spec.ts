@@ -1,7 +1,7 @@
 // Nest
 import { TestingModule } from '@nestjs/testing';
 // Tools
-import startTestServer from '../startTestServer';
+import testServer from '../testServer';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Data
@@ -11,7 +11,7 @@ describe('STATIONS', () => {
   let app: TestingModule;
   let seedService: SeedService;
   beforeAll(async () => {
-    app = await startTestServer();
+    app = await testServer();
     seedService = app.get(SeedService);
     await seedService.seedModel('station');
   });

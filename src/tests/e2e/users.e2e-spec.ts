@@ -1,8 +1,8 @@
 // Nest
 import { TestingModule } from '@nestjs/testing';
 // Tools
-import startTestServer from '../startTestServer';
-import { removeTestToken } from '../helpers/setGlobals';
+import testServer from '../testServer';
+import { removeTestToken } from '../helpers/globals';
 import { testAuthEndpoint, testPOSTRequest } from '../helpers/testEndpoint';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
@@ -14,10 +14,12 @@ describe('USERS CRUD', () => {
   let app: TestingModule;
   let seedService: SeedService;
   beforeAll(async () => {
-    app = await startTestServer();
+    app = await testServer();
+    seedService = app.get(SeedService);
+
+    await seedService.seedModel('user');
   });
   afterAll(async () => {
-    seedService = app.get(SeedService);
     seedService.removeSpecificTable('user');
     removeTestToken();
     app.close();
@@ -32,15 +34,15 @@ describe('USERS CRUD', () => {
         invalid.schema.response,
       );
     });
-    it('USER should be able to create a new account with VALID body', async () => {
-      await testPOSTRequest('/users', valid.body, valid.response);
-    });
     it('USER should NOT be able to create a new account with an email that ALREADY EXISTS', async () => {
       await testPOSTRequest(
         '/users',
         invalid.emailAlreadyExists.body,
         invalid.emailAlreadyExists.response,
       );
+    });
+    it('USER should be able to create a new account with VALID body', async () => {
+      await testPOSTRequest('/users', valid.body, valid.response);
     });
     it('USER should NOT be able to access USER AUTH endpoint after removing TEST TOKEN', async () => {
       removeTestToken();

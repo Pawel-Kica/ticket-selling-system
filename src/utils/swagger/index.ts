@@ -6,7 +6,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { applyDecorators } from '@nestjs/common';
-import { lowerCaseFirstLetter } from '../../strings';
+import { lowerCaseFirstLetter } from '../strings';
 import { invalidRoleIdBadRequest } from './params';
 
 export const schemaBadRequestDescription =

@@ -9,7 +9,7 @@ import {
   carriagePrefix,
   stationPrefix,
 } from '../../prisma/seed/data/prefixes';
-import { NotFoundErrorInstance } from '../helpers/responses.dto';
+import { NotFoundErrorInstance } from '../helpers/responses';
 import { testUserID } from './id.test.data';
 import { ticketOmitProperties } from './tickets.test.data';
 

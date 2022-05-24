@@ -34,7 +34,7 @@ import { omit } from '../../../utils/objects';
 import {
   ApiForbiddenResponseDescription,
   ApiInvalidRequestedBodySchemaResponse,
-} from '../../../utils/responses/swagger';
+} from '../../../utils/swagger';
 import { requestDateFormat } from '../../../config/dates.config';
 
 @ApiBearerAuth()

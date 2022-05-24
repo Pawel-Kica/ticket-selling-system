@@ -8,7 +8,7 @@ import * as supertest from 'supertest';
 // Services
 import { SeedService } from '../prisma/seed/seed.service';
 
-async function startTestServer() {
+async function testServer() {
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
     providers: [SeedService],
@@ -22,4 +22,4 @@ async function startTestServer() {
   return moduleFixture;
 }
 
-export default startTestServer;
+export default testServer;

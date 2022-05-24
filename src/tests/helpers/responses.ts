@@ -14,7 +14,11 @@ import {
   InvalidStationException,
   InvalidTrainIdException,
 } from '../../utils/responses/errors';
-import { SuccessResponse } from '../../utils/responses/main.dto';
+// Types
+import { ObjectSchema } from 'joi';
+import { SuccessResponse } from '../../@types/utils/responses.types';
+// Validation
+import { validateSchema } from '../../validation/validationPipe';
 
 export const ConflictExceptionError = new ConflictException();
 export const InvalidCredentialsError = new InvalidCredentialsException();
@@ -39,3 +43,7 @@ export const SuccessTestResponse = {
   status: HttpStatus.OK,
   omit: [],
 };
+
+export function requestedBodySchemaError(schema: ObjectSchema, data: any) {
+  return new InvalidRequestedBodyException(validateSchema(schema, data));
+}

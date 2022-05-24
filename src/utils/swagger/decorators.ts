@@ -1,8 +1,8 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiBody } from '@nestjs/swagger';
 import { ApiInvalidRequestedBodySchemaResponse } from '.';
-import { CreateUserDtoExtended } from '../../../@types/models/users.types.dto';
-import { createTicketObj } from '../../../tests/data/tickets.test.data';
+import { CreateUserDtoExtended } from '../../@types/models/users.types.dto';
+import { createTicketObj } from '../../tests/data/tickets.test.data';
 
 export const ApiCreateTicket = (description: string) =>
   applyDecorators(

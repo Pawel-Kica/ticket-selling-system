@@ -6,7 +6,7 @@ import { RequireHigherRole } from '../../guards/requireRole.guard';
 // Services
 import { TrainsService } from './trains.service';
 // Decorators
-import { UserId } from '../../decorators/userId.decorator';
+import { UserID } from '../../decorators/userID.decorator';
 // Types
 import { BossTrainsLookupQuery } from '../../utils/query';
 
@@ -20,7 +20,7 @@ export class BossTrainsController {
   @Get('trains')
   async getTrains(
     @Query() { bossId }: BossTrainsLookupQuery,
-    @UserId() id: string,
+    @UserID() id: string,
   ) {
     return this.trainsService.findMany({ bossId: bossId ? bossId : id });
   }

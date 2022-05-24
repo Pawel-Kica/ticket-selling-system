@@ -5,7 +5,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { defaultStationsTakeNumber, StationsService } from './stations.service';
 import { StationEntity } from '../../@types/models/stations.types.dto';
 import { TakeQuery } from '../../utils/query';
-import { takeParam } from '../../utils/responses/swagger/params';
+import { takeParam } from '../../utils/swagger/params';
 
 @ApiTags('Public - stations')
 @Controller('stations')

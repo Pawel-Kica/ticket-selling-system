@@ -1,23 +1,24 @@
+// Nest
+import { HttpStatus } from '@nestjs/common';
+// Types
+import { State } from '@prisma/client';
 // Data
 import {
   carriagePrefix,
   stationPrefix,
   trainPrefix,
 } from '../../prisma/seed/data/prefixes';
-import { State } from '@prisma/client';
 import { testUserID } from './id.test.data';
 // Validation
-import { validateSchema } from '../../validation/validationPipe';
 import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 // Responses
-import { InvalidRequestedBodyException } from '../../utils/responses/errors';
 import {
   InvalidCarriageIdError,
   InvalidSeatNumberError,
   InvalidStationsError,
   InvalidTrainIdError,
-} from '../helpers/responses.dto';
-import { HttpStatus } from '@nestjs/common';
+  requestedBodySchemaError,
+} from '../helpers/responses';
 
 const createTicketBodyStationsStartEnd = {
   seat: 40,
@@ -128,8 +129,9 @@ export const createTicketObj = {
     },
     seatNumber: {
       body: invalidSeatNumberCreateTicketBody,
-      response: new InvalidRequestedBodyException(
-        validateSchema(createTicketSchema, invalidSeatNumberCreateTicketBody),
+      response: requestedBodySchemaError(
+        createTicketSchema,
+        invalidSeatNumberCreateTicketBody,
       ),
     },
     carriageType: {

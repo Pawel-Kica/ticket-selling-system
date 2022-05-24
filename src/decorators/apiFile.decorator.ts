@@ -5,7 +5,7 @@ import { applyDecorators, UseInterceptors } from '@nestjs/common';
 import { ApiConsumes, ApiBody } from '@nestjs/swagger';
 // Tools
 import { diskStorage } from 'multer';
-import { FileUploadHelper } from '../utils/files/Helper';
+import { FileUploadHelper } from '../utils/files/uploadHelper';
 
 export function ApiFile() {
   return applyDecorators(

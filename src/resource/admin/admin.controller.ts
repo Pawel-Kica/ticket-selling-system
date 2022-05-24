@@ -13,11 +13,11 @@ import { RequireAdmin } from '../../guards/requireRole.guard';
 import {
   SuccessResponse,
   SuccessResponseDto,
-} from '../../utils/responses/main.dto';
+} from '../../@types/utils/responses.types';
 import {
   ApiAuthEndpointResponse,
   ApiForbiddenResponseDescription,
-} from '../../utils/responses/swagger';
+} from '../../utils/swagger';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()

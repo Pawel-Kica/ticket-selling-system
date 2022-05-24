@@ -20,10 +20,10 @@ import {
   endStationIdParam,
   takeParam,
   uniqueIdParam,
-} from '../../utils/responses/swagger/params';
+} from '../../utils/swagger/params';
 import { requestDateFormat } from '../../config/dates.config';
 import { routePrefix } from '../../prisma/seed/data/prefixes';
-import { ApiSubjectNotFoundResponse } from '../../utils/responses/swagger';
+import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
 
 @ApiTags('Public - Routes')
 @Controller('routes')

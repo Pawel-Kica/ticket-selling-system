@@ -7,23 +7,23 @@ import {
   testPUTRequest,
   testPOSTRequest,
 } from '../helpers/testEndpoint';
-import startTestServer from '../startTestServer';
+import testServer from '../testServer';
 import {
   generateTestToken,
   generateAdminToken,
   removeTestToken,
-} from '../helpers/setGlobals';
+} from '../helpers/globals';
 // Services
 import { SeedService } from '../../prisma/seed/seed.service';
 // Responses
-import { TokenResponse } from '../helpers/responses.dto';
-import { BlockedResourceError } from '../helpers/responses.dto';
+import { TokenResponse } from '../helpers/responses';
+import { BlockedResourceError } from '../helpers/responses';
 // Data
 import {
   adminLoginBody,
   blockUserObj,
   createEmployeeObj,
-  createUserByAdminLoginBody,
+  userCreatedByAdminLoginBody,
   createUserByAdminObj,
   removeUserObj,
   unblockUserObj,
@@ -35,7 +35,7 @@ describe('ADMIN', () => {
   let app: TestingModule;
 
   beforeAll(async () => {
-    app = await startTestServer();
+    app = await testServer();
     seedService = app.get(SeedService);
     await seedService.seedModel('user');
   });
@@ -73,7 +73,7 @@ describe('ADMIN', () => {
       it('USER should be able to login', async () => {
         await testPOSTRequest(
           '/users/login',
-          createUserByAdminLoginBody,
+          userCreatedByAdminLoginBody,
           TokenResponse,
         );
       });

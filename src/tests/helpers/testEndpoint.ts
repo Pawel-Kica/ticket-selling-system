@@ -2,10 +2,10 @@
 import { Response } from 'supertest';
 import { equalToRes, equalToType } from '../../@types/tests/expectations.types';
 // Tools
-import { getTestToken, setTestTokenRes } from './setGlobals';
+import { getTestToken, setTestTokenRes } from './globals';
 import { expectToEqualRes, expectToEqualError } from './betterExpectations';
 // Responses
-import { ForbiddenError, SuccessTestResponse } from './responses.dto';
+import { ForbiddenError, SuccessTestResponse } from './responses';
 
 export const afterTest = (res: Response, equalTo: equalToType) => {
   setTestTokenRes(res);
