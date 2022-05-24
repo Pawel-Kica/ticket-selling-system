@@ -42,6 +42,27 @@ const createTicketBodyStationsBetweenEnd = {
   startStationId: `${stationPrefix}2`,
   seat: 3,
 };
+const invalidCarriageIdCreateTicketBody = {
+  ...createTicketBodyStationsStartEnd,
+  carriageId: 'carriage0',
+};
+const invalidTrainIdCreateTicketBody = {
+  ...createTicketBodyStationsStartEnd,
+  trainId: 'train2',
+};
+const invalidSeatNumberCreateTicketBody = {
+  ...createTicketBodyStationsStartEnd,
+  seat: 41,
+};
+const invalidStationsCreateTicketBody = {
+  ...createTicketBodyStationsStartEnd,
+  startStationId: `${stationPrefix}5`,
+};
+const invalidCarriageTypeCreateTicketBody = {
+  ...createTicketBodyStationsStartEnd,
+  carriageId: `${carriagePrefix}2`,
+  seat: 21,
+};
 
 export const ticketOmitProperties = ['id', 'timeOfOperation'];
 
@@ -98,44 +119,25 @@ export const createTicketObj = {
   },
   invalid: {
     carriageId: {
-      body: {
-        ...createTicketBodyStationsStartEnd,
-        carriageId: 'carriage0',
-      },
+      body: invalidCarriageIdCreateTicketBody,
       response: InvalidCarriageIdError,
     },
     trainId: {
-      body: {
-        ...createTicketBodyStationsStartEnd,
-        trainId: 'train2',
-      },
+      body: invalidTrainIdCreateTicketBody,
       response: InvalidTrainIdError,
     },
     seatNumber: {
-      body: {
-        ...createTicketBodyStationsStartEnd,
-        seat: 41,
-      },
+      body: invalidSeatNumberCreateTicketBody,
       response: new InvalidRequestedBodyException(
-        validateSchema(createTicketSchema, {
-          ...createTicketBodyStationsStartEnd,
-          seat: 41,
-        }),
+        validateSchema(createTicketSchema, invalidSeatNumberCreateTicketBody),
       ),
     },
     carriageType: {
-      body: {
-        ...createTicketBodyStationsStartEnd,
-        carriageId: `${carriagePrefix}2`,
-        seat: 21,
-      },
+      body: invalidCarriageTypeCreateTicketBody,
       response: InvalidSeatNumberError,
     },
     stations: {
-      body: {
-        ...createTicketBodyStationsStartEnd,
-        startStationId: `${stationPrefix}5`,
-      },
+      body: invalidStationsCreateTicketBody,
       response: InvalidStationsError,
     },
   },

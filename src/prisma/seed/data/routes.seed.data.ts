@@ -25,7 +25,7 @@ const generateSingleStation = (
 
 const routes = [
   {
-    departureTime: threeDaysAhead.clone().add(1, 'h').toISOString(),
+    departureTime: threeDaysAhead.clone().add(3, 'h').toISOString(),
     arrivalTime: threeDaysAhead.clone().add(1, 'd').toISOString(),
     startStation: {
       connect: {

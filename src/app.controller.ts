@@ -1,10 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
 import {
   DefaultBodyClass,
   DefaultBodyInterface,
   DefaultBodyType,
-} from './app.dto';
+} from './app.types';
 
 @Controller('app')
 export class AppController {

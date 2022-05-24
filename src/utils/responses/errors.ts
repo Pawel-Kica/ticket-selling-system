@@ -11,19 +11,16 @@ export class InvalidRequestedBodyException extends HttpException {
     super({ message }, 400);
   }
 }
-
 export class BlockedResourceException extends HttpException {
   constructor() {
     super({ message: 'Account blocked' }, 403);
   }
 }
-
 export class InvalidQueryParameterException extends HttpException {
   constructor() {
     super({ message: 'Invalid query parameters' }, 400);
   }
 }
-
 export class InvalidSeatNumberException extends InvalidRequestedBodyException {
   constructor() {
     super('Invalid seat number');

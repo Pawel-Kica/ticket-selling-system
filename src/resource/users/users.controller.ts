@@ -111,12 +111,6 @@ export class UsersController {
         summary: 'invalid credentials',
         value: invalidCredentialsLoginUserBody,
       },
-      types: {
-        value: {
-          email: 'string',
-          password: 'string',
-        },
-      },
     },
   })
   @ApiBadRequestResponse({

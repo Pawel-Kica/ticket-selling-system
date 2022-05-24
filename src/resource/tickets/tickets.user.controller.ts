@@ -18,6 +18,7 @@ import { createTicketSchema } from '../../validation/schemas/ticket.schema';
 import { UserId } from '../../decorators/userId.decorator';
 // Responses
 import { ApiForbiddenResponseDescription } from '../../utils/responses/swagger';
+import { ApiCreateTicket } from '../../utils/responses/swagger/decorators';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()
@@ -37,6 +38,9 @@ export class TicketsController {
     });
   }
 
+  @ApiCreateTicket(
+    `Creates a new ticket. Ordinary users can only buy tickets, no option to provide ticket "state" property`,
+  )
   @Post()
   async create(
     @UserId() id: string,
