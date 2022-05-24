@@ -51,6 +51,14 @@ import {
   invalidCredentialsLoginUserBody,
   loginUserBody,
 } from '../../tests/data/users.test.data';
+import { loginProperties } from '../../config/loginProperties.config';
+import {
+  adminUser,
+  bossUser,
+  managerUser,
+  testUser,
+} from '../../prisma/seed/data/users.seed.data';
+import { pick } from '../../utils/objects';
 
 @ApiTags('Users - Main')
 @Controller('users')
@@ -107,8 +115,20 @@ export class UsersController {
   @ApiBody({
     type: LoginUserDto,
     examples: {
-      valid: {
+      createdUser: {
         value: loginUserBody,
+      },
+      default: {
+        value: pick(testUser, loginProperties),
+      },
+      admin: {
+        value: pick(adminUser, loginProperties),
+      },
+      manager: {
+        value: pick(managerUser, loginProperties),
+      },
+      boss: {
+        value: pick(bossUser, loginProperties),
       },
       invalidCredentials: {
         summary: 'invalid credentials',

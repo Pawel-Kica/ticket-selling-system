@@ -13,6 +13,7 @@ import {
   InvalidSeatNumberException,
   InvalidStationException,
   InvalidTrainIdException,
+  NotFoundPriceException,
 } from '../../utils/responses/errors';
 // Types
 import { ObjectSchema } from 'joi';
@@ -31,9 +32,7 @@ export const InvalidCarriageIdError = new InvalidCarriageIdException();
 export const InvalidTrainIdError = new InvalidTrainIdException();
 export const InvalidSeatNumberError = new InvalidSeatNumberException();
 export const InvalidStationsError = new InvalidStationException();
-export const NotFoundPriceError = new InvalidRequestedBodyException(
-  'We are not selling tickets for this route yet, try again later',
-);
+export const NotFoundPriceError = new NotFoundPriceException();
 //
 
 export const TokenResponse = { data: {}, status: HttpStatus.OK, omit: 'token' };

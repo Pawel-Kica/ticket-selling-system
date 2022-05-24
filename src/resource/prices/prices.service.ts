@@ -4,7 +4,7 @@ import { PrismaService } from 'nestjs-prisma';
 // Types
 import { PriceWhereInput } from '../../@types/models/prices.types.dto';
 // Responses
-import { NotFoundPriceError } from './../../utils/responses/errors';
+import { NotFoundPriceException } from './../../utils/responses/errors';
 
 export const defaultPricesTakeNumber = 10;
 
@@ -31,6 +31,6 @@ export class PricesService {
       startStationId,
       endStationId,
     });
-    if (!price) throw new NotFoundPriceError();
+    if (!price) throw new NotFoundPriceException();
   }
 }

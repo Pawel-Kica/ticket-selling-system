@@ -1,5 +1,5 @@
 // Nest
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 // Types
 import {
@@ -16,8 +16,17 @@ import { TicketsService } from './tickets.service';
 // Validation
 import { ApplyValidation } from '../../validation/validationPipe';
 import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
+import { ApiCreateTicketByManager } from '../../utils/swagger/decorators';
+import { ApiForbiddenResponseDescription } from '../../utils/swagger';
+import {
+  carriageIdFilter,
+  routeIdFilter,
+  trainIdFilter,
+  userIdFilter,
+} from '../../utils/swagger/params';
 
 @ApiBearerAuth()
+@ApiForbiddenResponseDescription()
 @UseGuards(RequireManager)
 @ApiTags('Manager - Tickets')
 @Controller('manager/tickets')
@@ -27,6 +36,15 @@ export class TicketsManagerController {
     private readonly usersService: UsersService,
   ) {}
 
+  @ApiQuery(userIdFilter)
+  @ApiQuery(routeIdFilter)
+  @ApiQuery(trainIdFilter)
+  @ApiQuery(carriageIdFilter)
+  @ApiQuery({
+    name: 'state',
+    description: 'Filter by (ticket) state property',
+    required: false,
+  })
   @Get()
   async findMany(
     @Query()
@@ -43,6 +61,9 @@ export class TicketsManagerController {
     });
   }
 
+  @ApiCreateTicketByManager(
+    `Creates a new ticket for specified user. Manager can choose between "book" and "bought" state`,
+  )
   @Post()
   async create(
     @Body(ApplyValidation(createTicketByManagerSchema))

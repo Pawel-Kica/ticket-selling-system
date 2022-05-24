@@ -9,7 +9,11 @@ import {
   carriagePrefix,
   stationPrefix,
 } from '../../prisma/seed/data/prefixes';
-import { NotFoundErrorInstance } from '../helpers/responses';
+import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
+import {
+  NotFoundErrorInstance,
+  requestedBodySchemaError,
+} from '../helpers/responses';
 import { testUserID } from './id.test.data';
 import { ticketOmitProperties } from './tickets.test.data';
 
@@ -51,11 +55,14 @@ const buyTicketByManagerBody = {
   startStationId: `${stationPrefix}1`,
   endStationId: `${stationPrefix}4`,
 };
-
 const bookTicketByManagerBody = {
   ...buyTicketByManagerBody,
-  state: State.bought,
+  state: State.booked,
   seat: 39,
+};
+const invalidCreateTicketByManagerBody = {
+  ...buyTicketByManagerBody,
+  state: 'boughtt',
 };
 
 export const createTicketByManagerObj = {
@@ -84,6 +91,13 @@ export const createTicketByManagerObj = {
         userId: 'notFound123',
       },
       response: NotFoundErrorInstance,
+    },
+    schema: {
+      body: invalidCreateTicketByManagerBody,
+      response: requestedBodySchemaError(
+        createTicketByManagerSchema,
+        invalidCreateTicketByManagerBody,
+      ),
     },
   },
 };

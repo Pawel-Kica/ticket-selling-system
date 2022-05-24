@@ -79,6 +79,13 @@ describe('MANAGER', () => {
   });
   describe('TICKETS', () => {
     const { valid, invalid } = createTicketByManagerObj;
+    it('MANAGER should NOT be able to buy/book ticket with INVALID body', async () => {
+      await testPOSTRequest(
+        '/manager/tickets',
+        invalid.schema.body,
+        invalid.schema.response,
+      );
+    });
     it('MANAGER should NOT be able to buy/book ticket for user that does not exist', async () => {
       await testPOSTRequest(
         '/manager/tickets',

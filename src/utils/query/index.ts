@@ -31,13 +31,13 @@ export class TicketsLookupQuery {
   @ApiPropertyOptional()
   userId: string;
   @ApiPropertyOptional()
+  routeId: string;
+  @ApiPropertyOptional()
   trainId: string;
   @ApiPropertyOptional()
   carriageId: string;
   @ApiPropertyOptional({ enum: State })
   state: State;
-  @ApiPropertyOptional()
-  routeId: string;
 }
 
 export class PricesLookupQuery extends TakeQuery {
@@ -53,11 +53,11 @@ export class PricesLookupQuery extends TakeQuery {
 
 export class EmployeesLookupQuery extends TakeQuery {
   @ApiPropertyOptional()
-  telephoneNumber: string;
-  @ApiPropertyOptional()
   name: string;
   @ApiPropertyOptional()
   surname: string;
+  @ApiPropertyOptional()
+  telephoneNumber: string;
   @ApiPropertyOptional({ enum: Position })
   position: Position;
 }

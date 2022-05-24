@@ -96,6 +96,7 @@ export const ticketUserSelect = Prisma.validator<TicketSelect>()({
     select: {
       id: true,
       type: true,
+      numberOfSeats: true,
     },
   },
   trainId: true,
@@ -109,10 +110,7 @@ export class TicketUserSelectEntity {
     surname: User['surname'];
   };
   trainId: Train['id'];
-  carriage: {
-    id: Carriage['id'];
-    type: CarriageType;
-  };
+  carriage: CarriageSeatsDto;
   timeOfOperation: Ticket['timeOfOperation'];
   @ApiProperty({ enum: State })
   state: State;

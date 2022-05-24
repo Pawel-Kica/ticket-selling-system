@@ -16,8 +16,8 @@ import { RouteEntity } from '../../@types/models/routes.types.dto';
 import { RoutesService } from './routes.service';
 // Data
 import {
-  startStationIdParam,
-  endStationIdParam,
+  startStationFilter,
+  endStationFilter,
   takeParam,
   uniqueIdParam,
 } from '../../utils/swagger/params';
@@ -34,8 +34,8 @@ export class RoutesController {
     description: `Returns filtered routes (filtering using query params)`,
   })
   @ApiQuery(takeParam('routes', 3, 1))
-  @ApiQuery(startStationIdParam)
-  @ApiQuery(endStationIdParam)
+  @ApiQuery(startStationFilter)
+  @ApiQuery(endStationFilter)
   @ApiQuery({
     name: 'date',
     description: 'Filter by date property',

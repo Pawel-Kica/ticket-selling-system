@@ -1,8 +1,6 @@
 // Nest
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 // Interceptors
-import { PostInterceptor } from './interceptors/postStatusCode.interceptor';
 // Middlewares
 import { Trimmer } from './middleware/trimmer.middleware';
 import { Deserialize } from './middleware/deserialize.middleware';
@@ -24,7 +22,6 @@ import { StationsModule } from './resource/stations/stations.module';
 import { EmployeesModule } from './resource/employees/employees.module';
 // Config
 import { publicPath } from './config/files.config';
-import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -59,7 +56,6 @@ import { AppController } from './app.controller';
     TrainsModule,
     CarriageModule,
   ],
-  controllers: [AppController],
   // providers: [
   //   {
   //     provide: APP_INTERCEPTOR,

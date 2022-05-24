@@ -5,7 +5,6 @@ import faker from '@faker-js/faker';
 import { generateIdPrefixes } from './helpers';
 // Data
 import { userPrefix } from './prefixes';
-import { adminLoginBody } from '../../../tests/data/admin.test.data';
 import {
   managerUserID,
   bossUserID,
@@ -36,8 +35,8 @@ export const numberOfManagers = numberOfUsers - numberOfBosses;
 export const adminUser = {
   id: adminUserID,
   name: 'Admin',
-  surname: 'Admin',
-  email: 'admin@gmail.com',
+  surname: 'User',
+  email: 'admin@example.com',
   password: 'Admin123!',
   role: Role.admin,
   documentNumber: '123',
@@ -45,9 +44,9 @@ export const adminUser = {
 };
 export const testUser = {
   id: testUserID,
-  name: 'Johnny',
-  surname: 'Depp',
-  email: 'johnnydeep@example.com',
+  name: 'Default',
+  surname: 'User',
+  email: 'default@example.com',
   password: 'Password1!',
   documentNumber: '456',
   documentType: DocumentType.identityCard,
@@ -55,9 +54,9 @@ export const testUser = {
 };
 export const managerUser = {
   id: managerUserID,
-  name: 'August',
-  surname: 'Comte',
-  email: 'august@example.com',
+  name: 'Manager',
+  surname: 'User',
+  email: 'manager@example.com',
   password: 'Password1!',
   documentNumber: '789',
   documentType: DocumentType.identityCard,
@@ -65,9 +64,9 @@ export const managerUser = {
 };
 export const bossUser = {
   id: bossUserID,
-  name: 'Satoshi',
-  surname: 'Nakomoto',
-  email: 'satoshi@example.com',
+  name: 'Boss',
+  surname: 'User',
+  email: 'boss@example.com',
   password: 'Password1!',
   documentNumber: '101112',
   documentType: DocumentType.identityCard,

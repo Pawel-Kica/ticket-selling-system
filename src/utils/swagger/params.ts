@@ -1,5 +1,11 @@
 import { testUserID } from '../../tests/data/id.test.data';
-import { stationPrefix } from '../../prisma/seed/data/prefixes';
+import {
+  carriagePrefix,
+  routePrefix,
+  stationPrefix,
+  trainPrefix,
+  userPrefix,
+} from '../../prisma/seed/data/prefixes';
 
 export function userIDParam(action: string) {
   return {
@@ -66,7 +72,7 @@ export const invalidRoleIdBadRequest = {
   error: 'Bad Request',
 };
 
-export const endStationIdParam = {
+export const endStationFilter = {
   name: 'endStationId',
   description: 'Filter by endStationId property',
   examples: {
@@ -80,7 +86,7 @@ export const endStationIdParam = {
   required: false,
 };
 
-export const startStationIdParam = {
+export const startStationFilter = {
   name: 'startStationId',
   description: 'Filter by startStationId property',
   examples: {
@@ -89,6 +95,62 @@ export const startStationIdParam = {
     },
     seed: {
       value: `${stationPrefix}1`,
+    },
+  },
+  required: false,
+};
+
+export const carriageIdFilter = {
+  name: 'carriageId',
+  description: 'Filter by carriageId property',
+  examples: {
+    empty: {
+      value: '',
+    },
+    example: {
+      value: `${carriagePrefix}1`,
+    },
+  },
+  required: false,
+};
+
+export const trainIdFilter = {
+  name: 'trainId',
+  description: 'Filter by trainId property',
+  examples: {
+    empty: {
+      value: '',
+    },
+    example: {
+      value: `${trainPrefix}1`,
+    },
+  },
+  required: false,
+};
+
+export const routeIdFilter = {
+  name: 'routeId',
+  description: 'Filter by routeId property',
+  examples: {
+    empty: {
+      value: '',
+    },
+    example: {
+      value: `${routePrefix}1`,
+    },
+  },
+  required: false,
+};
+
+export const userIdFilter = {
+  name: 'userId',
+  description: 'Filter by userId property',
+  examples: {
+    empty: {
+      value: '',
+    },
+    example: {
+      value: `${userPrefix}1`,
     },
   },
   required: false,

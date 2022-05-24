@@ -10,7 +10,7 @@ import { lowerCaseFirstLetter } from '../strings';
 import { invalidRoleIdBadRequest } from './params';
 
 export const schemaBadRequestDescription =
-  'Requested body includes invalid values, read schema messages from response';
+  'Bad request - requested body includes invalid values, read schema messages from response';
 
 export const ApiInvalidRequestedBodySchemaResponse = () =>
   applyDecorators(
@@ -18,9 +18,12 @@ export const ApiInvalidRequestedBodySchemaResponse = () =>
   );
 
 export const ApiEmailAlreadyExists = () =>
+  ApiConflictResponseDescription('Email already exists in the database');
+
+export const ApiConflictResponseDescription = (description: string) =>
   applyDecorators(
     ApiConflictResponse({
-      description: 'Conflict - email already exists in the database',
+      description: `Conflict - ${description}`,
       schema: {
         example: {
           statusCode: 409,

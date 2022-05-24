@@ -1,8 +1,14 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiBody } from '@nestjs/swagger';
-import { ApiInvalidRequestedBodySchemaResponse } from '.';
+import {
+  ApiConflictResponseDescription,
+  ApiInvalidRequestedBodySchemaResponse,
+  ApiUserNotFoundResponse,
+} from '.';
 import { CreateUserDtoExtended } from '../../@types/models/users.types.dto';
+import { CreateTicketBody } from '../../@types/models/tickets.types.dto';
 import { createTicketObj } from '../../tests/data/tickets.test.data';
+import { createTicketByManagerObj } from '../../tests/data/manager.test.data';
 
 export const ApiCreateTicket = (description: string) =>
   applyDecorators(
@@ -10,7 +16,7 @@ export const ApiCreateTicket = (description: string) =>
       description,
     }),
     ApiBody({
-      type: CreateUserDtoExtended,
+      type: CreateTicketBody,
       examples: {
         valid: {
           value: createTicketObj.valid.startEnd.body,
@@ -25,7 +31,7 @@ export const ApiCreateTicket = (description: string) =>
         },
         invalidSeatNumber: {
           summary: 'invalid seat number',
-          value: createTicketObj.invalid.seatNumber.body,
+          value: createTicketObj.invalid.carriageType.body,
         },
         invalidStations: {
           summary: 'invalid stations',
@@ -34,4 +40,34 @@ export const ApiCreateTicket = (description: string) =>
       },
     }),
     ApiInvalidRequestedBodySchemaResponse(),
+    ApiConflictResponseDescription('this seat has already been bought'),
+  );
+
+export const ApiCreateTicketByManager = (description: string) =>
+  applyDecorators(
+    ApiOperation({
+      description,
+    }),
+    ApiBody({
+      type: CreateUserDtoExtended,
+      examples: {
+        book: {
+          value: createTicketByManagerObj.valid.book.body,
+        },
+        buy: {
+          value: createTicketByManagerObj.valid.buy.body,
+        },
+        userNotFound: {
+          summary: 'user not found',
+          value: createTicketByManagerObj.invalid.notFoundUser.body,
+        },
+        invalidSchema: {
+          summary: 'invalid schema',
+          value: createTicketByManagerObj.invalid.schema.body,
+        },
+      },
+    }),
+    ApiUserNotFoundResponse(),
+    ApiInvalidRequestedBodySchemaResponse(),
+    ApiConflictResponseDescription('this seat has already been bought'),
   );

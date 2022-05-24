@@ -2,8 +2,8 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { PricesLookupQuery } from '../../utils/query';
 import {
-  endStationIdParam,
-  startStationIdParam,
+  endStationFilter,
+  startStationFilter,
   takeParam,
 } from '../../utils/swagger/params';
 import { defaultPricesTakeNumber, PricesService } from './prices.service';
@@ -17,8 +17,8 @@ export class PricesController {
     description: `Returns filtered prices (filtering using query params)`,
   })
   @ApiQuery(takeParam('prices', defaultPricesTakeNumber, 3))
-  @ApiQuery(startStationIdParam)
-  @ApiQuery(endStationIdParam)
+  @ApiQuery(startStationFilter)
+  @ApiQuery(endStationFilter)
   @ApiQuery({
     name: 'carriageType',
     description: 'Filter by carriageType property',

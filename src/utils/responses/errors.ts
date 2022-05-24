@@ -1,54 +1,52 @@
-import { HttpException } from '@nestjs/common';
 import { BetterJoiError } from '../../validation/helpers/betterJoiError';
+import {
+  ForbiddenException,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 
-export class InvalidCredentialsException extends HttpException {
+export class InvalidCredentialsException extends BadRequestException {
   constructor() {
-    super({ message: 'Invalid Credentials' }, 400);
+    super('Invalid Credentials');
   }
 }
-export class InvalidRequestedBodyException extends HttpException {
-  constructor(message: BetterJoiError[] | string) {
-    super({ message }, 400);
+export class InvalidRequestedBodyException extends BadRequestException {
+  constructor(messages: BetterJoiError[]) {
+    super(messages);
   }
 }
-export class BlockedResourceException extends HttpException {
+export class BlockedResourceException extends ForbiddenException {
   constructor() {
-    super({ message: 'Account blocked' }, 403);
+    super('Account blocked');
   }
 }
-export class InvalidQueryParameterException extends HttpException {
+export class InvalidQueryParameterException extends BadRequestException {
   constructor() {
-    super({ message: 'Invalid query parameters' }, 400);
+    super('Invalid query parameters');
   }
 }
-export class InvalidSeatNumberException extends InvalidRequestedBodyException {
+export class InvalidSeatNumberException extends BadRequestException {
   constructor() {
     super('Invalid seat number');
   }
 }
-export class InvalidCarriageIdException extends InvalidRequestedBodyException {
+export class InvalidCarriageIdException extends BadRequestException {
   constructor() {
     super('Invalid carriage id');
   }
 }
-export class InvalidTrainIdException extends InvalidRequestedBodyException {
+export class InvalidTrainIdException extends BadRequestException {
   constructor() {
     super('Invalid train id');
   }
 }
-export class InvalidStationException extends InvalidRequestedBodyException {
+export class InvalidStationException extends BadRequestException {
   constructor() {
     super('Invalid stations');
   }
 }
-export class NotFoundPriceError extends HttpException {
+export class NotFoundPriceException extends NotFoundException {
   constructor() {
-    super(
-      {
-        message:
-          'We are not selling tickets for this route yet, try again later',
-      },
-      404,
-    );
+    super('We are not selling tickets for this route yet, try again later');
   }
 }
