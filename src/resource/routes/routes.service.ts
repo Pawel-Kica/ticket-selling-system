@@ -12,14 +12,20 @@ import { InvalidRequestedBody } from '../../utils/responses/errors';
 // Config
 import { gtTimeLimit } from '../../config/dates.config';
 
+export const routeDefaultTakeNumber = 3;
 @Injectable()
 export class RoutesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(where: RouteWhereInput, select = routeMainSelect) {
+  async findMany(
+    where: RouteWhereInput,
+    select = routeMainSelect,
+    take = routeDefaultTakeNumber,
+  ) {
     return this.prisma.route.findMany({
       where,
       select,
+      take,
     });
   }
   async findUnique(where: RouteWhereUniqueInput, select = routeMainSelect) {
@@ -30,6 +36,7 @@ export class RoutesService {
     startStationId,
     endStationId,
     departureTime,
+    take,
   }: {
     startStationId: string;
     endStationId: string;
@@ -37,6 +44,7 @@ export class RoutesService {
       gt?: string;
       lt?: string;
     };
+    take?: number;
   }) {
     return this.findMany(
       {
@@ -86,6 +94,7 @@ export class RoutesService {
         ],
       },
       routeMainSelect,
+      take,
     );
   }
 

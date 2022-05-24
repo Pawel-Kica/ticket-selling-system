@@ -29,11 +29,13 @@ import { RequireAdmin } from '../../../guards/requireRole.guard';
 // Config
 import { defaultEmployeePhotoPath } from '../../../config/files.config';
 // Tools
+import * as moment from 'moment';
 import { omit } from '../../../utils/objects';
 import {
   ApiForbiddenResponseDescription,
   ApiInvalidRequestedBodySchemaResponse,
 } from '../../../utils/responses/swagger';
+import { requestDateFormat } from '../../../config/dates.config';
 
 @ApiBearerAuth()
 @ApiTags('Admin - employees')
@@ -67,8 +69,16 @@ export class AdminEmployeesController {
       ? file.filename.slice(0, -4)
       : defaultEmployeePhotoPath;
 
-    console.log(body);
-
-    return this.employeesService.create(omit(body, 'file'));
+    return this.employeesService.create(
+      omit(
+        {
+          ...body,
+          dateOfBirth: moment(body.dateOfBirth, requestDateFormat)
+            .startOf('day')
+            .toISOString(),
+        },
+        'file',
+      ),
+    );
   }
 }

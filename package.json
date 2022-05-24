@@ -30,6 +30,8 @@
     "seed:main": "ts-node ./src/prisma/seed/index.ts"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@hapi/joi-date": "^2.0.1",
     "@joi/date": "^2.1.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",

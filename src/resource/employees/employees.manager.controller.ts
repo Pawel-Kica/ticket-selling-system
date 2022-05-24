@@ -31,6 +31,7 @@ import {
 // Data
 import { employeesTestData } from '../../prisma/seed/data/employees.seed.data';
 import { employeePrefix } from '../../prisma/seed/data/prefixes';
+import { takeParam } from '../../utils/responses/swagger/params';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()
@@ -43,22 +44,7 @@ export class EmployeesManagerController {
   @ApiOperation({
     description: `Returns filtered employees (filtering using query params)`,
   })
-  @ApiQuery({
-    name: 'take',
-    description: 'Specify the number of employees you want to receive',
-    examples: {
-      empty: {
-        value: '',
-      },
-      default: {
-        value: defaultEmployeesTakeNumber,
-      },
-      example: {
-        value: 1,
-      },
-    },
-    required: false,
-  })
+  @ApiQuery(takeParam('employees', defaultEmployeesTakeNumber, 1))
   @ApiQuery({
     name: 'name',
     description: 'Filter by name property',

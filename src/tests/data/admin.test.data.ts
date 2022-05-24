@@ -1,6 +1,7 @@
 // Nest
 import { HttpStatus } from '@nestjs/common';
 // Tools
+import * as moment from 'moment';
 import { modifyObject, omit } from '../../utils/objects';
 // Data
 import { testUserID } from './id.test.data';
@@ -21,6 +22,7 @@ import {
   invalidCreateUserBody,
   loginUserBody,
 } from './users.test.data';
+import { requestDateFormat } from '../../config/dates.config';
 
 export const adminLoginBody = {
   email: 'admin@example.com',
@@ -91,7 +93,7 @@ export const removeUserObj = blockUserObj;
 const createEmployeeBody = {
   name: 'TheBest',
   surname: 'Employee',
-  dateOfBirth: new Date('1990-01-01').toISOString(),
+  dateOfBirth: '01-02-1990',
   address: 'Poland',
   telephoneNumber: '123456789',
   position: 'driver',
@@ -102,7 +104,13 @@ export const createEmployeeObj = {
   valid: {
     body: createEmployeeBody,
     response: {
-      data: { ...createEmployeeBody, photoPath: defaultEmployeePhotoPath },
+      data: {
+        ...createEmployeeBody,
+        photoPath: defaultEmployeePhotoPath,
+        dateOfBirth: moment(createEmployeeBody.dateOfBirth, requestDateFormat)
+          .startOf('day')
+          .toISOString(),
+      },
       status: HttpStatus.CREATED,
       omit: 'id',
     },

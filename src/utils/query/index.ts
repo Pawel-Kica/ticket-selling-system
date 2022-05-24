@@ -18,7 +18,7 @@ export class StationsLookupQuery {
   stationId: string;
 }
 
-export class RoutesLookupQuery {
+export class RoutesLookupQuery extends TakeQuery {
   @ApiPropertyOptional()
   startStationId: string;
   @ApiPropertyOptional()
