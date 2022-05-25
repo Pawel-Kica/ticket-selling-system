@@ -85,18 +85,6 @@ export class UsersController {
         summary: 'email already exists',
         value: createUserObj.invalid.emailAlreadyExists.body,
       },
-      types: {
-        description: 'For enum values, look in body dto/schema',
-        value: {
-          name: 'string',
-          surname: 'string',
-          email: 'string',
-          password: 'string',
-          passwordRepetition: 'string',
-          documentType: 'passport',
-          documentNumber: 'string',
-        },
-      },
     },
   })
   @ApiInvalidRequestedBodySchemaResponse()
@@ -139,6 +127,13 @@ export class UsersController {
   @ApiBadRequestResponse({
     description: `${schemaBadRequestDescription}
     \nInvalid login credentials`,
+    schema: {
+      example: {
+        statusCode: 400,
+        message: 'Invalid Credentials',
+        error: 'Bad Request',
+      },
+    },
   })
   @UsePipes(ApplyValidation(loginUserSchema))
   @HttpCode(HttpStatus.OK)

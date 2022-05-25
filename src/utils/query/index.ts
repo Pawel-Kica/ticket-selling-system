@@ -24,7 +24,7 @@ export class RoutesLookupQuery extends TakeQuery {
   @ApiPropertyOptional()
   endStationId: string;
   @ApiPropertyOptional()
-  date: string;
+  departureTime: string;
 }
 
 export class TicketsLookupQuery {
@@ -45,6 +45,13 @@ export class PricesLookupQuery extends TakeQuery {
   startStationId: string;
   @ApiPropertyOptional()
   endStationId: string;
+  @ApiPropertyOptional()
+  @ApiPropertyOptional()
+  @Transform(({ value }) => ToNumber(value))
+  priceLowerThan: number;
+  @ApiPropertyOptional()
+  @Transform(({ value }) => ToNumber(value))
+  priceGreaterThan: number;
   @ApiPropertyOptional({ enum: CarriageType })
   carriageType: CarriageType;
   @ApiPropertyOptional({ enum: TrainType })
@@ -73,4 +80,9 @@ export class AdminUpdateUserRoleQuery {
   @ApiProperty({ enum: Role })
   @IsEnum(Role)
   role: Role;
+}
+
+export class LookupByRouteId {
+  @ApiPropertyOptional()
+  routeId: string;
 }

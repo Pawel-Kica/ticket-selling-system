@@ -50,7 +50,6 @@ export class NotFoundPriceException extends NotFoundException {
     super('We are not selling tickets for this route yet, try again later');
   }
 }
-
 export class BookOnlyBefore3DaysException extends BadRequestException {
   constructor() {
     super('You can BOOK tickets only before 3 days of departureTime');

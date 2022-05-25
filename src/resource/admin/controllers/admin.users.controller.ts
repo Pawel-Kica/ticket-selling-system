@@ -90,20 +90,6 @@ export class AdminUsersController {
         summary: 'Invalid schema',
         value: invalidCreateUserByAdminBody,
       },
-      types: {
-        summary: 'Types',
-        description: 'For enum values, look in body dto/schema',
-        value: {
-          name: 'string',
-          surname: 'string',
-          email: 'string',
-          password: 'string',
-          passwordRepetition: 'string',
-          documentType: 'passport',
-          documentNumber: 'string',
-          role: 'admin',
-        },
-      },
     },
   })
   @ApiInvalidRequestedBodySchemaResponse()

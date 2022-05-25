@@ -85,6 +85,33 @@ export const endStationFilter = {
   },
   required: false,
 };
+export const priceLowerThanFilter = {
+  name: 'priceLowerThan',
+  description: 'Filter by priceLowerThan property',
+  examples: {
+    empty: {
+      value: '',
+    },
+    seed: {
+      value: 120,
+    },
+  },
+  required: false,
+};
+
+export const priceGreaterThan = {
+  name: 'priceGreaterThan',
+  description: 'Filter by priceGreaterThan property',
+  examples: {
+    empty: {
+      value: '',
+    },
+    seed: {
+      value: 60,
+    },
+  },
+  required: false,
+};
 
 export const startStationFilter = {
   name: 'startStationId',

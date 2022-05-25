@@ -1,5 +1,5 @@
 // Nest
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 // Guards
 import { RequireHigherRole } from '../../guards/requireRole.guard';
@@ -9,6 +9,7 @@ import { TrainsService } from './trains.service';
 import { UserID } from '../../decorators/userID.decorator';
 // Types
 import { BossTrainsLookupQuery } from '../../utils/query';
+import { TrainEntity } from '../../@types/models/trains.types.dto';
 
 @ApiBearerAuth()
 @UseGuards(RequireHigherRole)
@@ -17,11 +18,14 @@ import { BossTrainsLookupQuery } from '../../utils/query';
 export class BossTrainsController {
   constructor(private readonly trainsService: TrainsService) {}
 
+  @ApiOperation({
+    description: 'Returns trains filtered by boss id',
+  })
   @Get('trains')
   async getTrains(
     @Query() { bossId }: BossTrainsLookupQuery,
     @UserID() id: string,
-  ) {
+  ): Promise<TrainEntity[]> {
     return this.trainsService.findMany({ bossId: bossId ? bossId : id });
   }
 }

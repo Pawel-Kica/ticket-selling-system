@@ -37,8 +37,8 @@ export class RoutesController {
   @ApiQuery(startStationFilter)
   @ApiQuery(endStationFilter)
   @ApiQuery({
-    name: 'date',
-    description: 'Filter by date property',
+    name: 'departureTime',
+    description: 'Filter by departureTime property',
     examples: {
       empty: {
         value: '',
@@ -51,9 +51,10 @@ export class RoutesController {
   })
   @Get()
   async findMany(
-    @Query() { startStationId, endStationId, date, take }: RoutesLookupQuery,
+    @Query()
+    { startStationId, endStationId, departureTime, take }: RoutesLookupQuery,
   ): Promise<RouteEntity[]> {
-    const fDate = moment(date, requestDateFormat);
+    const fDate = moment(departureTime, requestDateFormat);
     const gt = fDate.startOf('day').toISOString() ?? undefined;
     const lt = fDate.endOf('day').toISOString() ?? undefined;
 
@@ -66,7 +67,7 @@ export class RoutesController {
   }
 
   @ApiOperation({
-    description: `Returns unique employee`,
+    description: `Returns unique route`,
   })
   @ApiParam(uniqueIdParam('route', `${routePrefix}1`))
   @ApiSubjectNotFoundResponse('Route')
