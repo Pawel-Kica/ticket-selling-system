@@ -6,7 +6,10 @@ import {
   ApiUserNotFoundResponse,
 } from '.';
 import { CreateUserDtoExtended } from '../../@types/models/users.types.dto';
-import { CreateTicketBody } from '../../@types/models/tickets.types.dto';
+import {
+  CreateTicketBody,
+  CreateTicketParams,
+} from '../../@types/models/tickets.types.dto';
 import { createTicketObj } from '../../tests/data/tickets.test.data';
 import { createTicketByManagerObj } from '../../tests/data/manager.test.data';
 
@@ -49,7 +52,7 @@ export const ApiCreateTicketByManager = (description: string) =>
       description,
     }),
     ApiBody({
-      type: CreateUserDtoExtended,
+      type: CreateTicketParams,
       examples: {
         book: {
           value: createTicketByManagerObj.valid.book.body,
@@ -60,6 +63,10 @@ export const ApiCreateTicketByManager = (description: string) =>
         userNotFound: {
           summary: 'user not found',
           value: createTicketByManagerObj.invalid.notFoundUser.body,
+        },
+        invalidBook3daysBefore: {
+          summary: 'invalid - book only 3 days before',
+          value: createTicketByManagerObj.invalid.tooLateToBook.body,
         },
         invalidSchema: {
           summary: 'invalid schema',

@@ -1,5 +1,6 @@
 // Types
 import { TrainType } from '@prisma/client';
+import { bossUserID } from '../../../tests/data/id.test.data';
 // Tools
 import { generateIdPrefixes } from './helpers';
 // Data
@@ -56,8 +57,8 @@ function generateTrains(
 }
 
 const trains = generateTrains([
-  generateParams('16', '17', '11', '1', TrainType.highSpeed),
-  generateParams('18', '19', '12', '2', TrainType.passenger),
+  generateParams('16', '17', bossUserID.slice(4), '1', TrainType.highSpeed),
+  generateParams('18', '19', bossUserID.slice(4), '2', TrainType.passenger),
   generateParams('20', '21', '13', '3', TrainType.regional),
 ]);
 

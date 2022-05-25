@@ -11,6 +11,7 @@ import {
 } from '../../prisma/seed/data/prefixes';
 import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
 import {
+  BookOnlyBefore3DaysError,
   NotFoundErrorInstance,
   requestedBodySchemaError,
 } from '../helpers/responses';
@@ -47,21 +48,30 @@ export const getSingleEmployeeObj = {
 };
 
 const buyTicketByManagerBody = {
-  state: State.bought,
-  userId: testUserID,
+  trainId: `${trainPrefix}3`,
+  carriageId: `${carriagePrefix}5`,
+  startStationId: `${stationPrefix}10`,
+  endStationId: `${stationPrefix}13`,
   seat: 40,
+  userId: testUserID,
+  state: State.bought,
+};
+const bookTicketByManagerBody = {
   trainId: `${trainPrefix}1`,
   carriageId: `${carriagePrefix}1`,
   startStationId: `${stationPrefix}1`,
-  endStationId: `${stationPrefix}4`,
+  endStationId: `${stationPrefix}3`,
+  state: State.booked,
+  userId: testUserID,
+  seat: 39,
 };
-const bookTicketByManagerBody = {
+const invalidBookBefore3DaysBody = {
   ...buyTicketByManagerBody,
   state: State.booked,
-  seat: 39,
 };
 const invalidCreateTicketByManagerBody = {
   ...buyTicketByManagerBody,
+  seat: 41,
   state: 'boughtt',
 };
 
@@ -98,6 +108,10 @@ export const createTicketByManagerObj = {
         createTicketByManagerSchema,
         invalidCreateTicketByManagerBody,
       ),
+    },
+    tooLateToBook: {
+      body: invalidBookBefore3DaysBody,
+      response: BookOnlyBefore3DaysError,
     },
   },
 };

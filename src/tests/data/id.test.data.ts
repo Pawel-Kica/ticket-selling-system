@@ -1,4 +1,4 @@
-export const adminUserID = 'admin1';
-export const testUserID = 'test1';
-export const managerUserID = 'manager1';
-export const bossUserID = 'boss1';
+export const adminUserID = 'userAdmin1';
+export const testUserID = 'userTest1';
+export const managerUserID = 'userManager1';
+export const bossUserID = 'userBoss1';

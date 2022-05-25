@@ -7,11 +7,12 @@ import {
 } from '@nestjs/common';
 import {
   BlockedResourceException,
+  BookOnlyBefore3DaysException,
   InvalidCarriageIdException,
   InvalidCredentialsException,
   InvalidRequestedBodyException,
   InvalidSeatNumberException,
-  InvalidStationException,
+  InvalidStationsException,
   InvalidTrainIdException,
   NotFoundPriceException,
 } from '../../utils/responses/errors';
@@ -31,8 +32,9 @@ export const BlockedResourceError = new BlockedResourceException();
 export const InvalidCarriageIdError = new InvalidCarriageIdException();
 export const InvalidTrainIdError = new InvalidTrainIdException();
 export const InvalidSeatNumberError = new InvalidSeatNumberException();
-export const InvalidStationsError = new InvalidStationException();
+export const InvalidStationsError = new InvalidStationsException();
 export const NotFoundPriceError = new NotFoundPriceException();
+export const BookOnlyBefore3DaysError = new BookOnlyBefore3DaysException();
 //
 
 export const TokenResponse = { data: {}, status: HttpStatus.OK, omit: 'token' };

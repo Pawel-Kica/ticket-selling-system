@@ -7,10 +7,10 @@ import {
   RouteWhereInput,
   RouteWhereUniqueInput,
 } from '../../@types/models/routes.types.dto';
+import { gtBuyTimeLimit } from '../../config/dates.config';
 // Responses
-import { InvalidStationException } from '../../utils/responses/errors';
+import { InvalidStationsException } from '../../utils/responses/errors';
 // Config
-import { gtTimeLimit } from '../../config/dates.config';
 
 export const routeDefaultTakeNumber = 3;
 @Injectable()
@@ -109,9 +109,11 @@ export class RoutesService {
       startStationId,
       endStationId,
       departureTime: {
-        gt: gtTimeLimit,
+        gt: gtBuyTimeLimit,
       },
     });
-    if (!routes.length) throw new InvalidStationException();
+    if (!routes.length) throw new InvalidStationsException();
+
+    return routes[0];
   }
 }

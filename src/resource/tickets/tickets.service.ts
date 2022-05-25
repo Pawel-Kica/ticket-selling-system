@@ -2,6 +2,7 @@
 import { PrismaService } from 'nestjs-prisma';
 import { ConflictException, Injectable } from '@nestjs/common';
 // Types
+import { State } from '@prisma/client';
 import {
   CreateTicketPrisma,
   TicketWhere,
@@ -14,6 +15,8 @@ import { PricesService } from '../prices/prices.service';
 import { RoutesService } from '../routes/routes.service';
 import { TrainsService } from '../trains/trains.service';
 import { CarriagesService } from '../carriage/carriage.service';
+import { BookOnlyBefore3DaysException } from '../../utils/responses/errors';
+import { gtBookTimeLimit } from '../../config/dates.config';
 
 @Injectable()
 export class TicketsService {
@@ -114,10 +117,13 @@ export class TicketsService {
 
     await this.checkTicketAvailability({ carriageId, seat });
 
-    await this.routesService.validateRoute({
+    const route = await this.routesService.validateRoute({
       startStationId,
       endStationId,
     });
+
+    if (route.departureTime < gtBookTimeLimit && state === State.booked)
+      throw new BookOnlyBefore3DaysException();
 
     const { type: trainType } = await this.trainsService.findUnique({
       id: trainId,

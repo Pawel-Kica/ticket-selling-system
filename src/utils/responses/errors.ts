@@ -40,7 +40,7 @@ export class InvalidTrainIdException extends BadRequestException {
     super('Invalid train id');
   }
 }
-export class InvalidStationException extends BadRequestException {
+export class InvalidStationsException extends BadRequestException {
   constructor() {
     super('Invalid stations');
   }
@@ -48,5 +48,11 @@ export class InvalidStationException extends BadRequestException {
 export class NotFoundPriceException extends NotFoundException {
   constructor() {
     super('We are not selling tickets for this route yet, try again later');
+  }
+}
+
+export class BookOnlyBefore3DaysException extends BadRequestException {
+  constructor() {
+    super('You can BOOK tickets only before 3 days of departureTime');
   }
 }

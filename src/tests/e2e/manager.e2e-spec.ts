@@ -93,6 +93,13 @@ describe('MANAGER', () => {
         invalid.notFoundUser.response,
       );
     });
+    it('MANAGER should NOT be able to BOOK ticket for user >3days ahead', async () => {
+      await testPOSTRequest(
+        '/manager/tickets',
+        invalid.tooLateToBook.body,
+        invalid.tooLateToBook.response,
+      );
+    });
     it('MANAGER should be able to buy ticket for user', async () => {
       await testPOSTRequest(
         '/manager/tickets',

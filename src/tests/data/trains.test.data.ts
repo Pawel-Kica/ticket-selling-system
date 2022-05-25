@@ -1,3 +1,4 @@
+import { bossUserID } from './id.test.data';
 import { formatArrayResponse } from './manager.test.data';
 
 export const viewAllTrainsResponse = {
@@ -5,7 +6,7 @@ export const viewAllTrainsResponse = {
     {
       id: 'train1',
       routeId: 'route1',
-      bossId: 'user11',
+      bossId: bossUserID,
       driverId: 'employee16',
       driverHelperId: 'employee17',
       type: 'highSpeed',
@@ -13,7 +14,7 @@ export const viewAllTrainsResponse = {
     {
       id: 'train2',
       routeId: 'route2',
-      bossId: 'user12',
+      bossId: bossUserID,
       driverId: 'employee18',
       driverHelperId: 'employee19',
       type: 'passenger',

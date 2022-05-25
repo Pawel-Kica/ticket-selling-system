@@ -1,6 +1,5 @@
 // Nest
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-// Interceptors
 // Middlewares
 import { Trimmer } from './middleware/trimmer.middleware';
 import { Deserialize } from './middleware/deserialize.middleware';
