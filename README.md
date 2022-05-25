@@ -30,7 +30,7 @@
 - Access data about **specified** route by entering its ID
 - Access general data about trains, filter it by:
   - routeId
-- Access detailed data about **specified** train
+- Access detailed data (train type, carriages, available seats etc.) about **specified** train
 
 #### **Passenger (default) user** can all above and:
 
@@ -65,9 +65,3 @@
 - unblock users
 - update roles
 - remove specified user
-
-### **Tests**
-
-#### Following features are tested:
-
--

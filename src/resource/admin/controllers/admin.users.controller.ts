@@ -19,7 +19,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 // Types
-import { Role } from '@prisma/client';
 import {
   CreateUserByAdminDto,
   CreateUserResponseDto,

@@ -4,7 +4,7 @@ import { join } from 'path';
 import { employeePrefix } from '../prisma/seed/data/prefixes';
 
 export const imagesFolderName = 'images';
-export const imagesExtension = 'jpg';
+export const imagesExtension = 'png';
 
 export const publicPath = join(process.cwd(), 'public');
 export const srcPath = join(process.cwd(), 'src');
