@@ -14,9 +14,9 @@ import {
 import { PricesService } from '../prices/prices.service';
 import { RoutesService } from '../routes/routes.service';
 import { TrainsService } from '../trains/trains.service';
+import { gtBookTimeLimit } from '../../config/dates.config';
 import { CarriagesService } from '../carriage/carriage.service';
 import { BookOnlyBefore3DaysException } from '../../utils/responses/errors';
-import { gtBookTimeLimit } from '../../config/dates.config';
 
 @Injectable()
 export class TicketsService {

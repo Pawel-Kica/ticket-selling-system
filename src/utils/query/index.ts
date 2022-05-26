@@ -4,6 +4,11 @@ import { Transform } from 'class-transformer';
 import { ToNumber } from './transform';
 import { IsEnum, IsString } from 'class-validator';
 
+export class idRequired {
+  @IsString()
+  id: string;
+}
+
 export class TakeQuery {
   @ApiPropertyOptional()
   @Transform(({ value }) => ToNumber(value))
