@@ -14,6 +14,7 @@ import {
   UseGuards,
   HttpStatus,
   HttpCode,
+  Get,
 } from '@nestjs/common';
 // Services
 import { AuthService } from './auth.service';
@@ -154,5 +155,10 @@ export class UsersController {
   @Post('auth')
   auth(): SuccessResponseDto {
     return SuccessResponse;
+  }
+
+  @Get('123')
+  return200() {
+    return 200;
   }
 }
