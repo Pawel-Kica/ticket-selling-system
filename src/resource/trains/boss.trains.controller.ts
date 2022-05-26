@@ -2,14 +2,13 @@
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import {
   Controller,
   Get,
   NotFoundException,
-  Param,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -20,10 +19,12 @@ import { TrainsService } from './trains.service';
 // Decorators
 import { UserID } from '../../decorators/userID.decorator';
 // Types
-import { BossTrainsLookupQuery } from '../../utils/query';
+import * as moment from 'moment';
+import { BossTrainsLookupQuery, TrainsReportQuery } from '../../utils/query';
 import { TrainEntity } from '../../@types/models/trains.types.dto';
 import { trainPrefix } from '../../prisma/seed/data/prefixes';
 import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
+import { requestDateFormat } from '../../config/dates.config';
 
 @ApiBearerAuth()
 // @UseGuards(RequireHigherRole)
@@ -44,9 +45,9 @@ export class BossTrainsController {
   }
 
   @ApiOperation({
-    description: 'Generate detailed report about the specified train',
+    description: 'Generate detailed report about trains',
   })
-  @ApiParam({
+  @ApiQuery({
     name: 'id',
     description: 'Specify the id of train to generate report',
     examples: {
@@ -57,11 +58,32 @@ export class BossTrainsController {
         value: '',
       },
     },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'departureTime',
+    description: 'Filter by departureTime property',
+    examples: {
+      empty: {
+        value: '',
+      },
+      seed: {
+        value: moment().add(3, 'd').format(requestDateFormat),
+      },
+    },
+    required: false,
   })
   @ApiSubjectNotFoundResponse('Train')
-  @Get('report/:id')
-  async getReport(@Param('id') id: string) {
-    const train = await this.trainsService.generateReport({ id });
+  @Get('report')
+  async getReport(@Query() { id, departureTime }: TrainsReportQuery) {
+    const train = await this.trainsService.generateReport({
+      id,
+      route: {
+        departureTime: {
+          gt: departureTime,
+        },
+      },
+    });
     if (!train) throw new NotFoundException();
     return train;
   }

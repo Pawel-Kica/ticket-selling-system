@@ -25,8 +25,8 @@ export class TrainsService {
     return this.prisma.train.findUnique({ where, select: trainDetailsSelect });
   }
 
-  async generateReport(where: TrainWhereUniqueInput) {
-    return this.prisma.train.findUnique({
+  async generateReport(where: TrainWhereInput) {
+    return this.prisma.train.findMany({
       where,
       select: {
         boss: {
