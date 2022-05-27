@@ -1,14 +1,15 @@
 FROM node:16.15
 
-WORKDIR /home/node/app
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 
+RUN npm run prisma:generate
 RUN npm run build
-RUN npm run upt:prisma
+RUN npm run prisma:push
 
 EXPOSE 8080
 
