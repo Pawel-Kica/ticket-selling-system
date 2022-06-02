@@ -9,8 +9,6 @@ COPY . .
 
 RUN npm run prisma:generate
 RUN npm run build
-RUN npm run prisma:push
-
-EXPOSE 8080
+# RUN npm run prisma:push
 
 CMD ["node","dist/main"]

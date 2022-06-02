@@ -159,6 +159,8 @@ export class UsersController {
 
   @Get('123')
   return200() {
+    console.log(process.env.DATABASE_URL);
+    console.log(process.env.CHECKENV);
     return 200;
   }
 }

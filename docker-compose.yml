@@ -1,17 +1,21 @@
 version: '3.8'
 services:
   api:
+    env_file:
+      - docker.env
     build:
       dockerfile: dockerfile
     ports:
       - '8001:4001'
     depends_on:
       - postgres
-    env_file:
-      - docker.env
   postgres:
     image: postgres:14.2
     ports:
       - '5432:5432'
+    volumes:
+      - db-data:/ticketstrainee
     env_file:
       - docker.env
+volumes:
+  db-data:
