@@ -3,7 +3,7 @@ import { generateIdPrefixes } from './helpers';
 // Data
 import { stationPrefix } from './prefixes';
 
-const stationsNames = [
+export const stationsNames = [
   'New York Penn Station',
   'Grand Central Terminal',
   'Toronto Union Station',

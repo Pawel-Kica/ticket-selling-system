@@ -3,7 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
-  StationsWhereInput,
+  StationCreateInput,
+  StationWhereInput,
   StationWhereUniqueInput,
 } from '../../@types/models/stations.types.dto';
 
@@ -13,7 +14,17 @@ export const defaultStationsTakeNumber = 10;
 export class StationsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(where: StationsWhereInput, take = defaultStationsTakeNumber) {
+  async create(data: StationCreateInput) {
+    return this.prisma.station.create({ data });
+  }
+  async delete(where: StationWhereUniqueInput) {
+    return this.prisma.station.delete({ where });
+  }
+  async findFirst(where: StationWhereInput) {
+    return this.prisma.station.findFirst({ where });
+  }
+
+  async findMany(where: StationWhereInput, take = defaultStationsTakeNumber) {
     return this.prisma.station.findMany({ where, take });
   }
 

@@ -47,7 +47,6 @@ import {
   createUserByAdminBody,
   invalidCreateUserByAdminBody,
 } from '../../../tests/data/admin.test.data';
-import { testUserID } from '../../../tests/data/id.test.data';
 import { AdminUpdateUserRoleQuery } from '../../../utils/query';
 import { userIDParam } from '../../../utils/swagger/params';
 
@@ -58,22 +57,6 @@ import { userIDParam } from '../../../utils/swagger/params';
 @Controller('admin/users')
 export class AdminUsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  private userIDparam(action: string) {
-    return {
-      name: 'id',
-      description: `Specify the ID of user to be ${action}`,
-      examples: {
-        valid: {
-          value: testUserID,
-        },
-        notFound: {
-          summary: 'not found',
-          value: '123',
-        },
-      },
-    };
-  }
 
   @ApiOperation({
     description: `Creates a new user with specified role`,
