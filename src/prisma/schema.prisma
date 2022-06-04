@@ -63,16 +63,16 @@ enum Position {
 
 model Train {
   id             String     @id @default(cuid())
-  routeId        String
-  bossId         String
-  driverId       String
-  driverHelperId String
+  routeId        String?
+  bossId         String?
+  driverId       String?
+  driverHelperId String?
   type           TrainType
   // relations
-  boss           User       @relation(fields: [bossId], references: [id], onDelete: Cascade)
-  route          Route      @relation(fields: [routeId], references: [id], onDelete: Cascade)
-  driver         Employee   @relation("driver", fields: [driverId], references: [id], onDelete: Cascade)
-  driverHelper   Employee   @relation("driverHelper", fields: [driverHelperId], references: [id], onDelete: Cascade)
+  boss           User?       @relation(fields: [bossId], references: [id], onDelete: SetNull)
+  route          Route?      @relation(fields: [routeId], references: [id], onDelete: SetNull)
+  driver         Employee?   @relation("driver", fields: [driverId], references: [id], onDelete: SetNull)
+  driverHelper   Employee?   @relation("driverHelper", fields: [driverHelperId], references: [id], onDelete: SetNull)
   carriage       Carriage[]
   ticket         Ticket[]
 }
@@ -101,12 +101,12 @@ model Carriage {
   numberOfSeats Int
   type          CarriageType
   trainId       String
-  conductor1Id  String
-  conductor2Id  String
+  conductor1Id  String?
+  conductor2Id  String?
   // relations
   train         Train        @relation(fields: [trainId], references: [id], onDelete: Cascade)
-  conductor1    Employee     @relation("conductor1", fields: [conductor1Id], references: [id], onDelete: Cascade)
-  conductor2    Employee     @relation("conductor2", fields: [conductor2Id], references: [id], onDelete: Cascade)
+  conductor1    Employee?     @relation("conductor1", fields: [conductor1Id], references: [id], onDelete: SetNull)
+  conductor2    Employee?     @relation("conductor2", fields: [conductor2Id], references: [id], onDelete: SetNull)
   ticket        Ticket[]
 }
 

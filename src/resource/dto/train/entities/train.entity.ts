@@ -9,15 +9,15 @@ import {Ticket} from '../../ticket/entities/ticket.entity'
 
 export class Train {
   id: string ;
-routeId: string ;
-bossId: string ;
-driverId: string ;
-driverHelperId: string ;
+routeId: string  | null;
+bossId: string  | null;
+driverId: string  | null;
+driverHelperId: string  | null;
 type: TrainType ;
-boss?: User ;
-route?: Route ;
-driver?: Employee ;
-driverHelper?: Employee ;
+boss?: User  | null;
+route?: Route  | null;
+driver?: Employee  | null;
+driverHelper?: Employee  | null;
 carriage?: Carriage[] ;
 ticket?: Ticket[] ;
 }

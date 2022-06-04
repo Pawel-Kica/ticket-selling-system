@@ -5,10 +5,13 @@ import {
   Body,
   UploadedFile,
   UseGuards,
+  Param,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiParam,
   ApiTags,
   ApiUnsupportedMediaTypeResponse,
 } from '@nestjs/swagger';
@@ -34,8 +37,10 @@ import { omit } from '../../../utils/objects';
 import {
   ApiForbiddenResponseDescription,
   ApiInvalidRequestedBodySchemaResponse,
+  ApiSubjectNotFoundResponse,
 } from '../../../utils/swagger';
 import { requestDateFormat } from '../../../config/dates.config';
+import { uniqueIdParam } from '../../../utils/swagger/params';
 
 @ApiBearerAuth()
 @ApiTags('Admin - employees')
@@ -80,5 +85,15 @@ export class AdminEmployeesController {
         'file',
       ),
     );
+  }
+
+  @ApiOperation({
+    description: 'Deletes specified employee',
+  })
+  @ApiParam(uniqueIdParam('employee', 'employee16', '123', 'deleted'))
+  @ApiSubjectNotFoundResponse('Employee')
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.employeesService.delete({ id });
   }
 }

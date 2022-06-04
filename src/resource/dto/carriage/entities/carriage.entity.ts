@@ -10,10 +10,10 @@ export class Carriage {
 numberOfSeats: number ;
 type: CarriageType ;
 trainId: string ;
-conductor1Id: string ;
-conductor2Id: string ;
+conductor1Id: string  | null;
+conductor2Id: string  | null;
 train?: Train ;
-conductor1?: Employee ;
-conductor2?: Employee ;
+conductor1?: Employee  | null;
+conductor2?: Employee  | null;
 ticket?: Ticket[] ;
 }

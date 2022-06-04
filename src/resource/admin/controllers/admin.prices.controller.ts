@@ -130,7 +130,7 @@ export class AdminPricesController {
   })
   @Put(':id')
   @ApiInvalidRequestedBodySchemaResponse()
-  @ApiParam(uniqueIdParam('price', 'price1'))
+  @ApiParam(uniqueIdParam('price', 'price1', '123', 'updated'))
   @ApiSubjectNotFoundResponse('Price')
   async update(
     @Param('id') id: string,

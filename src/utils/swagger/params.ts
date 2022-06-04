@@ -50,10 +50,11 @@ export function uniqueIdParam(
   subject: string,
   valid: string,
   notFound = '123',
+  operation = 'found',
 ) {
   return {
     name: 'id',
-    description: `Specify the ID of ${subject} to be found`,
+    description: `Specify the ID of ${subject} to be ${operation}`,
     examples: {
       valid: {
         value: valid,

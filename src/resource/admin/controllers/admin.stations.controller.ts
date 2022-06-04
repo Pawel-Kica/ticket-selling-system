@@ -77,7 +77,7 @@ export class AdminStationsController {
   @ApiOperation({
     description: 'Deletes specified station',
   })
-  @ApiParam(uniqueIdParam('station', 'station3'))
+  @ApiParam(uniqueIdParam('station', 'station3', '123', 'deleted'))
   @ApiSubjectNotFoundResponse('Station')
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<SuccessResponseDto> {
