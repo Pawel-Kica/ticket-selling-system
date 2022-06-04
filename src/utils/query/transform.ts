@@ -8,6 +8,12 @@ export function ToNumber(value: string): number | undefined {
   return newValue;
 }
 
+export function ToString(value: string): string | undefined {
+  const newValue = String(value);
+  if (typeof newValue !== 'string') return undefined;
+  return newValue;
+}
+
 export function toISOstring(value: string) {
   return moment(value, requestDateFormat).toISOString() ?? undefined;
 }

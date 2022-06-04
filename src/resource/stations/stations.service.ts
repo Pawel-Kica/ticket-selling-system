@@ -1,6 +1,11 @@
 // Nest
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { take } from 'rxjs';
 // Types
 import {
   StationCreateInput,
@@ -15,9 +20,12 @@ export class StationsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: StationCreateInput) {
+    if (await this.findFirst({ name: data.name }))
+      throw new ConflictException();
     return this.prisma.station.create({ data });
   }
   async delete(where: StationWhereUniqueInput) {
+    if (!(await this.findFirst(where))) throw new NotFoundException();
     return this.prisma.station.delete({ where });
   }
   async findFirst(where: StationWhereInput) {

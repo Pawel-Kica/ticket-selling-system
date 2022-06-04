@@ -22,9 +22,29 @@ export class StationsController {
     description: `Returns specified number of stations`,
   })
   @ApiQuery(takeParam('stations', defaultStationsTakeNumber, 3))
+  @ApiQuery({
+    name: 'name',
+    description: `Specify the name of the station (or some part of it)`,
+    examples: {
+      empty: {
+        value: '',
+      },
+      valid: {
+        value: 'New',
+      },
+    },
+    required: false,
+  })
   @Get()
-  async findMany(@Query() { take }: TakeQuery): Promise<StationEntity[]> {
-    return this.stationsService.findMany({}, take);
+  async findMany(@Query() { take, name }: TakeQuery): Promise<StationEntity[]> {
+    return this.stationsService.findMany(
+      {
+        name: {
+          contains: name,
+        },
+      },
+      take,
+    );
   }
 
   @ApiOperation({

@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { CarriageType, Position, Role, State, TrainType } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { toISOstring, ToNumber } from './transform';
+import { toISOstring, ToNumber, ToString } from './transform';
 import { IsEnum, IsString } from 'class-validator';
 
 export class TrainsReportQuery {
@@ -16,6 +16,9 @@ export class TakeQuery {
   @ApiPropertyOptional()
   @Transform(({ value }) => ToNumber(value))
   take: number;
+  @Transform(({ value }) => ToString(value))
+  @ApiPropertyOptional()
+  name: string;
 }
 
 export class IdDto {
