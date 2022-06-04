@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { PriceEntity } from '../../@types/models/prices.types.dto';
-import { PricesLookupQuery } from '../../utils/query';
+import { PricesLookupQuery } from '../../utils/query/index.types';
 import {
   endStationFilter,
   priceGreaterThan,
@@ -25,6 +25,23 @@ export class PricesController {
   @ApiQuery(priceGreaterThan)
   @ApiQuery(priceLowerThanFilter)
   @ApiQuery({
+    name: 'id',
+    description: `Specify the ID of price to be found`,
+    examples: {
+      empty: {
+        value: '',
+      },
+      valid: {
+        value: 'price1',
+      },
+      notFound: {
+        summary: 'not found',
+        value: '123',
+      },
+    },
+    required: false,
+  })
+  @ApiQuery({
     name: 'carriageType',
     description: 'Filter by carriageType property',
     required: false,
@@ -45,10 +62,12 @@ export class PricesController {
       take,
       priceLowerThan,
       priceGreaterThan,
+      id,
     }: PricesLookupQuery,
   ): Promise<PriceEntity[]> {
     return await this.pricesService.findMany(
       {
+        id,
         startStationId,
         endStationId,
         carriageType,

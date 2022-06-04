@@ -16,6 +16,8 @@ export class TakeQuery {
   @ApiPropertyOptional()
   @Transform(({ value }) => ToNumber(value))
   take: number;
+}
+export class StationsFindManyQuery extends TakeQuery {
   @Transform(({ value }) => ToString(value))
   @ApiPropertyOptional()
   name: string;
@@ -62,7 +64,6 @@ export class PricesLookupQuery extends TakeQuery {
   @ApiPropertyOptional()
   endStationId: string;
   @ApiPropertyOptional()
-  @ApiPropertyOptional()
   @Transform(({ value }) => ToNumber(value))
   priceLowerThan: number;
   @ApiPropertyOptional()
@@ -72,6 +73,8 @@ export class PricesLookupQuery extends TakeQuery {
   carriageType: CarriageType;
   @ApiPropertyOptional({ enum: TrainType })
   trainType: TrainType;
+  @ApiPropertyOptional()
+  id: string;
 }
 
 export class EmployeesLookupQuery extends TakeQuery {

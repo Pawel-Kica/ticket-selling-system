@@ -12,13 +12,13 @@ seat: number ;
 userId: string ;
 trainId: string ;
 carriageId: string ;
-startStationId: string ;
-endStationId: string ;
+startStationId: string  | null;
+endStationId: string  | null;
 state: State ;
 timeOfOperation: Date ;
 user?: User ;
 train?: Train ;
 carriage?: Carriage ;
-startStation?: Station ;
-endStation?: Station ;
+startStation?: Station  | null;
+endStation?: Station  | null;
 }

@@ -9,7 +9,10 @@ import {
 // Services
 import { defaultStationsTakeNumber, StationsService } from './stations.service';
 // Utils
-import { TakeQuery } from '../../utils/query';
+import {
+  StationsFindManyQuery,
+  TakeQuery,
+} from '../../utils/query/index.types';
 import { takeParam } from '../../utils/swagger/params';
 import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
 
@@ -36,7 +39,9 @@ export class StationsController {
     required: false,
   })
   @Get()
-  async findMany(@Query() { take, name }: TakeQuery): Promise<StationEntity[]> {
+  async findMany(
+    @Query() { take, name }: StationsFindManyQuery,
+  ): Promise<StationEntity[]> {
     return this.stationsService.findMany(
       {
         name: {

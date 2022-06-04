@@ -91,7 +91,7 @@ model Route {
   endStationId    String
   // relations
   startStation    Station      @relation("routeStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
-  endStation      Station      @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  endStation      Station    @relation("routeEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
   stationsBetween RoutePoint[]
   train           Train[]
 }
@@ -121,16 +121,16 @@ model Ticket {
   userId          String
   trainId         String
   carriageId      String
-  startStationId  String
-  endStationId    String
+  startStationId  String?
+  endStationId    String?
   state           State    @default(bought)
   timeOfOperation DateTime @updatedAt
   // relations
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   train           Train    @relation(fields: [trainId], references: [id], onDelete: Cascade)
   carriage        Carriage @relation(fields: [carriageId], references: [id], onDelete: Cascade)
-  startStation    Station  @relation("ticketStartStations", fields: [startStationId], references: [id], onDelete: Cascade)
-  endStation      Station  @relation("ticketEndStations", fields: [endStationId], references: [id], onDelete: Cascade)
+  startStation    Station?  @relation("ticketStartStations", fields: [startStationId], references: [id], onDelete: SetNull)
+  endStation      Station?  @relation("ticketEndStations", fields: [endStationId], references: [id], onDelete: SetNull)
 }
 
 enum State {
@@ -170,11 +170,11 @@ model Station {
 model RoutePoint {
   id            String   @id @default(cuid())
   routeId       String
-  stationId     String
+  stationId     String?
   departureTime DateTime
   arrivalTime   DateTime
   order         Int
   // relations
-  station       Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  station       Station?  @relation(fields: [stationId], references: [id], onDelete: SetNull)
   route         Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
 }

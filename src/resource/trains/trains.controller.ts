@@ -13,7 +13,7 @@ import {
   TrainDetailsDto,
   TrainEntity,
 } from '../../@types/models/trains.types.dto';
-import { LookupByRouteId } from '../../utils/query';
+import { LookupByRouteId } from '../../utils/query/index.types';
 import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
 
 @ApiTags('Public - Trains')

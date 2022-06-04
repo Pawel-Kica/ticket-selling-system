@@ -20,7 +20,7 @@ import {
 } from '../../utils/swagger';
 // Types
 import { EmployeeEntityDto } from '../../@types/models/employees.types.dto';
-import { EmployeesLookupQuery } from '../../utils/query';
+import { EmployeesLookupQuery } from '../../utils/query/index.types';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Services

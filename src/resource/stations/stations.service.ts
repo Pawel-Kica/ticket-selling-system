@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { take } from 'rxjs';
 // Types
 import {
   StationCreateInput,
@@ -31,7 +30,6 @@ export class StationsService {
   async findFirst(where: StationWhereInput) {
     return this.prisma.station.findFirst({ where });
   }
-
   async findMany(where: StationWhereInput, take = defaultStationsTakeNumber) {
     return this.prisma.station.findMany({ where, take });
   }

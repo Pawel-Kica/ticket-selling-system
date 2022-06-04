@@ -21,7 +21,10 @@ import { UserID } from '../../decorators/userID.decorator';
 // Tools
 import * as moment from 'moment';
 // Types
-import { BossTrainsLookupQuery, TrainsReportQuery } from '../../utils/query';
+import {
+  BossTrainsLookupQuery,
+  TrainsReportQuery,
+} from '../../utils/query/index.types';
 import { TrainEntity } from '../../@types/models/trains.types.dto';
 import { trainPrefix } from '../../prisma/seed/data/prefixes';
 import { ApiSubjectNotFoundResponse } from '../../utils/swagger';

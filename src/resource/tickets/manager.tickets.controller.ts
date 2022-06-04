@@ -7,7 +7,7 @@ import {
   CreateTicketByManagerResponse,
   TicketUserSelectEntity,
 } from '../../@types/models/tickets.types.dto';
-import { TicketsLookupQuery } from '../../utils/query';
+import { TicketsLookupQuery } from '../../utils/query/index.types';
 // Guards
 import { RequireManager } from '../../guards/requireRole.guard';
 // Services

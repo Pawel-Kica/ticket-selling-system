@@ -53,6 +53,12 @@ export class AdminStationsController {
           name: 'my station',
         },
       },
+      invalidSchema: {
+        summary: 'invalid schema',
+        value: {
+          name: { invalid: 'data' },
+        },
+      },
       conflict: {
         value: {
           name: stationsNames[0],

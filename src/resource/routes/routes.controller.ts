@@ -10,7 +10,6 @@ import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 // Tools
 import * as moment from 'moment';
 // Types
-import { RoutesLookupQuery } from '../../utils/query';
 import { RouteEntity } from '../../@types/models/routes.types.dto';
 // Services
 import { RoutesService } from './routes.service';
@@ -24,6 +23,7 @@ import {
 import { requestDateFormat } from '../../config/dates.config';
 import { routePrefix } from '../../prisma/seed/data/prefixes';
 import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
+import { RoutesLookupQuery } from '../../utils/query/index.types';
 
 @ApiTags('Public - Routes')
 @Controller('routes')

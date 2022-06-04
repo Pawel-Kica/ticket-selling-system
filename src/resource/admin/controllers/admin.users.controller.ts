@@ -47,7 +47,7 @@ import {
   createUserByAdminBody,
   invalidCreateUserByAdminBody,
 } from '../../../tests/data/admin.test.data';
-import { AdminUpdateUserRoleQuery } from '../../../utils/query';
+import { AdminUpdateUserRoleQuery } from '../../../utils/query/index.types';
 import { userIDParam } from '../../../utils/swagger/params';
 
 @ApiBearerAuth()
