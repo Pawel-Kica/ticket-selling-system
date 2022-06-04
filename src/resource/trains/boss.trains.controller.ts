@@ -18,8 +18,9 @@ import { RequireHigherRole } from '../../guards/requireRole.guard';
 import { TrainsService } from './trains.service';
 // Decorators
 import { UserID } from '../../decorators/userID.decorator';
-// Types
+// Tools
 import * as moment from 'moment';
+// Types
 import { BossTrainsLookupQuery, TrainsReportQuery } from '../../utils/query';
 import { TrainEntity } from '../../@types/models/trains.types.dto';
 import { trainPrefix } from '../../prisma/seed/data/prefixes';
@@ -27,7 +28,7 @@ import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
 import { requestDateFormat } from '../../config/dates.config';
 
 @ApiBearerAuth()
-// @UseGuards(RequireHigherRole)
+@UseGuards(RequireHigherRole)
 @ApiTags('Boss - Trains')
 @Controller('boss/trains')
 export class BossTrainsController {

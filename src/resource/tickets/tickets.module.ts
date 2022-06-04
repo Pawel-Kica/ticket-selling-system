@@ -8,7 +8,7 @@ import { PricesModule } from '../prices/prices.module';
 import { CarriageModule } from '../carriage/carriage.module';
 // Controllers
 import { TicketsController } from './tickets.user.controller';
-import { TicketsManagerController } from './tickets.manager.controller';
+import { TicketsManagerController } from './manager.tickets.controller';
 // Services
 import { TicketsService } from './tickets.service';
 

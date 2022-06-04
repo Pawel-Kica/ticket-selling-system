@@ -17,6 +17,11 @@ export class TakeQuery {
   @Transform(({ value }) => ToNumber(value))
   take: number;
 }
+
+export class IdDto {
+  @IsString()
+  id: string;
+}
 export class TrainsLookupQuery {
   @ApiPropertyOptional()
   routeId: string;

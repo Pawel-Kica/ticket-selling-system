@@ -1,11 +1,17 @@
 // Nest
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Query } from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+// Types
+import {
+  StationDetailedInfoDto,
+  StationEntity,
+} from '../../@types/models/stations.types.dto';
 // Services
 import { defaultStationsTakeNumber, StationsService } from './stations.service';
-import { StationEntity } from '../../@types/models/stations.types.dto';
+// Utils
 import { TakeQuery } from '../../utils/query';
 import { takeParam } from '../../utils/swagger/params';
+import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
 
 @ApiTags('Public - stations')
 @Controller('stations')
@@ -19,5 +25,36 @@ export class StationsController {
   @Get()
   async findMany(@Query() { take }: TakeQuery): Promise<StationEntity[]> {
     return this.stationsService.findMany({}, take);
+  }
+
+  @ApiOperation({
+    description: `Returns specified station`,
+  })
+  @ApiParam({
+    name: 'id',
+    description: `Specify the ID of station to be found`,
+    examples: {
+      startStation: {
+        summary: 'start station',
+        value: 'station1',
+      },
+      endStation: {
+        summary: 'end station',
+        value: 'station9',
+      },
+      stationBetween: {
+        summary: 'station between',
+        value: 'station12',
+      },
+      notFound: {
+        summary: 'not found',
+        value: '123',
+      },
+    },
+  })
+  @ApiSubjectNotFoundResponse('Station')
+  @Get(':id')
+  async findUnique(@Param('id') id: string): Promise<StationDetailedInfoDto> {
+    return this.stationsService.findUnique({ id });
   }
 }

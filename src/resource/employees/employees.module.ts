@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from '../users/users.module';
 // Controllers
 import { EmployeesController } from './employees.controller';
-import { EmployeesManagerController } from './employees.manager.controller';
+import { EmployeesManagerController } from './manager.employees.controller';
 // Services
 import { EmployeesService } from './employees.service';
 

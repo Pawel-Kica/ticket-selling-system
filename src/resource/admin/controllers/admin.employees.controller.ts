@@ -18,7 +18,7 @@ import { ApiFile } from '../../../decorators/apiFile.decorator';
 import { EmployeesService } from '../../employees/employees.service';
 // Validation
 import { ApplyValidation } from '../../../validation/validationPipe';
-import { createEmployeeSchema } from './../../../validation/schemas/employee.schema';
+import { createEmployeeSchema } from '../../../validation/schemas/employee.schema';
 // Types
 import {
   CreateEmployeeFileDto,
