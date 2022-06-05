@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
+  EmployeeUpdateInput,
   EmployeeWhereInput,
   EmployeeWhereUniqueInput,
 } from '../../@types/models/employees.types.dto';
@@ -20,6 +21,10 @@ export class EmployeesService {
   async delete(where: EmployeeWhereUniqueInput) {
     if (!(await this.findUnique(where))) throw new NotFoundException();
     return this.prisma.employee.delete({ where });
+  }
+  async update(where: EmployeeWhereUniqueInput, data: EmployeeUpdateInput) {
+    if (!(await this.findUnique(where))) throw new NotFoundException();
+    return this.prisma.employee.update({ where, data });
   }
   async findMany(where: EmployeeWhereInput, take = defaultEmployeesTakeNumber) {
     return this.prisma.employee.findMany({

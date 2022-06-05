@@ -7,6 +7,7 @@ import { CreateEmployeeDto } from '../../resource/dto/employee/dto/create-employ
 import { Employee } from './../../resource/dto/employee/entities/employee.entity';
 
 export type CreateEmployeeDtoPrisma = Prisma.EmployeeCreateInput;
+export type EmployeeUpdateInput = Prisma.EmployeeUpdateInput;
 export type EmployeeWhereUniqueInput = Prisma.EmployeeWhereUniqueInput;
 export type EmployeeWhereInput = Prisma.EmployeeWhereInput;
 export type EmployeeSelect = Prisma.EmployeeSelect;

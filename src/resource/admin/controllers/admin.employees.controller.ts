@@ -7,9 +7,11 @@ import {
   UseGuards,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiParam,
   ApiTags,
@@ -21,12 +23,12 @@ import { ApiFile } from '../../../decorators/apiFile.decorator';
 import { EmployeesService } from '../../employees/employees.service';
 // Validation
 import { ApplyValidation } from '../../../validation/validationPipe';
-import { createEmployeeSchema } from '../../../validation/schemas/employee.schema';
-// Types
 import {
-  CreateEmployeeFileDto,
-  EmployeeEntityDto,
-} from '../../../@types/models/employees.types.dto';
+  createEmployeeSchema,
+  updateEmployeeSchema,
+} from '../../../validation/schemas/employee.schema';
+// Types
+import { CreateEmployeeFileDto } from '../../../@types/models/employees.types.dto';
 // Guards
 import { RequireAdmin } from '../../../guards/requireRole.guard';
 // Config
@@ -41,6 +43,13 @@ import {
 } from '../../../utils/swagger';
 import { requestDateFormat } from '../../../config/dates.config';
 import { uniqueIdParam } from '../../../utils/swagger/params';
+import {
+  SuccessResponse,
+  SuccessResponseDto,
+} from '../../../@types/utils/responses.types';
+import { Employee } from '@prisma/client';
+import { employeePrefix } from '../../../prisma/seed/data/prefixes';
+import { CreateEmployeeDto } from '../../dto/employee/dto/create-employee.dto';
 
 @ApiBearerAuth()
 @ApiTags('Admin - employees')
@@ -54,7 +63,7 @@ export class AdminEmployeesController {
     description: `Creates a new employee with specified data and photo (photo can be accessed via /employees/image/{photoPath})`,
   })
   @ApiUnsupportedMediaTypeResponse({
-    description: 'Unsupported media type - "only .jpg files are allowed"',
+    description: 'Unsupported media type - "only .png files are allowed"',
     schema: {
       example: {
         statusCode: 415,
@@ -68,7 +77,7 @@ export class AdminEmployeesController {
   async create(
     @UploadedFile() file,
     @Body(ApplyValidation(createEmployeeSchema)) body: CreateEmployeeFileDto,
-  ): Promise<EmployeeEntityDto> {
+  ): Promise<Employee> {
     // swagger
     body.photoPath = file?.filename
       ? file.filename.slice(0, -4)
@@ -88,12 +97,47 @@ export class AdminEmployeesController {
   }
 
   @ApiOperation({
+    description: 'Updated specified employee',
+  })
+  @ApiBody({
+    type: CreateEmployeeDto,
+    examples: {
+      valid: {
+        value: {
+          name: 'NewName',
+          surname: 'NewSurname',
+          dateOfBirth: '02-05-2002',
+          address: 'Newark',
+          telephoneNumber: '123456789',
+          position: 'driver',
+        },
+      },
+    },
+  })
+  @ApiParam(uniqueIdParam('employee', `${employeePrefix}1`, '123', 'updated'))
+  @ApiSubjectNotFoundResponse('Employee')
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body(ApplyValidation(updateEmployeeSchema)) body: CreateEmployeeDto,
+  ): Promise<Employee> {
+    const formatted: any = { ...body };
+    if (body.dateOfBirth)
+      formatted.dateOfBirth = moment(body.dateOfBirth, requestDateFormat)
+        .startOf('day')
+        .toISOString();
+
+    return this.employeesService.update({ id }, formatted);
+  }
+
+  @ApiOperation({
     description: 'Deletes specified employee',
   })
-  @ApiParam(uniqueIdParam('employee', 'employee16', '123', 'deleted'))
+  @ApiParam(uniqueIdParam('employee', 'employee1', '123', 'deleted'))
   @ApiSubjectNotFoundResponse('Employee')
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return this.employeesService.delete({ id });
+  async delete(@Param('id') id: string): Promise<SuccessResponseDto> {
+    await this.employeesService.delete({ id });
+    return SuccessResponse;
   }
 }
