@@ -1,6 +1,7 @@
 import { Prisma, Route, RoutePoint, Station } from '@prisma/client';
 
 export type StationCreateInput = Prisma.StationCreateInput;
+export type StationUpdateInput = Prisma.StationUpdateInput;
 export type StationWhereInput = Prisma.StationWhereInput;
 export type StationWhereUniqueInput = Prisma.StationWhereUniqueInput;
 export type StationsSelect = Prisma.StationSelect;

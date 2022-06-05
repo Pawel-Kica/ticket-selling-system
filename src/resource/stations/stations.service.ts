@@ -8,6 +8,7 @@ import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
   StationCreateInput,
+  StationUpdateInput,
   StationWhereInput,
   StationWhereUniqueInput,
 } from '../../@types/models/stations.types.dto';
@@ -26,6 +27,13 @@ export class StationsService {
   async delete(where: StationWhereUniqueInput) {
     if (!(await this.findFirst(where))) throw new NotFoundException();
     return this.prisma.station.delete({ where });
+  }
+  async update(where: StationWhereUniqueInput, data: StationUpdateInput) {
+    const station = await this.findFirst(where);
+    if (!station) throw new NotFoundException();
+    if (station.name === data.name) throw new ConflictException();
+
+    return this.prisma.station.update({ where, data });
   }
   async findFirst(where: StationWhereInput) {
     return this.prisma.station.findFirst({ where });
