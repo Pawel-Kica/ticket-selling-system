@@ -41,6 +41,10 @@ export class PricesService {
   async findUnique(where: PriceWhereUniqueInput) {
     return this.prisma.price.findUnique({ where });
   }
+  async delete(where: PriceWhereUniqueInput) {
+    return this.prisma.price.delete({ where });
+  }
+
   async validatePriceInput({
     trainType,
     carriageType,

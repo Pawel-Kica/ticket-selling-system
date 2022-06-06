@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Put,
   Param,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -19,6 +20,10 @@ import {
   PriceEntity,
   UpdatePriceDto,
 } from '../../../@types/models/prices.types.dto';
+import {
+  SuccessResponse,
+  SuccessResponseDto,
+} from '../../../@types/utils/responses.types';
 import { RequireAdmin } from '../../../guards/requireRole.guard';
 import {
   ApiConflictResponseDescription,
@@ -140,5 +145,18 @@ export class AdminPricesController {
     const price = await this.pricesService.findUnique({ id });
     if (!price) throw new NotFoundException();
     return this.pricesService.update({ id }, { value });
+  }
+
+  @ApiOperation({
+    description: 'Deletes specified price',
+  })
+  @Delete(':id')
+  @ApiSubjectNotFoundResponse('Price')
+  @ApiParam(uniqueIdParam('price', 'price1', '123', 'deleted'))
+  async delete(@Param('id') id: string): Promise<SuccessResponseDto> {
+    const price = await this.pricesService.findUnique({ id });
+    if (!price) throw new NotFoundException();
+    await this.pricesService.delete({ id });
+    return SuccessResponse;
   }
 }

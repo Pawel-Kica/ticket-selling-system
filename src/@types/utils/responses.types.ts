@@ -1,7 +1,11 @@
-export const SuccessResponse = { success: true };
+export const SuccessResponse = {
+  statusCode: 200,
+  message: 'Ok',
+};
 
 export class SuccessResponseDto {
-  success = true;
+  statusCode = 200;
+  message = 'Ok';
 }
 export class TokenResponseDto {
   token: string;
