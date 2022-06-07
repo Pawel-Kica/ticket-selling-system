@@ -1,29 +1,24 @@
-// Nest
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
-// Types
 import {
+  TicketUserSelectEntity,
   CreateTicketParams,
   CreateTicketByManagerResponse,
-  TicketUserSelectEntity,
-} from '../../@types/models/tickets.types.dto';
-import { TicketsLookupQuery } from '../../utils/query/index.types';
-// Guards
-import { RequireManager } from '../../guards/requireRole.guard';
-// Services
-import { UsersService } from '../users/users.service';
-import { TicketsService } from './tickets.service';
-// Validation
-import { ApplyValidation } from '../../validation/validationPipe';
-import { createTicketByManagerSchema } from '../../validation/schemas/ticket.schema';
-import { ApiCreateTicketByManager } from '../../utils/swagger/decorators';
-import { ApiForbiddenResponseDescription } from '../../utils/swagger';
+} from '../../../@types/models/tickets.types.dto';
+import { RequireManager } from '../../../guards/requireRole.guard';
+import { TicketsLookupQuery } from '../../../utils/query/index.types';
+import { ApiForbiddenResponseDescription } from '../../../utils/swagger';
+import { ApiCreateTicketByManager } from '../../../utils/swagger/decorators';
 import {
-  carriageIdFilter,
+  userIdFilter,
   routeIdFilter,
   trainIdFilter,
-  userIdFilter,
-} from '../../utils/swagger/params';
+  carriageIdFilter,
+} from '../../../utils/swagger/params';
+import { createTicketByManagerSchema } from '../../../validation/schemas/ticket.schema';
+import { ApplyValidation } from '../../../validation/validationPipe';
+import { TicketsService } from '../../tickets/tickets.service';
+import { UsersService } from '../../users/users.service';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()

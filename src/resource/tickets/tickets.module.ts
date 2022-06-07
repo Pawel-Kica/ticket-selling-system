@@ -8,7 +8,6 @@ import { PricesModule } from '../prices/prices.module';
 import { CarriageModule } from '../carriage/carriage.module';
 // Controllers
 import { TicketsController } from './tickets.user.controller';
-import { TicketsManagerController } from './manager.tickets.controller';
 // Services
 import { TicketsService } from './tickets.service';
 
@@ -20,7 +19,8 @@ import { TicketsService } from './tickets.service';
     RoutesModule,
     PricesModule,
   ],
-  controllers: [TicketsController, TicketsManagerController],
+  controllers: [TicketsController],
   providers: [TicketsService],
+  exports: [TicketsService],
 })
 export class TicketsModule {}

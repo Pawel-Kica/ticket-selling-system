@@ -17,21 +17,17 @@ import {
 import {
   ApiForbiddenResponseDescription,
   ApiSubjectNotFoundResponse,
-} from '../../utils/swagger';
-// Types
-import { EmployeeEntityDto } from '../../@types/models/employees.types.dto';
-import { EmployeesLookupQuery } from '../../utils/query/index.types';
-// Guards
-import { RequireManager } from '../../guards/requireRole.guard';
-// Services
+} from '../../../utils/swagger';
 import {
-  defaultEmployeesTakeNumber,
   EmployeesService,
-} from './employees.service';
-// Data
-import { employeesTestData } from '../../prisma/seed/data/employees.seed.data';
-import { employeePrefix } from '../../prisma/seed/data/prefixes';
-import { takeParam, uniqueIdParam } from '../../utils/swagger/params';
+  defaultEmployeesTakeNumber,
+} from '../../employees/employees.service';
+import { EmployeeEntityDto } from '../../../@types/models/employees.types.dto';
+import { RequireManager } from '../../../guards/requireRole.guard';
+import { employeesTestData } from '../../../prisma/seed/data/employees.seed.data';
+import { employeePrefix } from '../../../prisma/seed/data/prefixes';
+import { EmployeesLookupQuery } from '../../../utils/query/index.types';
+import { takeParam, uniqueIdParam } from '../../../utils/swagger/params';
 
 @ApiBearerAuth()
 @ApiForbiddenResponseDescription()

@@ -19,6 +19,8 @@ import { TicketsModule } from './resource/tickets/tickets.module';
 import { CarriageModule } from './resource/carriage/carriage.module';
 import { StationsModule } from './resource/stations/stations.module';
 import { EmployeesModule } from './resource/employees/employees.module';
+import { BossModule } from './resource/boss/boss.module';
+import { ManagerModule } from './resource/manager/manager.module';
 // Config
 import { publicPath } from './config/files.config';
 
@@ -45,15 +47,17 @@ import { publicPath } from './config/files.config';
       dest: `./${publicPath}`,
     }),
     JwtModule,
-    UsersModule,
-    AdminModule,
     StationsModule,
-    EmployeesModule,
+    TrainsModule,
     PricesModule,
     RoutesModule,
-    TicketsModule,
-    TrainsModule,
     CarriageModule,
+    EmployeesModule,
+    TicketsModule,
+    UsersModule,
+    AdminModule,
+    ManagerModule,
+    BossModule,
   ],
   // providers: [
   //   {

@@ -1,4 +1,3 @@
-// Nest
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -12,23 +11,18 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-// Guards
-import { RequireHigherRole } from '../../guards/requireRole.guard';
-// Services
-import { TrainsService } from './trains.service';
-// Decorators
-import { UserID } from '../../decorators/userID.decorator';
-// Tools
 import * as moment from 'moment';
-// Types
+import { TrainEntity } from '../../../@types/models/trains.types.dto';
+import { requestDateFormat } from '../../../config/dates.config';
+import { UserID } from '../../../decorators/userID.decorator';
+import { RequireHigherRole } from '../../../guards/requireRole.guard';
+import { trainPrefix } from '../../../prisma/seed/data/prefixes';
 import {
   BossTrainsLookupQuery,
   TrainsReportQuery,
-} from '../../utils/query/index.types';
-import { TrainEntity } from '../../@types/models/trains.types.dto';
-import { trainPrefix } from '../../prisma/seed/data/prefixes';
-import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
-import { requestDateFormat } from '../../config/dates.config';
+} from '../../../utils/query/index.types';
+import { ApiSubjectNotFoundResponse } from '../../../utils/swagger';
+import { TrainsService } from '../../trains/trains.service';
 
 @ApiBearerAuth()
 @UseGuards(RequireHigherRole)
