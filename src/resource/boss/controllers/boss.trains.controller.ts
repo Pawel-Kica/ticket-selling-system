@@ -34,9 +34,22 @@ export class BossTrainsController {
   @ApiOperation({
     description: 'Returns trains filtered by boss id',
   })
+  @ApiQuery({
+    name: 'id',
+    description: `Specify the ID of boss`,
+    examples: {
+      empty: {
+        value: '',
+      },
+      valid: {
+        value: 'user13',
+      },
+    },
+    required: false,
+  })
   @Get()
   async getTrains(
-    @Query() { bossId }: BossTrainsLookupQuery,
+    @Query() { id: bossId }: BossTrainsLookupQuery,
     @UserID() id: string,
   ): Promise<TrainEntity[]> {
     return this.trainsService.findMany({ bossId: bossId ? bossId : id });
@@ -71,7 +84,6 @@ export class BossTrainsController {
     },
     required: false,
   })
-  @ApiSubjectNotFoundResponse('Train')
   @Get('report')
   async getReport(@Query() { id, departureTime }: TrainsReportQuery) {
     const train = await this.trainsService.generateReport({
@@ -82,7 +94,6 @@ export class BossTrainsController {
         },
       },
     });
-    if (!train) throw new NotFoundException();
     return train;
   }
 }

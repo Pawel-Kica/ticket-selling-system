@@ -14,8 +14,6 @@ export class FileUploadHelper {
     file: { mimetype: string | string[]; originalname: string },
     cb: (arg0: any, arg1: any) => void,
   ) {
-    console.log(file.mimetype);
-
     if (file.mimetype.indexOf(imagesExtension) === -1)
       return cb(new UnsupportedMediaTypeException(), false);
 

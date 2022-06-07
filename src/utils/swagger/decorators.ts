@@ -66,7 +66,10 @@ export const ApiCreateTicketByManager = (description: string) =>
         },
         invalidBook3daysBefore: {
           summary: 'invalid - book only 3 days before',
-          value: createTicketByManagerObj.invalid.tooLateToBook.body,
+          value: {
+            ...createTicketByManagerObj.invalid.tooLateToBook.body,
+            seat: 10,
+          },
         },
         invalidSchema: {
           summary: 'invalid schema',

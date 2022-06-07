@@ -90,7 +90,7 @@ export class EmployeesLookupQuery extends TakeQuery {
 
 export class BossTrainsLookupQuery {
   @ApiPropertyOptional()
-  bossId: string;
+  id: string;
 }
 
 export class AdminUpdateUserRoleQuery {

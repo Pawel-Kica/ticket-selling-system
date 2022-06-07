@@ -83,6 +83,8 @@ export class SeedService {
     if (!this.models.includes(modelName))
       this.logSeedInfo(`Unknown model name ${modelName}`);
 
+    if (!dataset) return;
+
     this.logSeedInfo(`Store ${modelName.toUpperCase()} data`);
 
     await Promise.all(
@@ -109,5 +111,6 @@ export class SeedService {
     await this.seedModel('train');
     await this.seedModel('carriage');
     await this.seedModel('price');
+    await this.seedModel('ticket');
   }
 }

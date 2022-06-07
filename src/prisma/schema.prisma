@@ -117,7 +117,7 @@ enum CarriageType {
 
 model Ticket {
   id              String   @id @default(cuid())
-  seat            Int      @unique
+  seat            Int      
   userId          String
   trainId         String
   carriageId      String

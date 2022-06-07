@@ -36,10 +36,10 @@ export const employeesTestData = [
   {
     id: testEmployeeId,
     name: 'Trudie',
-    surname: "O'Hara",
+    surname: 'OHara',
     dateOfBirth: '1991-11-07T13:59:56.038Z',
     address: 'High Point',
-    telephoneNumber: '225.803.3471 x952',
+    telephoneNumber: '531093001',
     position: 'conductor',
     photoPath: 'employee0',
   },

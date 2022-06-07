@@ -29,6 +29,7 @@ export class TrainsService {
     return this.prisma.train.findMany({
       where,
       select: {
+        id: true,
         boss: {
           select: {
             id: true,
