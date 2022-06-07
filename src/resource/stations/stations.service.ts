@@ -1,5 +1,6 @@
 // Nest
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -31,7 +32,7 @@ export class StationsService {
   async update(where: StationWhereUniqueInput, data: StationUpdateInput) {
     const station = await this.findFirst(where);
     if (!station) throw new NotFoundException();
-    if (station.name === data.name) throw new ConflictException();
+    if (station.name === data.name) throw new BadRequestException();
 
     return this.prisma.station.update({ where, data });
   }
@@ -39,7 +40,13 @@ export class StationsService {
     return this.prisma.station.findFirst({ where });
   }
   async findMany(where: StationWhereInput, take = defaultStationsTakeNumber) {
-    return this.prisma.station.findMany({ where, take });
+    return this.prisma.station.findMany({
+      where,
+      take,
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 
   async findUnique(where: StationWhereUniqueInput) {

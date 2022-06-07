@@ -28,7 +28,10 @@ import {
   updateEmployeeSchema,
 } from '../../../validation/schemas/employee.schema';
 // Types
-import { CreateEmployeeFileDto } from '../../../@types/models/employees.types.dto';
+import {
+  CreateEmployeeFileDto,
+  EmployeeEntityDto,
+} from '../../../@types/models/employees.types.dto';
 // Guards
 import { RequireAdmin } from '../../../guards/requireRole.guard';
 // Config
@@ -47,7 +50,6 @@ import {
   SuccessResponse,
   SuccessResponseDto,
 } from '../../../@types/utils/responses.types';
-import { Employee } from '@prisma/client';
 import { employeePrefix } from '../../../prisma/seed/data/prefixes';
 import { CreateEmployeeDto } from '../../dto/employee/dto/create-employee.dto';
 
@@ -72,12 +74,12 @@ export class AdminEmployeesController {
     },
   })
   @ApiInvalidRequestedBodySchemaResponse()
-  @Post()
   @ApiFile()
+  @Post()
   async create(
     @UploadedFile() file,
     @Body(ApplyValidation(createEmployeeSchema)) body: CreateEmployeeFileDto,
-  ): Promise<Employee> {
+  ): Promise<EmployeeEntityDto> {
     // swagger
     body.photoPath = file?.filename
       ? file.filename.slice(0, -4)
@@ -120,7 +122,7 @@ export class AdminEmployeesController {
   async update(
     @Param('id') id: string,
     @Body(ApplyValidation(updateEmployeeSchema)) body: CreateEmployeeDto,
-  ): Promise<Employee> {
+  ): Promise<EmployeeEntityDto> {
     const formatted: any = { ...body };
     if (body.dateOfBirth)
       formatted.dateOfBirth = moment(body.dateOfBirth, requestDateFormat)

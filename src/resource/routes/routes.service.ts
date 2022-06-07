@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
+  routeFindManySelect,
   routeMainSelect,
   RouteWhereInput,
   RouteWhereUniqueInput,
@@ -19,7 +20,7 @@ export class RoutesService {
 
   async findMany(
     where: RouteWhereInput,
-    select = routeMainSelect,
+    select = routeFindManySelect,
     take = routeDefaultTakeNumber,
   ) {
     return this.prisma.route.findMany({
@@ -93,7 +94,7 @@ export class RoutesService {
           },
         ],
       },
-      routeMainSelect,
+      routeFindManySelect,
       take,
     );
   }

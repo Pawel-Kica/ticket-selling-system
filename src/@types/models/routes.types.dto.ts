@@ -33,6 +33,28 @@ export const routeMainSelect = Prisma.validator<RouteSelect>()({
     },
   },
 });
+export const routeFindManySelect = Prisma.validator<RouteSelect>()({
+  id: true,
+  startStation: true,
+  departureTime: true,
+  endStation: true,
+  arrivalTime: true,
+  stationsBetween: {
+    select: stationsBetweenSelect,
+    orderBy: {
+      order: 'asc',
+    },
+  },
+});
+
+export class RouteFindManyEntity {
+  id: Route['id'];
+  startStation: StationEntity;
+  departureTime: Route['departureTime'];
+  endStation: StationEntity;
+  arrivalTime: Route['arrivalTime'];
+  stationsBetween: StationsBetweenInfoDto[];
+}
 
 export class RouteEntity {
   id: Route['id'];

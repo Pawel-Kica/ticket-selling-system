@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { PriceEntity } from '../../@types/models/prices.types.dto';
+import { PriceFindManyEntity } from '../../@types/models/prices.types.dto';
 import { PricesLookupQuery } from '../../utils/query/index.types';
 import {
   endStationFilter,
@@ -64,7 +64,7 @@ export class PricesController {
       priceGreaterThan,
       id,
     }: PricesLookupQuery,
-  ): Promise<PriceEntity[]> {
+  ): Promise<PriceFindManyEntity[]> {
     return await this.pricesService.findMany(
       {
         id,

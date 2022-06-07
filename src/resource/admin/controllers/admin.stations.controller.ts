@@ -15,6 +15,7 @@ import {
   ApiSubjectNotFoundResponse,
 } from '../../../utils/swagger';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiOkResponse,
@@ -100,8 +101,16 @@ export class AdminStationsController {
       },
     },
   })
-  @ApiConflictResponseDescription('station with this name already exists')
   @ApiParam(uniqueIdParam('station', 'station1', '123', 'updated'))
+  @ApiBadRequestResponse({
+    description: 'Bad request - cannot update the same value',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: 'Bad request',
+      },
+    },
+  })
   @Put(':id')
   async update(
     @Param('id') id: string,

@@ -65,11 +65,15 @@ export class AdminUsersController {
     type: CreateUserByAdminDto,
     examples: {
       valid: {
-        summary: 'Valid',
-        value: createUserByAdminBody,
+        summary: 'valid',
+        value: {
+          ...createUserByAdminBody,
+          email: `second${createUserByAdminBody.email}`,
+          role: 'admin',
+        },
       },
       invalidSchema: {
-        summary: 'Invalid schema',
+        summary: 'invalid schema',
         value: invalidCreateUserByAdminBody,
       },
     },
@@ -129,7 +133,7 @@ export class AdminUsersController {
   @ApiOperation({
     description: `Deletes specified user`,
   })
-  @ApiQuery(userIDParam('deleted'))
+  @ApiParam(userIDParam('deleted'))
   @ApiUserNotFoundResponse()
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<SuccessResponseDto> {

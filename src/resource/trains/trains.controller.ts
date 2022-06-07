@@ -1,5 +1,5 @@
 // Nest
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
   Controller,
   Get,
@@ -15,6 +15,8 @@ import {
 } from '../../@types/models/trains.types.dto';
 import { LookupByRouteId } from '../../utils/query/index.types';
 import { ApiSubjectNotFoundResponse } from '../../utils/swagger';
+import { trainPrefix } from '../../prisma/seed/data/prefixes';
+import { uniqueIdParam } from '../../utils/swagger/params';
 
 @ApiTags('Public - Trains')
 @Controller('trains')
@@ -23,6 +25,19 @@ export class TrainsController {
 
   @ApiOperation({
     description: `Returns filtered trains (filtering using query params)`,
+  })
+  @ApiQuery({
+    name: 'routeId',
+    description: `Specify the ID of route`,
+    examples: {
+      empty: {
+        value: '',
+      },
+      valid: {
+        value: 'route2',
+      },
+    },
+    required: false,
   })
   @Get()
   async findMany(
@@ -34,6 +49,7 @@ export class TrainsController {
   @ApiOperation({
     description: `Returns unique train`,
   })
+  @ApiParam(uniqueIdParam('train', `${trainPrefix}1`))
   @ApiSubjectNotFoundResponse('Train')
   @Get(':id')
   async findUnique(@Param('id') id: string): Promise<TrainDetailsDto> {

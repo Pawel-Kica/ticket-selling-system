@@ -8,6 +8,7 @@ import { PrismaService } from 'nestjs-prisma';
 // Types
 import {
   PriceCreateInput,
+  PriceSelectFindMany,
   PriceUpdateInput,
   PriceWhereInput,
   PriceWhereUniqueInput,
@@ -33,7 +34,11 @@ export class PricesService {
     return this.prisma.price.update({ where, data });
   }
   async findMany(where: PriceWhereInput, take = defaultPricesTakeNumber) {
-    return this.prisma.price.findMany({ where, take });
+    return this.prisma.price.findMany({
+      where,
+      select: PriceSelectFindMany,
+      take,
+    });
   }
   async findFirst(where: PriceWhereInput) {
     return this.prisma.price.findFirst({ where });
