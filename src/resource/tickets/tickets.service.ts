@@ -107,6 +107,8 @@ export class TicketsService {
     state,
     seat,
   }: CreateTicketParams) {
+    //
+
     const { type: carriageType } = await this.carriagesService.validateCarriage(
       {
         carriageId,

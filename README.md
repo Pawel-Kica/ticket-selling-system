@@ -1,5 +1,10 @@
 ## **Ticket selling system for trains, no transfers**
 
+### **Tech stack**
+
+- Nest.js
+- PostgreSQL with Prisma
+
 ### **Role based authorization module:**
 
 - Admin – can add and remove users. manages roles. Does not have
@@ -32,6 +37,7 @@
 
 - Access data about trains, filtered by:
   - bossId
+- Access data about detailed train reports
 
 #### **Manager** can all above and:
 
@@ -51,8 +57,5 @@
 
 #### **Admin** does not have access to any data, can:
 
-- creates a new user with specified role
-- block users
-- unblock users
-- update roles
-- remove specified user
+- user, stations, prices and emploees CRUD
+- block/unblock users

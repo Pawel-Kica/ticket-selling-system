@@ -9,6 +9,7 @@ import {
   stationsBetweenSelect,
 } from './stations.types.dto';
 
+export type TrainCreateInput = Prisma.TrainCreateInput;
 export type TrainWhereInput = Prisma.TrainWhereInput;
 export type TrainWhereUniqueInput = Prisma.TrainWhereUniqueInput;
 export type TrainSelect = Prisma.TrainSelect;
